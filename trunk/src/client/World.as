@@ -7,6 +7,7 @@ package client
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
@@ -14,15 +15,14 @@ package client
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import client.utils.MathUtils;
+	import client.AssetLoader;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class World extends Sprite
 	{
-		[Embed (source = "resources\\assets\\index.swf", mimeType = "application/octet-stream")] private var _cAssets:Class;
-		
-		
 		private var _world:b2World=new b2World(new b2Vec2(0,10),true);
 		private var _worldScale:int = 30;
 		
@@ -48,26 +48,13 @@ package client
 		public function init():void {
 			_world.SetContactListener(customContact);
 			
-			_assets = new Loader();
-			_assets.loadBytes(new _cAssets());
-			_assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAssetLoded);
-		}
-		
-		private function onAssetLoded(e:Event):void {
 			// Carga el background
-			var _cBackground:Class = _assets.contentLoaderInfo.applicationDomain.getDefinition("backgroundMc") as Class;
+			var _cBackground:Class = AssetLoader.instance.getAssetDefinition("backgroundMc") as Class;
 			_background = new _cBackground();
 			addChild(_background);
 
 			// Basura a lanzar
-			_trash = new Trash(null);
-			//_trash.x = GameProperties.TRASH_BATTING_POISTION.x;
-			//_trash.y = GameProperties.TRASH_BATTING_POISTION.y;
-			_trash.init(_world, _worldScale);
-			addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-			addChild(_trash);
+			createTrash();
 			
 			// Agrega suelo
 			addWall(800, 50, 0, 430);
@@ -87,6 +74,38 @@ package client
 			addEventListener(Event.ENTER_FRAME, updateWorld);
 			
 			dispatchEvent(new Event(Event.COMPLETE));			
+		}
+		
+		private function createTrash():void {
+			var items:Array = ApplicationModel.instance.getItems();
+			var itemDef:ItemDefinition = getThrowItemByType('battable');
+			
+			_trash = new Trash(itemDef);
+			_trash.init(_world, _worldScale);
+			addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			addChild(_trash);
+		}
+		
+		private function destroyTrash():void {
+			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			removeChild(_trash);
+			_trash.destroy();
+		}
+		
+		private function getThrowItemByType(type:String):ItemDefinition {
+			var items:Array = ApplicationModel.instance.getItems().concat();
+			var itemsFiltered:Array = [];
+			for each(var itemDef:ItemDefinition in items) {
+				if (itemDef.type == type) {
+					itemsFiltered.push(itemDef);
+				}
+			}
+			
+			return itemsFiltered[MathUtils.getRandomInt(1, itemsFiltered.length) - 1];
 		}
 		
 		private function trashMoved(e:MouseEvent):void {
@@ -165,10 +184,9 @@ package client
 			
 			// Chequea que la basura se fue de pantalla y la resetea
 			if (_trash.position.x > 800 || _trash.position.y > 600) {
-				_trash.reset();
-				addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-				addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-				addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+				destroyTrash();
+				createTrash();
+
 				_power = 0;
 			}
 			

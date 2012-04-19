@@ -1,0 +1,60 @@
+package client.definitions 
+{
+	/**
+	 * ...
+	 * @author Fulvio Crescenzi
+	 */
+	public class ItemDefinition 
+	{
+		private var _name:String;
+		private var _code:uint;
+		private var _type:String;
+		
+		private var _itemProps:ItemPropertiesDefinition;
+		private var _physicProps:ItemPhysicDefinition;
+		private var _areaAffecting:ItemAffectingAreaDefinition;
+		
+		public function ItemDefinition(name:String, code:uint, type:String, props:ItemPropertiesDefinition, physic:ItemPhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
+		{
+			_name = name;
+			_code = code;
+			_type = type;
+			
+			_itemProps = props;
+			_physicProps = physic;
+			_areaAffecting = affectingArea;
+		}
+		
+		public function get itemProps():ItemPropertiesDefinition 
+		{
+			return _itemProps;
+		}
+		
+		public function get physicProps():ItemPhysicDefinition 
+		{
+			return _physicProps;
+		}
+		
+		public function get areaAffecting():ItemAffectingAreaDefinition 
+		{
+			return _areaAffecting;
+		}
+		
+		public function get name():String 
+		{
+			return _name;
+		}
+		
+		public function get code():uint 
+		{
+			return _code;
+		}
+		
+		public function get type():String 
+		{
+			return _type;
+		}
+		
+	}
+
+}

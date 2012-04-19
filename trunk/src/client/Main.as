@@ -2,6 +2,7 @@ package client
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import client.deserealizer.ItemConfigDeserealizer;
 
 	/**
 	 * ...
@@ -13,6 +14,9 @@ package client
 
 		private var _ingame:InGame;
 		
+		private var _resources:int;
+		private var _loaded:int;
+		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -21,11 +25,37 @@ package client
 
 		private function init(e:Event = null):void 
 		{
+			_resources = 2;
+			_loaded = 0;
+			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			
-			_ingame = new InGame();
-			addChild(_ingame);
+			ItemConfigDeserealizer.instance.addEventListener(Event.COMPLETE, onItemConfigLoaded);
+			ItemConfigDeserealizer.instance.init();
+			
+			AssetLoader.instance.addEventListener(Event.COMPLETE, onAssetLoaded);
+			AssetLoader.instance.init();
+			
+		}
+		
+		private function onItemConfigLoaded(e:Event):void {
+			ItemConfigDeserealizer.instance.removeEventListener(Event.COMPLETE, onItemConfigLoaded);
+			
+			begin();
+		}
+		
+		private function onAssetLoaded(e:Event):void {
+			AssetLoader.instance.removeEventListener(Event.COMPLETE, onAssetLoaded);
+			
+			begin();
+		}
+		
+		private function begin():void {
+			if (++_loaded == _resources){
+				_ingame = new InGame();
+				addChild(_ingame);
+			}
 		}
 
 	}

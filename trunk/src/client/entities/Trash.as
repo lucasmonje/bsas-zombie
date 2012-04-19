@@ -6,12 +6,14 @@ package client.entities
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.definitions.ItemDefinition;
 	import client.World;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import client.GameProperties;
+	import client.AssetLoader;
 	
 	/**
 	 * ...
@@ -19,14 +21,15 @@ package client.entities
 	 */
 	public class Trash extends Sprite
 	{
-		private var _props:Object;
+		private var _props:ItemDefinition;
 		
 		private var _mc:MovieClip;
 		private var _trashSphere:b2Body;
 		
+		private var _world:b2World;
 		private var _worldScale:int;
 		
-		public function Trash(props:Object) 
+		public function Trash(props:ItemDefinition) 
 		{
 			_props = props;
 		}
@@ -34,19 +37,20 @@ package client.entities
 		public function init(world:b2World, worldScale:int):void {
 			createMc();
 			
+			_world = world;
 			_worldScale = worldScale;
 			
 			var sphereShape:b2CircleShape=new b2CircleShape(15/worldScale);
 			
 			var sphereFixture:b2FixtureDef = new b2FixtureDef();
-			sphereFixture.density=1;
-			sphereFixture.friction=3;
-			sphereFixture.restitution=0.1;
+			sphereFixture.density=_props.physicProps.density;
+			sphereFixture.friction=_props.physicProps.friction;
+			sphereFixture.restitution=_props.physicProps.restitution;
 			sphereFixture.shape = sphereShape;
 			
 			var sphereBodyDef:b2BodyDef = new b2BodyDef();
 			sphereBodyDef.type=b2Body.b2_dynamicBody;
-			sphereBodyDef.userData={assetName:"trash",assetSprite:_mc,remove:false};
+			sphereBodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
 			sphereBodyDef.position.Set(GameProperties.TRASH_BATTING_POISTION.x / worldScale, GameProperties.TRASH_BATTING_POISTION.y / worldScale);
 			
 			_trashSphere=world.CreateBody(sphereBodyDef);
@@ -66,10 +70,9 @@ package client.entities
 		}
 		
 		private function createMc():void {
-			_mc = new MovieClip();
-			_mc.graphics.beginFill(0xff0000);
-			_mc.graphics.drawCircle(0, 0, 20);
-			_mc.graphics.endFill();
+			var cAsset:Class = AssetLoader.instance.getAssetDefinition(_props.name);
+			
+			_mc = new cAsset();
 			addChild(_mc);
 		}
 		
@@ -81,6 +84,10 @@ package client.entities
 		public function get trashSphere():b2Body 
 		{
 			return _trashSphere;
+		}
+		
+		public function destroy():void {
+			_world.DestroyBody(_trashSphere);
 		}
 	}
 

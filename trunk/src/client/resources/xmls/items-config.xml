@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<item name="tv" code="100001" type="battable">
+		<physicProps density="1" friction="3" restitution="0.1" />
+		<properties hits="1" />
+	</item>
+	<item name="washingMachine" code="100002" type="battable">
+		<physicProps density="100" friction="3" restitution="0.1" />
+		<properties hits="2" />
+	</item>
+	<item name="molotov" code="100003" type="handable">
+		<properties hits="0" />
+		<affectingArea radius="10" times="10" hit="2" />
+	</item>
+	<item name="grenade" code="100004" type="handable">
+		<properties hits="0" />
+		<affectingArea radius="5" times="10" hit="5" />
+	</item>
+</data>
