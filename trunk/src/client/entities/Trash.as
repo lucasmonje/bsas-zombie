@@ -41,8 +41,10 @@ package client.entities
 			
 			_world = world;
 			_worldScale = worldScale;
-			
-			var sphereShape:b2CircleShape=new b2CircleShape(15/worldScale);
+			var radius:Number = _mc.width / 2;
+			radius = radius / _worldScale; 
+
+			var sphereShape:b2CircleShape=new b2CircleShape(radius);
 			
 			var sphereFixture:b2FixtureDef = new b2FixtureDef();
 			sphereFixture.density=_props.physicProps.density;
@@ -81,6 +83,7 @@ package client.entities
 		public function shot(vel:b2Vec2):void {
 			_trashSphere.SetActive(true);
 			_trashSphere.SetLinearVelocity(vel);
+			_trashSphere.SetAngularDamping(10);
 		}
 		
 		public function get trashSphere():b2Body 
