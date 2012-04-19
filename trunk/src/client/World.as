@@ -39,6 +39,7 @@ package client
 		private var _background:MovieClip;
 		private var _poweringArrow:MovieClip;
 		private var _mcTrashCont:MovieClip;
+		private var _mcPlayer:MovieClip;
 		private var _currentTrash:Trash;
 		private var _trashList:Vector.<Trash>;
 		
@@ -74,6 +75,7 @@ package client
 			_background = new _cBackground();
 			_poweringArrow = _background.getChildByName("mcPoweringContainer") as MovieClip;
 			_mcTrashCont = _background.getChildByName("mcTrashCont") as MovieClip;
+			_mcPlayer = _background.getChildByName("mcPlayer") as MovieClip;
 			
 			addChild(_background);
 
@@ -108,7 +110,7 @@ package client
 		
 		private function trashMoved(e:MouseEvent):void {
 			setNewAngle();
-			_poweringArrow.rotation = _angle * 100;
+			_poweringArrow.rotation = _angle * 75;
 		}
 		
 		private function setNewAngle():void {
@@ -125,24 +127,34 @@ package client
 			}
 		}
 		
-		private function validAngle():Boolean {
-			var result:Boolean = _angle > -0.45 && _angle < 0.45;
-			if (!result) trace("Invalid angle: " + _angle * 100);
-			return result;
-		}
-		
 		private function trashMouseDown(e:MouseEvent):void {
 			_powering = true;
 		}
 		
 		private function trashMouseUp(e:MouseEvent):void {
-			_powering = false;
-			updatePowerBar();
-			setNewAngle();
-			removePlayerListeners();
+			if (_powering) {
+				_powering = false;
+				updatePowerBar();
+				setNewAngle();
+				removePlayerListeners();			
+				_player.state = PlayerStatesEnum.SHOOTING;
+				_mcPlayer.addEventListener('player_hit', onPlayerHit);
+				_mcPlayer.addEventListener('player_ready', onPlayerReady);
+				_mcPlayer.gotoAndPlay(1);	
+			}			
+		}
+		
+		private function onPlayerHit(e:Event):void {
+			_mcPlayer.removeEventListener('player_hit', onPlayerHit);
 			_currentTrash.shot(new b2Vec2((_power * Math.cos(_angle)) / 4, (_power * Math.sin(_angle)) / 4));
-			_player.state = PlayerStatesEnum.SHOOTING;
-			
+		}
+		
+		private function onPlayerReady(e:Event):void {
+			_mcPlayer.removeEventListener('player_ready', onPlayerHit);
+			_mcTrashCont.addChild(createTrash());
+			DisplayUtil.bringToFront(_poweringArrow);
+			_player.state = PlayerStatesEnum.READY;
+			addPlayerListeners();
 		}
 		
 		private function addWall(w:Number,h:Number,px:Number,py:Number):void {
@@ -171,12 +183,6 @@ package client
 		private function updateWorld(e:Event):void {
 			updatePowerBar();
 			
-			if (_player.state == PlayerStatesEnum.SHOOTING) {
-				_mcTrashCont.addChild(createTrash());
-				DisplayUtil.bringToFront(_poweringArrow);
-				_player.state = PlayerStatesEnum.READY;
-				addPlayerListeners();
-			}
 			_world.Step(1 / 30, 10, 10);
 			/*
 			// Chequea que la basura se fue de pantalla y la resetea
