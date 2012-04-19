@@ -8,6 +8,7 @@ package client
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
+	[SWF(width = "835", height = "550", frameRate = "30", backgroundColor = "#234a00")]
 	[Frame(factoryClass="client.Preloader")]
 	public class Main extends Sprite 
 	{

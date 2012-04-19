@@ -21,6 +21,8 @@ package client.entities
 	 */
 	public class Trash extends Sprite
 	{
+		public static var initialPosition:Point;
+		
 		private var _props:ItemDefinition;
 		
 		private var _mc:MovieClip;
@@ -51,7 +53,7 @@ package client.entities
 			var sphereBodyDef:b2BodyDef = new b2BodyDef();
 			sphereBodyDef.type=b2Body.b2_dynamicBody;
 			sphereBodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
-			sphereBodyDef.position.Set(GameProperties.TRASH_BATTING_POISTION.x / worldScale, GameProperties.TRASH_BATTING_POISTION.y / worldScale);
+			sphereBodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
 			
 			_trashSphere=world.CreateBody(sphereBodyDef);
 			_trashSphere.CreateFixture(sphereFixture);
@@ -62,7 +64,7 @@ package client.entities
 		
 		public function reset():void {
 			_trashSphere.SetActive(false);
-			_trashSphere.SetPosition(new b2Vec2(GameProperties.TRASH_BATTING_POISTION.x / _worldScale, GameProperties.TRASH_BATTING_POISTION.y / _worldScale));
+			_trashSphere.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
 		}
 
 		public function get position():Point {

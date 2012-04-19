@@ -6,10 +6,12 @@ package client
 	 * @author Fulvio Crescenzi
 	 */
 	public class GameProperties 
-	{
-		public static var TRASH_BATTING_POISTION:Point = new Point(170, 270);
+	{		
+		public static const POWER_INCREMENT:Number = 5;
 		
-		public static var POWER_INCREMENT:Number = 1.5;
+		public static const ANGLE_BOTTOM:Number = 0.45;
+		
+		public static const ANGLE_TOP:Number = -0.85;
 		
 		public function GameProperties() 
 		{

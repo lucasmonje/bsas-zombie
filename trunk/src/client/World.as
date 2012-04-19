@@ -7,22 +7,28 @@ package client
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.entities.Player;
 	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import client.enum.PlayerStatesEnum;
 	import client.utils.MathUtils;
 	import client.AssetLoader;
+	import client.utils.DisplayUtil;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class World extends Sprite
 	{
+		[Embed (source = "resources\\assets\\stage01.swf", mimeType = "application/octet-stream")] private var _cAssets:Class;
+		
 		private var _world:b2World=new b2World(new b2Vec2(0,10),true);
 		private var _worldScale:int = 30;
 		
@@ -30,70 +36,62 @@ package client
 		
 		private var _assets:Loader;
 		
-		private var _angleDrawing:Sprite;
-		private var _powerDrawing:Sprite;
-		private var _background:MovieClip;		
-		private var _trash:Trash;
+		private var _background:MovieClip;
+		private var _poweringArrow:MovieClip;
+		private var _mcTrashCont:MovieClip;
+		private var _currentTrash:Trash;
+		private var _trashList:Vector.<Trash>;
+		
+		private var _shotReset:Sprite;
 		
 		private var _following:Boolean = false;
+		
 		private var _powering:Boolean = false;
 		
 		private var _power:Number;
 		
+		private var _angle:Number;
+		
+		private var _player:Player;
+		
 		public function World() 
 		{
-			
 		}
 		
 		public function init():void {
 			_world.SetContactListener(customContact);
-			
+			_power = 0;
+			_trashList = new Vector.<Trash>();
+			_assets = new Loader();
+			_player = new Player();
+			_assets.loadBytes(new _cAssets());
+			_assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAssetLoded);
+		}
+		
+		private function onAssetLoded(e:Event):void {
 			// Carga el background
-			var _cBackground:Class = AssetLoader.instance.getAssetDefinition("backgroundMc") as Class;
+			var _cBackground:Class = _assets.contentLoaderInfo.applicationDomain.getDefinition("stage01") as Class;
 			_background = new _cBackground();
+			_poweringArrow = _background.getChildByName("mcPoweringContainer") as MovieClip;
+			_mcTrashCont = _background.getChildByName("mcTrashCont") as MovieClip;
+			
 			addChild(_background);
 
-			// Basura a lanzar
-			createTrash();
+			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
 			
-			// Agrega suelo
-			addWall(800, 50, 0, 430);
+			var floor:MovieClip = _background.getChildByName("mcFloor") as MovieClip;
+			addWall(floor.width, floor.height, floor.x, floor.y);
 			
-			// Angulo de disparo
-			_angleDrawing = new Sprite();
-			addChild(_angleDrawing);
+			addChild(_background);
+			var newTrash:Trash = createTrash();
+			_mcTrashCont.addChild(newTrash);
 			
-			// Barra de power
-			_powerDrawing = new Sprite();
-			_powerDrawing.x = GameProperties.TRASH_BATTING_POISTION.x;
-			_powerDrawing.y = GameProperties.TRASH_BATTING_POISTION.y + 50;
-			addChild(_powerDrawing);
+			DisplayUtil.bringToFront(_poweringArrow);
+			_player.state = PlayerStatesEnum.READY;
 			
-			_power = 0;
-			
+			addPlayerListeners();
 			addEventListener(Event.ENTER_FRAME, updateWorld);
-			
-			dispatchEvent(new Event(Event.COMPLETE));			
-		}
-		
-		private function createTrash():void {
-			var items:Array = ApplicationModel.instance.getItems();
-			var itemDef:ItemDefinition = getThrowItemByType('battable');
-			
-			_trash = new Trash(itemDef);
-			_trash.init(_world, _worldScale);
-			addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-			addChild(_trash);
-		}
-		
-		private function destroyTrash():void {
-			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-			removeChild(_trash);
-			_trash.destroy();
+			dispatchEvent(new Event(Event.COMPLETE));	
 		}
 		
 		private function getThrowItemByType(type:String):ItemDefinition {
@@ -109,14 +107,28 @@ package client
 		}
 		
 		private function trashMoved(e:MouseEvent):void {
-			
-			var originPoint:Point = new Point(_trash.position.x, _trash.position.y);
+			setNewAngle();
+			_poweringArrow.rotation = _angle * 100;
+		}
+		
+		private function setNewAngle():void {
 			var destPoint:Point = new Point(mouseX, mouseY);
-			
-			_angleDrawing.graphics.clear();
-			_angleDrawing.graphics.lineStyle(1);
-			_angleDrawing.graphics.moveTo(originPoint.x, originPoint.y);
-			_angleDrawing.graphics.lineTo(destPoint.x, destPoint.y);
+			var distanceX:Number = destPoint.x - Trash.initialPosition.x;
+			var distanceY:Number = destPoint.y - Trash.initialPosition.y;
+			var newAngle:Number = Math.atan2(distanceY, distanceX);	
+			if (newAngle <= GameProperties.ANGLE_TOP)  {
+				_angle = GameProperties.ANGLE_TOP;
+			} else if (newAngle >= GameProperties.ANGLE_BOTTOM) {
+				_angle = GameProperties.ANGLE_BOTTOM;
+			} else {
+				_angle = newAngle;
+			}
+		}
+		
+		private function validAngle():Boolean {
+			var result:Boolean = _angle > -0.45 && _angle < 0.45;
+			if (!result) trace("Invalid angle: " + _angle * 100);
+			return result;
 		}
 		
 		private function trashMouseDown(e:MouseEvent):void {
@@ -125,33 +137,22 @@ package client
 		
 		private function trashMouseUp(e:MouseEvent):void {
 			_powering = false;
+			updatePowerBar();
+			setNewAngle();
+			removePlayerListeners();
+			_currentTrash.shot(new b2Vec2((_power * Math.cos(_angle)) / 4, (_power * Math.sin(_angle)) / 4));
+			_player.state = PlayerStatesEnum.SHOOTING;
 			
-			_powerDrawing.graphics.clear();
-			_angleDrawing.graphics.clear();
-			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-
-			
-			var originPoint:Point = new Point(_trash.position.x, _trash.position.y);
-			var destPoint:Point = new Point(mouseX, mouseY);
-			
-			var distanceX:Number=destPoint.x-originPoint.x;
-			var distanceY:Number=destPoint.y-originPoint.y;
-			var trashAngle:Number = Math.atan2(distanceY, distanceX);
-			
-			_trash.shot(new b2Vec2(_power*Math.cos(trashAngle)/4,_power*Math.sin(trashAngle)/4));
 		}
 		
 		private function addWall(w:Number,h:Number,px:Number,py:Number):void {
-			
 			var floorShape:b2PolygonShape = new b2PolygonShape();
 			floorShape.SetAsBox(w/_worldScale,h/_worldScale);
 			
 			var floorFixture:b2FixtureDef = new b2FixtureDef();
 			floorFixture.density=0;
 			floorFixture.friction=10;
-			floorFixture.restitution=0.5;
+			floorFixture.restitution=0.1;
 			floorFixture.shape=floorShape;
 		
 			var floorBodyDef:b2BodyDef = new b2BodyDef();
@@ -168,20 +169,16 @@ package client
 		}
 		
 		private function updateWorld(e:Event):void {
-			//trace(_trash.trashSphere.GetPosition().x , _trash.trashSphere.GetPosition().y);
+			updatePowerBar();
 			
-			if (_powering) {
-				_power += GameProperties.POWER_INCREMENT;
-				if (_power > 100) {
-					_power = 100;
-				}
-				
-				_powerDrawing.graphics.clear();
-				_powerDrawing.graphics.beginFill(0xffff00);
-				_powerDrawing.graphics.drawRect(0, 0, _power, 20);
-				_powerDrawing.graphics.endFill();
+			if (_player.state == PlayerStatesEnum.SHOOTING) {
+				_mcTrashCont.addChild(createTrash());
+				DisplayUtil.bringToFront(_poweringArrow);
+				_player.state = PlayerStatesEnum.READY;
+				addPlayerListeners();
 			}
-			
+			_world.Step(1 / 30, 10, 10);
+			/*
 			// Chequea que la basura se fue de pantalla y la resetea
 			if (_trash.position.x > 800 || _trash.position.y > 600) {
 				destroyTrash();
@@ -189,11 +186,11 @@ package client
 
 				_power = 0;
 			}
+			*/
 			
-			_world.Step(1/30,10,10);
-			for (var currentBody:b2Body=_world.GetBodyList(); currentBody; currentBody=currentBody.GetNext()) {
+			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				if (currentBody.GetUserData()) {
-					if (currentBody.GetUserData().assetSprite!=null) {
+					if (currentBody.GetUserData().assetSprite != null) {
 						currentBody.GetUserData().assetSprite.x=currentBody.GetPosition().x*_worldScale;
 						currentBody.GetUserData().assetSprite.y=currentBody.GetPosition().y*_worldScale;
 						currentBody.GetUserData().assetSprite.rotation=currentBody.GetAngle()*(180/Math.PI);
@@ -207,7 +204,7 @@ package client
 				}
 			}
 			if (_following) {
-				var posX:Number=_trash.x;
+				var posX:Number=_currentTrash.x;
 				posX=stage.stageWidth/2-posX;
 				if (posX>0) {
 					posX=0;
@@ -220,6 +217,58 @@ package client
 			_world.ClearForces();
 			_world.DrawDebugData();
 		}
-	}
+		
+		private function updatePowerBar():void {
+			if (_powering) {
+				_power += GameProperties.POWER_INCREMENT;
+				if (_power > 100) {
+					_power = 100;
+				}
+				_poweringArrow.gotoAndStop(_power);
+			} else {
+				_poweringArrow.gotoAndStop(1);
+			}
+		}
+		
+		private function addPlayerListeners():void {
+			if (!this.hasEventListener(MouseEvent.MOUSE_MOVE)) {
+				addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);				
+			}
+			if (!this.hasEventListener(MouseEvent.MOUSE_DOWN)) {
+				addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			}
+			if (!this.hasEventListener(MouseEvent.MOUSE_UP)) {
+				addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			}
+		}
 
+		private function removePlayerListeners():void {
+			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+		}
+		
+		private function createTrash():Trash {
+			
+			var items:Array = ApplicationModel.instance.getItems();
+			var itemDef:ItemDefinition = getThrowItemByType('battable');
+			var trash:Trash = new Trash(itemDef);
+			trash.init(_world, _worldScale);
+			_trashList.push(trash);
+			_power = 0;
+			_currentTrash = trash;
+			return trash;
+		}
+		
+		private function destroyTrash(trash:Trash):void {
+			if (Boolean(trash.parent)) {
+				trash.parent.removeChild(trash);
+			}
+			var i:int = _trashList.indexOf(trash);
+			if (i > -1) {
+				_trashList.slice(i, 1);
+			}
+			_currentTrash.destroy();
+		}
+	}
 }
