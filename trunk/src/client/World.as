@@ -78,10 +78,6 @@ package client
 			_assets = new Loader();
 			_assets.loadBytes(new _cAssets());
 			_assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAssetLoded);
-			
-			if (!ApplicationModel.instance.stage.hasEventListener(KeyboardEvent.KEY_UP)) {
-				ApplicationModel.instance.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-			}
 		}
 		
 		private function onAssetLoded(e:Event):void {
@@ -123,6 +119,9 @@ package client
 			
 			addPlayerListeners();
 			addEventListener(Event.ENTER_FRAME, updateWorld);
+			
+			ApplicationModel.instance.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			
 			dispatchEvent(new Event(Event.COMPLETE));	
 		}
 		
