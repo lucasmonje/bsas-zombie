@@ -46,7 +46,7 @@ package client.deserealizer
 			var items:Array = [];
 			
 			for each(var element:XML in xml.elements()) {
-				var physic:ItemPhysicDefinition = new ItemPhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution);
+				var physic:ItemPhysicDefinition = new ItemPhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution, element.physicProps.@width, element.physicProps.@height);
 				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits);
 				var area:ItemAffectingAreaDefinition = new ItemAffectingAreaDefinition(element.affectingArea.@radius, element.affectingArea.@times, element.affectingArea.@hit);
 				

@@ -1,6 +1,8 @@
 package client.entities 
 {
 	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
@@ -26,7 +28,7 @@ package client.entities
 		private var _props:ItemDefinition;
 		
 		private var _mc:MovieClip;
-		private var _trashSphere:b2Body;
+		private var _trashBody:b2Body;
 		
 		private var _world:b2World;
 		private var _worldScale:int;
@@ -41,36 +43,36 @@ package client.entities
 			
 			_world = world;
 			_worldScale = worldScale;
-			var radius:Number = _mc.width / _worldScale;
-			radius = radius / _worldScale; 
 
-			var sphereShape:b2CircleShape=new b2CircleShape(radius);
+			var shape:b2PolygonShape=new b2PolygonShape();
+			shape.SetAsBox(_props.physicProps.width, _props.physicProps.height);
 			
-			var sphereFixture:b2FixtureDef = new b2FixtureDef();
-			sphereFixture.density=_props.physicProps.density;
-			sphereFixture.friction=_props.physicProps.friction;
-			sphereFixture.restitution=_props.physicProps.restitution;
-			sphereFixture.shape = sphereShape;
+			var fixture:b2FixtureDef = new b2FixtureDef();
+			fixture.density=_props.physicProps.density;
+			fixture.friction=_props.physicProps.friction;
+			fixture.restitution=_props.physicProps.restitution;
+			fixture.shape = shape;
 			
-			var sphereBodyDef:b2BodyDef = new b2BodyDef();
-			sphereBodyDef.type=b2Body.b2_dynamicBody;
-			sphereBodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
-			sphereBodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
+			var bodyDef:b2BodyDef = new b2BodyDef();
+			bodyDef.type=b2Body.b2_dynamicBody;
+			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
+			bodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
 			
-			_trashSphere=world.CreateBody(sphereBodyDef);
-			_trashSphere.CreateFixture(sphereFixture);
+			_trashBody = world.CreateBody(bodyDef);
+			_trashBody.ResetMassData();
+			_trashBody.CreateFixture(fixture);
 			
-			_trashSphere.SetActive(false);
+			_trashBody.SetActive(false);
 			
 		}
 		
 		public function reset():void {
-			_trashSphere.SetActive(false);
-			_trashSphere.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
+			_trashBody.SetActive(false);
+			_trashBody.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
 		}
 
 		public function get position():Point {
-			return new Point(_trashSphere.GetPosition().x * _worldScale, _trashSphere.GetPosition().y * _worldScale);
+			return new Point(_trashBody.GetPosition().x * _worldScale, _trashBody.GetPosition().y * _worldScale);
 		}
 		
 		private function createMc():void {
@@ -81,18 +83,18 @@ package client.entities
 		}
 		
 		public function shot(vel:b2Vec2):void {
-			_trashSphere.SetActive(true);
-			_trashSphere.SetLinearVelocity(vel);
-			_trashSphere.SetAngularDamping(10);
+			_trashBody.SetActive(true);
+			_trashBody.SetLinearVelocity(vel);
+			_trashBody.SetAngularDamping(10);
 		}
 		
 		public function get trashSphere():b2Body 
 		{
-			return _trashSphere;
+			return _trashBody;
 		}
 		
 		public function destroy():void {
-			_world.DestroyBody(_trashSphere);
+			_world.DestroyBody(_trashBody);
 		}
 	}
 

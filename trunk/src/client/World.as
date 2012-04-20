@@ -185,7 +185,7 @@ package client
 		private function updateWorld(e:Event):void {
 			updatePowerBar();
 			
-			_world.Step(1 / 30, 10, 10);
+			_world.Step(1 / 30, 6, 2);
 			/*
 			// Chequea que la basura se fue de pantalla y la resetea
 			if (_trash.position.x > 800 || _trash.position.y > 600) {
