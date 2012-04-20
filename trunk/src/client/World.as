@@ -8,6 +8,7 @@ package client
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.b2.Clientb2ContactListener;
 	import client.entities.Player;
 	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
@@ -22,6 +23,7 @@ package client
 	import client.utils.MathUtils;
 	import client.AssetLoader;
 	import client.utils.DisplayUtil;
+	import flash.utils.Dictionary;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -33,7 +35,7 @@ package client
 		private var _world:b2World=new b2World(new b2Vec2(0,10),true);
 		private var _worldScale:int = 30;
 		
-		private var customContact:b2ContactListener = new b2ContactListener()
+		private var customContact:b2ContactListener;
 		
 		private var _assets:Loader;
 		
@@ -56,12 +58,16 @@ package client
 		
 		private var _player:Player;
 		
+		private var b2BodyTrashMap:Dictionary;
+		
 		public function World() 
 		{
 		}
 		
 		public function init():void {
+			customContact = new Clientb2ContactListener();
 			_world.SetContactListener(customContact);
+			b2BodyTrashMap = new Dictionary();
 			_power = 0;
 			_trashList = new Vector.<Trash>();
 			_assets = new Loader();
@@ -210,6 +216,15 @@ package client
 						}
 						_world.DestroyBody(currentBody);
 					}
+					
+					if (currentBody.GetUserData().hits != null) {
+						var hits:int = currentBody.GetUserData().hits;
+						if (hits == 0) {
+							if (Boolean(b2BodyTrashMap[currentBody])) {
+								destroyTrash(b2BodyTrashMap[currentBody] as Trash);								
+							}
+						}
+					}
 				}
 			}
 			if (_following) {
@@ -266,6 +281,7 @@ package client
 			_trashList.push(trash);
 			_power = 0;
 			_currentTrash = trash;
+			b2BodyTrashMap[trash.getb2Body()] = trash;
 			return trash;
 		}
 		
@@ -277,7 +293,8 @@ package client
 			if (i > -1) {
 				_trashList.slice(i, 1);
 			}
-			_currentTrash.destroy();
+			delete b2BodyTrashMap[trash];
+			trash.destroy();
 		}
 	}
 }

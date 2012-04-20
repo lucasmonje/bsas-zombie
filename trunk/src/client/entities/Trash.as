@@ -28,7 +28,7 @@ package client.entities
 		private var _props:ItemDefinition;
 		
 		private var _mc:MovieClip;
-		private var _trashBody:b2Body;
+		private var _b2Body:b2Body;
 		
 		private var _world:b2World;
 		private var _worldScale:int;
@@ -59,23 +59,27 @@ package client.entities
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.type=b2Body.b2_dynamicBody;
 
-			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
+			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false, hits: _props.itemProps.hits};
 			bodyDef.position.Set((initialPosition.x - _mc.width / 2)/ worldScale, (initialPosition.y - _mc.height/2) / worldScale);
-			_trashBody = world.CreateBody(bodyDef);
-			_trashBody.CreateFixture(fixture);
-			_trashBody.ResetMassData();
 			
-			_trashBody.SetActive(false);
+			_b2Body = world.CreateBody(bodyDef);
+			_b2Body.CreateFixture(fixture);
+			_b2Body.ResetMassData();
 			
+			_b2Body.SetActive(false);
+			
+		}
+		private function onSplit(e:*):void {
+			trace("");
 		}
 		
 		public function reset():void {
-			_trashBody.SetActive(false);
-			_trashBody.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
+			_b2Body.SetActive(false);
+			_b2Body.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
 		}
 
 		public function get position():Point {
-			return new Point(_trashBody.GetPosition().x * _worldScale, _trashBody.GetPosition().y * _worldScale);
+			return new Point(_b2Body.GetPosition().x * _worldScale, _b2Body.GetPosition().y * _worldScale);
 		}
 		
 		private function createMc():void {
@@ -86,18 +90,18 @@ package client.entities
 		}
 		
 		public function shot(vel:b2Vec2):void {
-			_trashBody.SetActive(true);
-			_trashBody.SetLinearVelocity(vel);
-			_trashBody.SetAngularDamping(10);
+			_b2Body.SetActive(true);
+			_b2Body.SetLinearVelocity(vel);
+			_b2Body.SetAngularDamping(10);
 		}
-		
-		public function get trashSphere():b2Body 
+
+		public function getb2Body():b2Body 
 		{
-			return _trashBody;
+			return _b2Body;
 		}
 		
 		public function destroy():void {
-			_world.DestroyBody(_trashBody);
+			_world.DestroyBody(_b2Body);
 		}
 	}
 
