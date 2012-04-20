@@ -41,7 +41,7 @@ package client.entities
 			
 			_world = world;
 			_worldScale = worldScale;
-			var radius:Number = _mc.width / 2;
+			var radius:Number = _mc.width / _worldScale;
 			radius = radius / _worldScale; 
 
 			var sphereShape:b2CircleShape=new b2CircleShape(radius);

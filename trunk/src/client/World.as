@@ -146,6 +146,7 @@ package client
 		
 		private function onPlayerHit(e:Event):void {
 			_mcPlayer.removeEventListener('player_hit', onPlayerHit);
+			_poweringArrow.visible = false;
 			_currentTrash.shot(new b2Vec2((_power * Math.cos(_angle)) / 4, (_power * Math.sin(_angle)) / 4));
 		}
 		
@@ -153,6 +154,7 @@ package client
 			_mcPlayer.removeEventListener('player_ready', onPlayerHit);
 			_mcTrashCont.addChild(createTrash());
 			DisplayUtil.bringToFront(_poweringArrow);
+			_poweringArrow.visible = true;
 			_player.state = PlayerStatesEnum.READY;
 			addPlayerListeners();
 		}
