@@ -8,7 +8,10 @@ package client
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Joints.b2DistanceJointDef;
+	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import client.b2.Clientb2ContactListener;
+	import client.definitions.ItemPhysicDefinition;
 	import client.entities.Player;
 	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
@@ -18,11 +21,13 @@ package client
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import client.utils.B2Utils;
 	import flash.geom.Point;
 	import client.enum.PlayerStatesEnum;
 	import client.utils.MathUtils;
 	import client.AssetLoader;
 	import client.utils.DisplayUtil;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	/**
 	 * ...
@@ -88,6 +93,22 @@ package client
 			
 			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
 			
+			
+			
+			
+			
+			
+			var body3:b2Body = B2Utils.createBox(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body4:b2Body = B2Utils.createBox(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body2:b2Body = B2Utils.createBox(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body1:b2Body = B2Utils.createBox(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			
+			
+			B2Utils.setRevoluteJoint(body1, body2, _world, -0.25, -0.25);
+			B2Utils.setRevoluteJoint(body2, body3, _world, -0.75, 1);
+			B2Utils.setRevoluteJoint(body2, body4, _world, -0.75, 1);
+			
+			
 			var floor:MovieClip = _background.getChildByName("mcFloor") as MovieClip;
 			addFloor(floor.width, floor.height, floor.x, floor.y);
 			
@@ -100,7 +121,7 @@ package client
 			
 			var debug:b2DebugDraw = new b2DebugDraw();
 			var sprite:Sprite = new Sprite();
-			//addChild(sprite);
+			addChild(sprite);
 			debug.SetSprite(sprite);
 			debug.SetDrawScale(1 / PHYSICS_SCALE);
 			debug.SetFlags(b2DebugDraw.e_shapeBit);

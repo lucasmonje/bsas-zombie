@@ -5,6 +5,7 @@ package client.utils
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import client.definitions.ItemPhysicDefinition;
 	import flash.geom.Rectangle;
 	/**
@@ -14,7 +15,20 @@ package client.utils
 	public class B2Utils 
 	{
 		
-		public static function createBox(bounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:ItemPhysicDefinition = null, userData:Object = null):b2Body {
+			public static function setRevoluteJoint(body1:b2Body, body2:b2Body, world:b2World, lowerAngle:int = -0.15, upperAngle:int = 0.15, enableLimit:Boolean  = true, maxMotorTorque:int = 10, motorSpeed:int = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
+				var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
+				revoluteJointDef.Initialize(body1, body2, body1.GetWorldCenter());
+				revoluteJointDef.lowerAngle = lowerAngle; 
+				revoluteJointDef.upperAngle = upperAngle;
+				revoluteJointDef.enableLimit = enableLimit;
+				revoluteJointDef.maxMotorTorque = maxMotorTorque;
+				revoluteJointDef.motorSpeed = motorSpeed;
+				revoluteJointDef.enableMotor = enableMotor;
+				world.CreateJoint(revoluteJointDef);
+				return revoluteJointDef;
+			}
+			
+			public static function createBox(bounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:ItemPhysicDefinition = null, userData:Object = null):b2Body {
 			
 			var shape:b2PolygonShape = new b2PolygonShape();
 			var hx:Number = (bounds.width / 2) * (1 / worldScale);
