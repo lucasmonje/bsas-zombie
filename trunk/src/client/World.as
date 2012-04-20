@@ -46,7 +46,7 @@ package client
 		
 		private var _assets:Loader;
 		
-		private var _background:MovieClip;
+		private var mcStage:MovieClip;
 		private var _poweringArrow:MovieClip;
 		private var _mcTrashCont:MovieClip;
 		private var _mcPlayer:MovieClip;
@@ -87,14 +87,12 @@ package client
 		private function onAssetLoded(e:Event):void {
 			// Carga el background
 			var _cBackground:Class = _assets.contentLoaderInfo.applicationDomain.getDefinition("stage01") as Class;
-			_background = new _cBackground();
-			_poweringArrow = _background.getChildByName("mcPoweringContainer") as MovieClip;
-			_mcTrashCont = _background.getChildByName("mcTrashCont") as MovieClip;
-			_mcPlayer = _background.getChildByName("mcPlayer") as MovieClip;
+			mcStage = new _cBackground();
+			_poweringArrow = mcStage.getChildByName("mcPoweringContainer") as MovieClip;
+			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
+			_mcPlayer = mcStage.getChildByName("mcPlayer") as MovieClip;
 			
 			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
-			
-			
 			
 			
 			
@@ -110,10 +108,10 @@ package client
 			B2Utils.setRevoluteJoint(body2, body4, _world, -0.75, 1);
 			
 			
-			var floor:MovieClip = _background.getChildByName("mcFloor") as MovieClip;
+			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
 			addFloor(floor.width, floor.height, floor.x, floor.y);
 			
-			addChild(_background);
+			addChild(mcStage);
 			var newTrash:Trash = createTrash();
 			_mcTrashCont.addChild(newTrash);
 			
