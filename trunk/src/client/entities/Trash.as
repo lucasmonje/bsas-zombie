@@ -60,7 +60,7 @@ package client.entities
 			bodyDef.type=b2Body.b2_dynamicBody;
 
 			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
-			bodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
+			bodyDef.position.Set((initialPosition.x - _mc.width / 2)/ worldScale, (initialPosition.y - _mc.height/2) / worldScale);
 			_trashBody = world.CreateBody(bodyDef);
 			_trashBody.CreateFixture(fixture);
 			_trashBody.ResetMassData();
