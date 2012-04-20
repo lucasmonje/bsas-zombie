@@ -185,8 +185,8 @@ package client
 			floorFixture.shape=floorShape;
 		
 			var floorBodyDef:b2BodyDef = new b2BodyDef();
-			px = px * PHYSICS_SCALE ;
-			py = py * PHYSICS_SCALE + 1.9;
+			px = px / worldScale;
+			py = (py + h) / worldScale;
 			floorBodyDef.position.Set(px,py);
 			floorBodyDef.userData={assetName:"wall",assetSprite:null,remove:false};
 			
