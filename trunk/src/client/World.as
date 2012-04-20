@@ -8,30 +8,28 @@ package client
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
-	import Box2D.Dynamics.Joints.b2DistanceJointDef;
-	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import client.b2.Box;
+	import client.b2.BoxBuilder;
 	import client.b2.Clientb2ContactListener;
-	import client.definitions.ItemPhysicDefinition;	import client.definitions.ItemDefinition;
+	import client.definitions.ItemDefinition;
+	import client.definitions.ItemPhysicDefinition;
 	import client.entities.Trash;
+	import client.enum.PlayerStatesEnum;
+	import client.utils.B2Utils;
+	import client.utils.DisplayUtil;
+	import client.utils.MathUtils;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import client.utils.B2Utils;
-	import flash.geom.Point;
-	import client.enum.PlayerStatesEnum;
-	import client.utils.MathUtils;
-	import client.AssetLoader;
-	import client.utils.DisplayUtil;
-	import flash.geom.Rectangle;
-	import flash.utils.Dictionary;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
-	import client.b2.BoxBuilder;
-	/**
+	import flash.utils.Dictionary;
+	
+	/*
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */

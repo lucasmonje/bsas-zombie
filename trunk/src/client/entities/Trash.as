@@ -1,24 +1,14 @@
 package client.entities 
 {
-	import Box2D.Collision.Shapes.b2CircleShape;
-	import Box2D.Collision.Shapes.b2MassData;
-	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.b2BodyDef;
-	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.AssetLoader;
 	import client.b2.Box;
+	import client.b2.BoxBuilder;
 	import client.definitions.ItemDefinition;
-	import client.World;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import client.GameProperties;
-	import client.AssetLoader;
-	import client.b2.BoxBuilder;
 	import flash.geom.Rectangle;
 	
 	/**
