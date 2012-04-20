@@ -10,6 +10,7 @@ package client
 	import Box2D.Dynamics.b2World;
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
+	import client.b2.Box;
 	import client.b2.Clientb2ContactListener;
 	import client.definitions.ItemPhysicDefinition;	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
@@ -29,6 +30,7 @@ package client
 	import flash.utils.Dictionary;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import client.b2.BoxBuilder;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -97,15 +99,15 @@ package client
 			
 			
 			
-			var body3:b2Body = B2Utils.createBox(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body4:b2Body = B2Utils.createBox(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body2:b2Body = B2Utils.createBox(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body1:b2Body = B2Utils.createBox(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body2:Box = BoxBuilder.build(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var body1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
 			
 			
-			B2Utils.setRevoluteJoint(body1, body2, _world, -0.25, -0.25);
-			B2Utils.setRevoluteJoint(body2, body3, _world, -0.75, 1);
-			B2Utils.setRevoluteJoint(body2, body4, _world, -0.75, 1);
+			B2Utils.setRevoluteJoint(body1, body2, new b2Vec2(body1.worldBounds.x + body1.worldBounds.width/2, body1.worldBounds.y + body1.worldBounds.height), _world, -0.25, -0.25);
+			B2Utils.setRevoluteJoint(body2, body3, new b2Vec2(body3.worldBounds.x + body3.worldBounds.width/2, body2.worldBounds.y + body2.worldBounds.height), _world, -0.75, 1);
+			B2Utils.setRevoluteJoint(body2, body4, new b2Vec2(body4.worldBounds.x + body4.worldBounds.width/2, body2.worldBounds.y + body2.worldBounds.height), _world, -0.75, 1);
 			
 			
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;

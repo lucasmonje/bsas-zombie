@@ -27,6 +27,7 @@ import Box2D.Dynamics.Contacts.*;
 import Box2D.Dynamics.Controllers.b2Controller;
 import Box2D.Dynamics.Controllers.b2ControllerEdge;
 import Box2D.Dynamics.Joints.*;
+import client.b2.Box;
 
 import Box2D.Common.b2internal;
 use namespace b2internal;
@@ -173,6 +174,31 @@ public class b2World
 		
 	}
 
+public function CreateBox(def:b2BodyDef) : Box{
+		
+		//b2Settings.b2Assert(m_lock == false);
+		if (IsLocked() == true)
+		{
+			return null;
+		}
+		
+		//void* mem = m_blockAllocator.Allocate(sizeof(b2Body));
+		var b:Box = new Box(def, this);
+		
+		// Add to world doubly linked list.
+		b.m_prev = null;
+		b.m_next = m_bodyList;
+		if (m_bodyList)
+		{
+			m_bodyList.m_prev = b;
+		}
+		m_bodyList = b;
+		++m_bodyCount;
+		
+		return b;
+		
+	}
+	
 	/**
 	* Destroy a rigid body given a definition. No reference to the definition
 	* is retained. This function is locked during callbacks.

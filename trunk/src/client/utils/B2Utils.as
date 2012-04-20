@@ -1,6 +1,7 @@
 package client.utils 
 {
 	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
@@ -10,30 +11,28 @@ package client.utils
 	import flash.geom.Rectangle;
 	/**
 	 * ...
-	 * @author ...
+	 * @author lmonje
 	 */
 	public class B2Utils 
 	{
 		
-			public static function setRevoluteJoint(body1:b2Body, body2:b2Body, world:b2World, lowerAngle:int = -0.15, upperAngle:int = 0.15, enableLimit:Boolean  = true, maxMotorTorque:int = 10, motorSpeed:int = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
-				var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
-				revoluteJointDef.Initialize(body1, body2, body1.GetWorldCenter());
-				revoluteJointDef.lowerAngle = lowerAngle; 
-				revoluteJointDef.upperAngle = upperAngle;
-				revoluteJointDef.enableLimit = enableLimit;
-				revoluteJointDef.maxMotorTorque = maxMotorTorque;
-				revoluteJointDef.motorSpeed = motorSpeed;
-				revoluteJointDef.enableMotor = enableMotor;
-				world.CreateJoint(revoluteJointDef);
-				return revoluteJointDef;
-			}
+		public static function setRevoluteJoint(body1:b2Body, body2:b2Body, anchor:b2Vec2, world:b2World, lowerAngle:int = -0.15, upperAngle:int = 0.15, enableLimit:Boolean  = true, maxMotorTorque:int = 10, motorSpeed:int = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
+			var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
+			revoluteJointDef.Initialize(body1, body2, anchor);
+			revoluteJointDef.lowerAngle = lowerAngle; 
+			revoluteJointDef.upperAngle = upperAngle;
+			revoluteJointDef.enableLimit = enableLimit;
+			revoluteJointDef.maxMotorTorque = maxMotorTorque;
+			revoluteJointDef.motorSpeed = motorSpeed;
+			revoluteJointDef.enableMotor = enableMotor;
+			world.CreateJoint(revoluteJointDef);
+			return revoluteJointDef;
+		}
 			
-			public static function createBox(bounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:ItemPhysicDefinition = null, userData:Object = null):b2Body {
+		public static function createBox(worldBounds:Rectangle, world:b2World, body:b2Body = null, isDynamic:Boolean = false, physicProps:ItemPhysicDefinition = null, userData:Object = null):b2Body {
 			
 			var shape:b2PolygonShape = new b2PolygonShape();
-			var hx:Number = (bounds.width / 2) * (1 / worldScale);
-			var hy:Number = (bounds.height / 2) * (1 / worldScale);
-			shape.SetAsBox(hx, hy);
+			shape.SetAsBox(worldBounds.width, worldBounds.height);
 			
 			var fixture:b2FixtureDef = new b2FixtureDef();
 			if (physicProps) {
@@ -50,9 +49,9 @@ package client.utils
 			if (userData) {
 				bodyDef.userData = userData;				
 			}
-			bodyDef.position.Set(bounds.x / worldScale, bounds.y / worldScale);
+			bodyDef.position.Set(worldBounds.x, worldBounds.y);
 			
-			var body:b2Body = world.CreateBody(bodyDef);
+			body = world.CreateBody(bodyDef);
 			body.CreateFixture(fixture);
 			body.ResetMassData();
 			return body;
