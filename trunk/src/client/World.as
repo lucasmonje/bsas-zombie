@@ -96,19 +96,14 @@ package client
 			
 			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
 			
-			
-			
-			
 			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
 			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
 			var body2:Box = BoxBuilder.build(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			var box1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
 			
-			
-			B2Utils.setRevoluteJoint(body1, body2, new b2Vec2(body1.worldBounds.x + body1.worldBounds.width/2, body1.worldBounds.y + body1.worldBounds.height), _world, -0.25, -0.25);
-			B2Utils.setRevoluteJoint(body2, body3, new b2Vec2(body3.worldBounds.x + body3.worldBounds.width/2, body2.worldBounds.y + body2.worldBounds.height), _world, -0.75, 1);
-			B2Utils.setRevoluteJoint(body2, body4, new b2Vec2(body4.worldBounds.x + body4.worldBounds.width/2, body2.worldBounds.y + body2.worldBounds.height), _world, -0.75, 1);
-			
+			B2Utils.setRevoluteJoint(box1, body2, new b2Vec2(box1.initialWorldBounds.x + box1.initialWorldBounds.width/2, box1.initialWorldBounds.y + box1.initialWorldBounds.height), _world, -0.25, -0.25);
+			B2Utils.setRevoluteJoint(body2, body3, new b2Vec2(body3.initialWorldBounds.x + body3.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
+			B2Utils.setRevoluteJoint(body2, body4, new b2Vec2(body4.initialWorldBounds.x + body4.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
 			
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
 			addFloor(floor.width, floor.height, floor.x, floor.y);
@@ -316,7 +311,7 @@ package client
 			_trashList.push(trash);
 			_power = 0;
 			_currentTrash = trash;
-			b2BodyTrashMap[trash.getb2Body()] = trash;
+			b2BodyTrashMap[trash.box] = trash;
 			return trash;
 		}
 		

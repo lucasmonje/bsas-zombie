@@ -9,6 +9,7 @@ package client.entities
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import client.b2.Box;
 	import client.definitions.ItemDefinition;
 	import client.World;
 	import flash.display.MovieClip;
@@ -17,6 +18,8 @@ package client.entities
 	import flash.geom.Point;
 	import client.GameProperties;
 	import client.AssetLoader;
+	import client.b2.BoxBuilder;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * ...
@@ -29,86 +32,51 @@ package client.entities
 		private var _props:ItemDefinition;
 		
 		private var _mc:MovieClip;
-		private var _b2Body:b2Body;
+		private var _box:Box;
 		
 		private var _world:b2World;
 		private var _worldScale:int;
 		
-		public function Trash(props:ItemDefinition) 
-		{
+		public function Trash(props:ItemDefinition) {
 			_props = props;
 		}
 		
 		public function init(world:b2World, worldScale:int):void {
-			
 			_world = world;
 			_worldScale = worldScale;
 			
-			createMc();
+			var cAsset:Class = AssetLoader.instance.getAssetDefinition(_props.name);
+			_mc = new cAsset();
 			addChild(_mc);
-			
-			
-			var shape:b2PolygonShape = new b2PolygonShape();
-			var hx:Number = (_mc.width / 2) * (1 / _worldScale);
-			var hy:Number = (_mc.height / 2) * (1 / _worldScale);
-			hx = parseFloat(hx.toString().slice(0, 4));
-			hy = parseFloat(hy.toString().slice(0, 4));
-			trace("hx: " + hx + " hy: " + hy);
-			shape.SetAsBox(hx, hy);
-			
-			var fixture:b2FixtureDef = new b2FixtureDef();
-			fixture.density=_props.physicProps.density;
-			fixture.friction=_props.physicProps.friction;
-			fixture.restitution = _props.physicProps.restitution;
-			fixture.shape = shape;
-			
-			var bodyDef:b2BodyDef = new b2BodyDef();
-			bodyDef.type=b2Body.b2_dynamicBody;
-
-			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false, hits: _props.itemProps.hits};
-			bodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
-			
-			_b2Body = world.CreateBody(bodyDef);
-			//_b2Body.SetMassData(new b2MassData());
-			_b2Body.CreateFixture(fixture);
-			_b2Body.ResetMassData();
-			
-			_b2Body.SetActive(false);
-			
-		}
-		private function onSplit(e:*):void {
-			trace("");
+		
+			var bounds:Rectangle = _mc.getBounds(null);
+			bounds.x = initialPosition.x;
+			bounds.y = initialPosition.y;
+			_box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, hits: _props.itemProps.hits } );
+			_box.SetActive(false);
 		}
 		
 		public function reset():void {
-			_b2Body.SetActive(false);
-			_b2Body.SetPosition(new b2Vec2(initialPosition.x / _worldScale, initialPosition.y / _worldScale));
+			_box.SetActive(false);
+			_box.SetPosition(new b2Vec2(_box.initialWorldBounds.x, _box.initialWorldBounds.y));
 		}
 
 		public function get position():Point {
-			return new Point(_b2Body.GetPosition().x * _worldScale, _b2Body.GetPosition().y * _worldScale);
+			return new Point(_box.GetPosition().x * _worldScale, _box.GetPosition().y * _worldScale);
 		}
 		
-		private function createMc():void {
-			var cAsset:Class = AssetLoader.instance.getAssetDefinition(_props.name);
-			_mc = new cAsset();
-			_mc.width = _mc.width;
-			_mc.height = _mc.height;
+		public function get box():Box {
+			return _box;
 		}
 		
 		public function shot(vel:b2Vec2):void {
-			_b2Body.SetActive(true);
-			_b2Body.SetLinearVelocity(vel);
-			_b2Body.SetAngularDamping(10);
+			_box.SetActive(true);
+			_box.SetLinearVelocity(vel);
+			_box.SetAngularDamping(10);
 		}
 
-		public function getb2Body():b2Body 
-		{
-			return _b2Body;
-		}
-		
 		public function destroy():void {
-			_world.DestroyBody(_b2Body);
+			_world.DestroyBody(_box);
 		}
 	}
 

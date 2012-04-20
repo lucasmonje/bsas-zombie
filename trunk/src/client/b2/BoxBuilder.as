@@ -40,8 +40,8 @@ package client.b2
 			var box:Box = world.CreateBox(bodyDef);
 			box.CreateFixture(fixture);
 			box.ResetMassData();
-			box.stageBounds = stageBounds;
-			box.worldBounds = worldBounds;
+			box.initialStageBounds = stageBounds;
+			box.initialWorldBounds = worldBounds;
 			box.userData = userData;
 			box.physicProps = physicProps;
 			box.isDynamic = isDynamic;

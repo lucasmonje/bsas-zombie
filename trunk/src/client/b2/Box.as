@@ -12,8 +12,8 @@ package client.b2
 	 */
 	public class Box extends b2Body 
 	{
-		private var _stageBounds:Rectangle;
-		private var _worldBounds:Rectangle;
+		private var _initialStageBounds:Rectangle;
+		private var _initialWorldBounds:Rectangle;
 		private var _isDynamic:Boolean;
 		private var _physicProps:ItemPhysicDefinition;
 		private var _userData:Object;
@@ -22,24 +22,24 @@ package client.b2
 			super(bd, world);
 		}
 		
-		public function get stageBounds():Rectangle 
+		public function get initialStageBounds():Rectangle 
 		{
-			return _stageBounds;
+			return _initialStageBounds;
 		}
 		
-		public function set stageBounds(value:Rectangle):void 
+		public function set initialStageBounds(value:Rectangle):void 
 		{
-			_stageBounds = value;
+			_initialStageBounds = value;
 		}
 		
-		public function get worldBounds():Rectangle 
+		public function get initialWorldBounds():Rectangle 
 		{
-			return _worldBounds;
+			return _initialWorldBounds;
 		}
 		
-		public function set worldBounds(value:Rectangle):void 
+		public function set initialWorldBounds(value:Rectangle):void 
 		{
-			_worldBounds = value;
+			_initialWorldBounds = value;
 		}
 		
 		public function get isDynamic():Boolean 
