@@ -10,7 +10,7 @@ package client.definitions
 		private var _friction:Number;
 		private var _restitution:Number;
 		
-		public function ItemPhysicDefinition(density:Number, friction:Number, restitution:Number, width:Number, height:Number) 
+		public function ItemPhysicDefinition(density:Number, friction:Number, restitution:Number) 
 		{
 			_density = density;
 			_friction = friction;
