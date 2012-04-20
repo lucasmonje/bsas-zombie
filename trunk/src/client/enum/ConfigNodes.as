@@ -1,4 +1,4 @@
-package client 
+package client.enum 
 {
 	/**
 	 * ...
@@ -6,7 +6,8 @@ package client
 	 */
 	public class ConfigNodes 
 	{
-		public static const ITEMS:String = "items";
+		public static const TRASHES:String = "trashes";
+		public static const WEAPONS:String = "weapons";
 		
 		public function ConfigNodes() 
 		{

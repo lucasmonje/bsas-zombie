@@ -11,9 +11,7 @@ package client
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import client.b2.Clientb2ContactListener;
-	import client.definitions.ItemPhysicDefinition;
-	import client.entities.Player;
-	import client.definitions.ItemDefinition;
+	import client.definitions.ItemPhysicDefinition;	import client.definitions.ItemDefinition;
 	import client.entities.Trash;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
@@ -29,6 +27,8 @@ package client
 	import client.utils.DisplayUtil;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -63,8 +63,6 @@ package client
 		
 		private var _angle:Number;
 		
-		private var _player:Player;
-		
 		private var b2BodyTrashMap:Dictionary;
 		
 		public function World() 
@@ -78,9 +76,12 @@ package client
 			_power = 0;
 			_trashList = new Vector.<Trash>();
 			_assets = new Loader();
-			_player = new Player();
 			_assets.loadBytes(new _cAssets());
 			_assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAssetLoded);
+			
+			if (!ApplicationModel.instance.stage.hasEventListener(KeyboardEvent.KEY_UP)) {
+				ApplicationModel.instance.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			}
 		}
 		
 		private function onAssetLoded(e:Event):void {
@@ -117,7 +118,7 @@ package client
 			_mcTrashCont.addChild(newTrash);
 			
 			DisplayUtil.bringToFront(_poweringArrow);
-			_player.state = PlayerStatesEnum.READY;
+			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
 			var debug:b2DebugDraw = new b2DebugDraw();
 			var sprite:Sprite = new Sprite();
@@ -132,16 +133,9 @@ package client
 			dispatchEvent(new Event(Event.COMPLETE));	
 		}
 		
-		private function getThrowItemByType(type:String):ItemDefinition {
-			var items:Array = ApplicationModel.instance.getItems().concat();
-			var itemsFiltered:Array = [];
-			for each(var itemDef:ItemDefinition in items) {
-				if (itemDef.type == type) {
-					itemsFiltered.push(itemDef);
-				}
-			}
-			
-			return itemsFiltered[MathUtils.getRandomInt(1, itemsFiltered.length) - 1];
+		private function getTrash():ItemDefinition {
+			var items:Array = ApplicationModel.instance.getTrashes().concat();
+			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
 		private function trashMoved(e:MouseEvent):void {
@@ -173,7 +167,7 @@ package client
 				updatePowerBar();
 				setNewAngle();
 				removePlayerListeners();			
-				_player.state = PlayerStatesEnum.SHOOTING;
+				UserModel.instance.player.state = PlayerStatesEnum.SHOOTING;
 				_mcPlayer.addEventListener('player_hit', onPlayerHit);
 				_mcPlayer.addEventListener('player_ready', onPlayerReady);
 				_mcPlayer.gotoAndPlay(1);	
@@ -191,7 +185,7 @@ package client
 			_mcTrashCont.addChild(createTrash());
 			DisplayUtil.bringToFront(_poweringArrow);
 			_poweringArrow.visible = true;
-			_player.state = PlayerStatesEnum.READY;
+			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			addPlayerListeners();
 		}
 		
@@ -213,6 +207,12 @@ package client
 			
 			var floor:b2Body=_world.CreateBody(floorBodyDef);
 			floor.CreateFixture(floorFixture);
+		}
+		
+		public function keyUp(e:KeyboardEvent):void {
+			if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.RIGHT) {
+				UserModel.instance.changeWeapon(e.charCode == Keyboard.LEFT);
+			}
 		}
 		
 		public function get worldScale():int 
@@ -305,12 +305,12 @@ package client
 			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			
 		}
 		
 		private function createTrash():Trash {
 			
-			var items:Array = ApplicationModel.instance.getItems();
-			var itemDef:ItemDefinition = getThrowItemByType('battable');
+			var itemDef:ItemDefinition = getTrash();
 			var trash:Trash = new Trash(itemDef);
 			trash.init(_world, _worldScale);
 			_trashList.push(trash);

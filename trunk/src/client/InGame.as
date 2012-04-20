@@ -2,6 +2,7 @@ package client
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import client.UserModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -16,13 +17,17 @@ package client
 		private var _state:String;
 		
 		private var _world:World;
+		private var _hud:Hud;
 		
 		public function InGame() 
 		{
 			_oldState = NONE;
 			_state = WORLD;
 			
+			UserModel.instance.init();
+			
 			_world = new World();
+			_hud = new Hud();
 			
 			changeState();
 		}
@@ -41,7 +46,10 @@ package client
 		}
 		
 		private function onWorldLoaded(e:Event):void {
+			_hud.init();
+			
 			addChild(_world);
+			addChild(_hud);
 		}
 		
 		/* Escucha evento del mapa y le llega que nivel seleccionó

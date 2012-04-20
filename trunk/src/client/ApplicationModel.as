@@ -1,6 +1,9 @@
 package client 
 {
+	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.utils.Dictionary;
+	import client.enum.ConfigNodes;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -30,14 +33,21 @@ package client
 			return _instance;
 		}
 		
+		public var stage:Stage;
+		
 		private var _map:Dictionary;
 		
 		public function addMap(key:String, list:Array):void {
 			_map[key] = list.concat();
 		}
 		
-		public function getItems():Array {
-			return _map[ConfigNodes.ITEMS];
+		public function getTrashes():Array {
+			return _map[ConfigNodes.TRASHES];
+		}
+		
+		
+		public function getWeapons():Array {
+			return _map[ConfigNodes.WEAPONS];
 		}
 	}
 

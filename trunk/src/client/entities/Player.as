@@ -1,5 +1,6 @@
 package client.entities 
 {
+	import client.events.PlayerEvents;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import client.enum.PlayerStatesEnum;
@@ -9,6 +10,7 @@ package client.entities
 	 */
 	public class Player extends EventDispatcher 
 	{
+		private var _actualWeapon:int;
 		
 		private var _state:String;
 		
@@ -25,6 +27,18 @@ package client.entities
 				_state = value;	
 				dispatchEvent(new Event("state_changed"));
 			}
+		}
+		
+		public function get actualWeapon():int 
+		{
+			return _actualWeapon;
+		}
+		
+		public function set actualWeapon(value:int):void 
+		{
+			var old:int = _actualWeapon;
+			_actualWeapon = value;
+			dispatchEvent(new PlayerEvents(PlayerEvents.CHANGE_WEAPON, _actualWeapon.toString(), old.toString()));
 		}
 		
 	}

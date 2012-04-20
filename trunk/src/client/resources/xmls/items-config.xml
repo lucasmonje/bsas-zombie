@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-	<item name="TrashSplit" code="100001" type="battable">
-		<physicProps density="3" friction="0.3" restitution="0.15" />
-		<properties hits="5" />
-	</item>
-	<item name="TrashNotebook" code="100002" type="battable">
-		<physicProps density="3" friction="0.3" restitution="0.1" />
-		<properties hits="5" />
-	</item>	
-	<item name="TrashTV" code="100002" type="battable">
-		<physicProps density="3" friction="0.3" restitution="0.1" />
-		<properties hits="5" />
-	</item>
-	<item name="molotov" code="100003" type="handable">
-		<properties hits="0" />
-		<affectingArea radius="10" times="10" hit="2" />
-	</item>
-	<item name="grenade" code="100004" type="handable">
-		<properties hits="0" />
-		<affectingArea radius="5" times="10" hit="5" />
-	</item>
+	<trashes>
+		<trash name="TrashSplit" code="100001">
+			<physicProps density="3" friction="0.3" restitution="0.15" />
+			<properties hits="2" />
+		</trash>
+		<trash name="TrashNotebook" code="100002">
+			<physicProps density="1" friction="0.3" restitution="0.1" />
+			<properties hits="2" />
+		</trash>	
+		<trash name="TrashTV" code="100002">
+			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<properties hits="2" />
+		</trash>
+	</trashes>
+	
+	<weapons>
+		<weapon name="Bat" code="200001" icon="Bat" type="battable" />
+		<weapon name="Molotov" code="100003" icon="Molotov">
+			<affectingArea radius="10" times="10" hit="2" />
+		</weapon>
+		<weapon name="Grenade" code="100004" icon="Grenade">
+			<affectingArea radius="5" times="10" hit="5" />
+			<locks> <!-- A futuro para desarrollar -->
+				<level value="4" />
+			</locks>
+		</weapon>
+	</weapons>
 </data>

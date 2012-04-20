@@ -59,7 +59,10 @@ package client
 		}
 		
 		private function begin():void {
-			if (++_loaded == _resources){
+			if (++_loaded == _resources) {
+				ApplicationModel.instance.stage = stage;
+				Canvas.instance.init(this);
+				
 				_ingame = new InGame();
 				addChild(_ingame);
 			}

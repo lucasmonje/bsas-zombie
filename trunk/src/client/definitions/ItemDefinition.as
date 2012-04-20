@@ -8,16 +8,18 @@ package client.definitions
 	{
 		private var _name:String;
 		private var _code:uint;
+		private var _icon:String;
 		private var _type:String;
 		
 		private var _itemProps:ItemPropertiesDefinition;
 		private var _physicProps:ItemPhysicDefinition;
 		private var _areaAffecting:ItemAffectingAreaDefinition;
 		
-		public function ItemDefinition(name:String, code:uint, type:String, props:ItemPropertiesDefinition, physic:ItemPhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
+		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:ItemPhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
 		{
 			_name = name;
 			_code = code;
+			_icon = icon;
 			_type = type;
 			
 			_itemProps = props;
@@ -53,6 +55,11 @@ package client.definitions
 		public function get type():String 
 		{
 			return _type;
+		}
+		
+		public function get icon():String 
+		{
+			return _icon;
 		}
 		
 	}

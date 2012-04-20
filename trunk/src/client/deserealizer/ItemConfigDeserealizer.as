@@ -9,7 +9,7 @@ package client.deserealizer
 	import flash.utils.ByteArray;
 	import flash.xml.XMLNode;
 	import client.ApplicationModel;
-	import client.ConfigNodes;
+	import client.enum.ConfigNodes;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -43,6 +43,13 @@ package client.deserealizer
 			var byteArray:ByteArray = new cXml() as ByteArray;
 			var xml:XML = new XML(byteArray.readUTFBytes(byteArray.length));
 			
+			decodeItems(ConfigNodes.TRASHES, xml.trashes);
+			decodeItems(ConfigNodes.WEAPONS, xml.weapons);
+			
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function decodeItems(key:String, xml:XMLList):void {
 			var items:Array = [];
 			
 			for each(var element:XML in xml.elements()) {
@@ -50,14 +57,12 @@ package client.deserealizer
 				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits);
 				var area:ItemAffectingAreaDefinition = new ItemAffectingAreaDefinition(element.affectingArea.@radius, element.affectingArea.@times, element.affectingArea.@hit);
 				
-				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@type, props, physic, area);
+				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area);
 				
 				items.push(itemDef);
 			}
 			
-			ApplicationModel.instance.addMap(ConfigNodes.ITEMS, items);
-			
-			dispatchEvent(new Event(Event.COMPLETE));
+			ApplicationModel.instance.addMap(key, items);
 		}
 	}
 
