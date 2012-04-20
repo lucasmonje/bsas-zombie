@@ -39,28 +39,31 @@ package client.entities
 		}
 		
 		public function init(world:b2World, worldScale:int):void {
-			createMc();
 			
 			_world = world;
 			_worldScale = worldScale;
-
+			
+			createMc();
+			addChild(_mc);
+			
+			
 			var shape:b2PolygonShape=new b2PolygonShape();
-			shape.SetAsBox(_props.physicProps.width, _props.physicProps.height);
+			shape.SetAsBox(_mc.width / (_worldScale*2), _mc.height / (_worldScale*2));
 			
 			var fixture:b2FixtureDef = new b2FixtureDef();
 			fixture.density=_props.physicProps.density;
 			fixture.friction=_props.physicProps.friction;
-			fixture.restitution=_props.physicProps.restitution;
+			fixture.restitution = _props.physicProps.restitution;
 			fixture.shape = shape;
 			
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.type=b2Body.b2_dynamicBody;
+
 			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false};
 			bodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
-			
 			_trashBody = world.CreateBody(bodyDef);
-			_trashBody.ResetMassData();
 			_trashBody.CreateFixture(fixture);
+			_trashBody.ResetMassData();
 			
 			_trashBody.SetActive(false);
 			
@@ -77,9 +80,9 @@ package client.entities
 		
 		private function createMc():void {
 			var cAsset:Class = AssetLoader.instance.getAssetDefinition(_props.name);
-			
 			_mc = new cAsset();
-			addChild(_mc);
+			_mc.width = _mc.width;
+			_mc.height = _mc.height;
 		}
 		
 		public function shot(vel:b2Vec2):void {

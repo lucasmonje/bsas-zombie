@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-	<item name="tv" code="100001" type="battable">
-		<physicProps density="1" friction="0.3" restitution="0.15" width="0.4" height="0.25" />
+	<item name="TrashSplit" code="100001" type="battable">
+		<physicProps density="3" friction="0.3" restitution="0.15" />
 		<properties hits="1" />
 	</item>
-	<item name="washingMachine" code="100002" type="battable">
-		<physicProps density="100" friction="0.3" restitution="0.1" width="0.4" height="1" />
+	<item name="TrashNotebook" code="100002" type="battable">
+		<physicProps density="1" friction="0.3" restitution="0.1" />
+		<properties hits="2" />
+	</item>	
+	<item name="TrashTV" code="100002" type="battable">
+		<physicProps density="3" friction="0.3" restitution="0.1" />
 		<properties hits="2" />
 	</item>
 	<item name="molotov" code="100003" type="handable">

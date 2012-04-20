@@ -5,6 +5,7 @@ package client
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2ContactListener;
+	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
 	import client.entities.Player;

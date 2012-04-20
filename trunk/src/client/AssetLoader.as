@@ -9,7 +9,7 @@ package client
 	 */
 	public class AssetLoader extends EventDispatcher
 	{
-		[Embed (source = "resources\\assets\\index.swf", mimeType = "application/octet-stream")] private var _cAssets:Class;
+		[Embed (source = "resources\\assets\\common.swf", mimeType = "application/octet-stream")] private var _cAssets:Class;
 		
 		private static var _instanciable:Boolean;
 		private static var _instance:AssetLoader;
