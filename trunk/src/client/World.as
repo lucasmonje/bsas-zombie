@@ -34,6 +34,8 @@ package client
 		
 		private var _world:b2World=new b2World(new b2Vec2(0,10),true);
 		private var _worldScale:int = 30;
+		private static var PHYSICS_SCALE:Number = 1 / 30;
+
 		
 		private var customContact:b2ContactListener;
 		
@@ -84,12 +86,10 @@ package client
 			_mcTrashCont = _background.getChildByName("mcTrashCont") as MovieClip;
 			_mcPlayer = _background.getChildByName("mcPlayer") as MovieClip;
 			
-			addChild(_background);
-
 			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
 			
 			var floor:MovieClip = _background.getChildByName("mcFloor") as MovieClip;
-			addWall(floor.width, floor.height, floor.x, floor.y);
+			addFloor(floor.width, floor.height, floor.x, floor.y);
 			
 			addChild(_background);
 			var newTrash:Trash = createTrash();
@@ -97,6 +97,14 @@ package client
 			
 			DisplayUtil.bringToFront(_poweringArrow);
 			_player.state = PlayerStatesEnum.READY;
+			
+			var debug:b2DebugDraw = new b2DebugDraw();
+			var sprite:Sprite = new Sprite();
+			//addChild(sprite);
+			debug.SetSprite(sprite);
+			debug.SetDrawScale(1 / PHYSICS_SCALE);
+			debug.SetFlags(b2DebugDraw.e_shapeBit);
+			_world.SetDebugDraw(debug);
 			
 			addPlayerListeners();
 			addEventListener(Event.ENTER_FRAME, updateWorld);
@@ -166,7 +174,7 @@ package client
 			addPlayerListeners();
 		}
 		
-		private function addWall(w:Number,h:Number,px:Number,py:Number):void {
+		private function addFloor(w:Number,h:Number,px:Number,py:Number):void {
 			var floorShape:b2PolygonShape = new b2PolygonShape();
 			floorShape.SetAsBox(w/_worldScale,h/_worldScale);
 			
@@ -177,7 +185,9 @@ package client
 			floorFixture.shape=floorShape;
 		
 			var floorBodyDef:b2BodyDef = new b2BodyDef();
-			floorBodyDef.position.Set(px/_worldScale,py/_worldScale);
+			px = px * PHYSICS_SCALE ;
+			py = py * PHYSICS_SCALE + 1.9;
+			floorBodyDef.position.Set(px,py);
 			floorBodyDef.userData={assetName:"wall",assetSprite:null,remove:false};
 			
 			var floor:b2Body=_world.CreateBody(floorBodyDef);
@@ -207,8 +217,8 @@ package client
 				if (currentBody.GetUserData()) {
 					if (currentBody.GetUserData().assetSprite != null) {
 						currentBody.GetUserData().assetSprite.x=currentBody.GetPosition().x*_worldScale;
-						currentBody.GetUserData().assetSprite.y=currentBody.GetPosition().y*_worldScale;
-						currentBody.GetUserData().assetSprite.rotation=currentBody.GetAngle()*(180/Math.PI);
+						currentBody.GetUserData().assetSprite.y = currentBody.GetPosition().y * _worldScale;
+						currentBody.GetUserData().assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
 					}
 					if (currentBody.GetUserData().remove) {
 						if (currentBody.GetUserData().assetSprite!=null) {
@@ -238,6 +248,10 @@ package client
 				}
 				x=posX;
 			}
+			/*
+			World.ClearForces();
+			World.DrawDebugData();
+			*/
 			_world.ClearForces();
 			_world.DrawDebugData();
 		}

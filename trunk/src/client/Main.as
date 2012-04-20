@@ -3,6 +3,8 @@ package client
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import client.deserealizer.ItemConfigDeserealizer;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 
 	/**
 	 * ...
@@ -26,6 +28,10 @@ package client
 
 		private function init(e:Event = null):void 
 		{
+			
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
 			_resources = 2;
 			_loaded = 0;
 			

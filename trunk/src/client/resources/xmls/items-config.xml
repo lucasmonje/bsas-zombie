@@ -2,15 +2,15 @@
 <data>
 	<item name="TrashSplit" code="100001" type="battable">
 		<physicProps density="3" friction="0.3" restitution="0.15" />
-		<properties hits="2" />
+		<properties hits="5" />
 	</item>
 	<item name="TrashNotebook" code="100002" type="battable">
-		<physicProps density="1" friction="0.3" restitution="0.1" />
-		<properties hits="2" />
+		<physicProps density="3" friction="0.3" restitution="0.1" />
+		<properties hits="5" />
 	</item>	
 	<item name="TrashTV" code="100002" type="battable">
 		<physicProps density="3" friction="0.3" restitution="0.1" />
-		<properties hits="2" />
+		<properties hits="5" />
 	</item>
 	<item name="molotov" code="100003" type="handable">
 		<properties hits="0" />

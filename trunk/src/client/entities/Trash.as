@@ -1,6 +1,7 @@
 package client.entities 
 {
 	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
@@ -47,8 +48,13 @@ package client.entities
 			addChild(_mc);
 			
 			
-			var shape:b2PolygonShape=new b2PolygonShape();
-			shape.SetAsBox(_mc.width / (_worldScale*2), _mc.height / (_worldScale*2));
+			var shape:b2PolygonShape = new b2PolygonShape();
+			var hx:Number = (_mc.width / 2) * (1 / _worldScale);
+			var hy:Number = (_mc.height / 2) * (1 / _worldScale);
+			hx = parseFloat(hx.toString().slice(0, 4));
+			hy = parseFloat(hy.toString().slice(0, 4));
+			trace("hx: " + hx + " hy: " + hy);
+			shape.SetAsBox(hx, hy);
 			
 			var fixture:b2FixtureDef = new b2FixtureDef();
 			fixture.density=_props.physicProps.density;
@@ -60,9 +66,10 @@ package client.entities
 			bodyDef.type=b2Body.b2_dynamicBody;
 
 			bodyDef.userData={assetName:_props.name, assetSprite:_mc, remove:false, hits: _props.itemProps.hits};
-			bodyDef.position.Set((initialPosition.x - _mc.width / 2)/ worldScale, (initialPosition.y - _mc.height/2) / worldScale);
+			bodyDef.position.Set(initialPosition.x / worldScale, initialPosition.y / worldScale);
 			
 			_b2Body = world.CreateBody(bodyDef);
+			//_b2Body.SetMassData(new b2MassData());
 			_b2Body.CreateFixture(fixture);
 			_b2Body.ResetMassData();
 			
