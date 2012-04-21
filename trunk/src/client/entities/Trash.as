@@ -42,7 +42,7 @@ package client.entities
 			var bounds:Rectangle = _mc.getBounds(null);
 			bounds.x = initialPosition.x;
 			bounds.y = initialPosition.y;
-			_box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, hits: _props.itemProps.hits } );
+			_box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
 			_box.SetActive(false);
 		}
 		

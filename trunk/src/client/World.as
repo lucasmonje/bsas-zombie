@@ -10,12 +10,15 @@ package client
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import client.b2.Box;
 	import client.b2.BoxBuilder;
 	import client.b2.Clientb2ContactListener;
+	import client.definitions.ItemAffectingAreaDefinition;
 	import client.definitions.ItemDefinition;
 	import client.definitions.PhysicDefinition;
 	import client.definitions.PhysicDefinition;
+	import client.entities.AffectingArea;
 	import client.entities.Trash;
 	import client.entities.Zombie;
 	import client.enum.PlayerStatesEnum;
@@ -47,6 +50,7 @@ package client
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
 		private var b2BodyTrashMap:Dictionary;
+		private var _affectingAreas:Vector.<AffectingArea>;
 		
 		public function World() {
 		}
@@ -58,6 +62,7 @@ package client
 			b2BodyTrashMap = new Dictionary();
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
+			_affectingAreas = new Vector.<AffectingArea>();
 			// Carga el background
 			var _cBackground:Class = AssetLoader.instance.getAssetDefinition('stage01', "stage01") as Class;
 			mcStage = new _cBackground();
@@ -173,6 +178,10 @@ package client
 					}
 				}
 			}
+			
+			// Chequea las colisiones
+			checkCollisions();
+			
 			if (_following) {
 				var posX:Number = _currentTrash.x;
 				posX = stage.stageWidth / 2 - posX;
@@ -188,6 +197,44 @@ package client
 			_world.DrawDebugData();
 		}
 		
+		/**
+		 * Chequea las colisiones entre los objetos fisicos
+		 */
+		private function checkCollisions():void {
+			if (_world.GetContactCount() > 0) {
+				var contact:b2Contact = _world.GetContactList();
+				
+				if (!contact) {
+					return;
+				}
+				
+				// Colision de un item con affecting area. Lo agrega a la lista de areas afectadas
+				var bodyCollided:b2Body;
+				var areaAffectedDef:ItemAffectingAreaDefinition;
+				var areaAffected:AffectingArea;
+				
+				var userDataA:Object = contact.GetFixtureA().GetBody().GetUserData();
+				var userDataB:Object = contact.GetFixtureB().GetBody().GetUserData();
+				if (userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'handable') {
+					trace("Objeto A es un item! " + ItemDefinition(userDataA.props).name);
+					bodyCollided = contact.GetFixtureA().GetBody();
+					areaAffectedDef = ItemDefinition(userDataA.props).areaAffecting;
+					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
+					_affectingAreas.push(areaAffected);
+					addChild(areaAffected.content);
+					destroyTrash(_currentItem);
+				}else if (userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') {
+					trace("Objeto B es un item! " + ItemDefinition(userDataB.props).name);
+					bodyCollided = contact.GetFixtureB().GetBody();
+					areaAffectedDef = ItemDefinition(userDataB.props).areaAffecting;
+					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
+					_affectingAreas.push(areaAffected);
+					addChild(areaAffected.content);
+					destroyTrash(_currentItem);
+				}
+			}
+		}
+			
 		private function createItem(itemName:String):Trash {
 			var itemDef:ItemDefinition;
 			var items:Array = ApplicationModel.instance.getWeapons().concat();
