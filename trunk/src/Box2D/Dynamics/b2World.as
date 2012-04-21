@@ -28,6 +28,7 @@ import Box2D.Dynamics.Controllers.b2Controller;
 import Box2D.Dynamics.Controllers.b2ControllerEdge;
 import Box2D.Dynamics.Joints.*;
 import client.b2.Box;
+import client.b2.Circle;
 
 import Box2D.Common.b2internal;
 use namespace b2internal;
@@ -174,15 +175,12 @@ public class b2World
 		
 	}
 
-public function CreateBox(def:b2BodyDef) : Box{
+	public function CreateBox(def:b2BodyDef):Box {
 		
-		//b2Settings.b2Assert(m_lock == false);
-		if (IsLocked() == true)
-		{
+		if (IsLocked() == true) {
 			return null;
 		}
 		
-		//void* mem = m_blockAllocator.Allocate(sizeof(b2Body));
 		var b:Box = new Box(def, this);
 		
 		// Add to world doubly linked list.
@@ -197,6 +195,27 @@ public function CreateBox(def:b2BodyDef) : Box{
 		
 		return b;
 		
+	}
+	
+	public function CreateCircle(def:b2BodyDef):Circle {
+		
+		if (IsLocked() == true) {
+			return null;
+		}
+		
+		var c:Circle = new Circle(def, this);
+		
+		// Add to world doubly linked list.
+		c.m_prev = null;
+		c.m_next = m_bodyList;
+		if (m_bodyList)
+		{
+			m_bodyList.m_prev = c;
+		}
+		m_bodyList = c;
+		++m_bodyCount;
+		
+		return c;	
 	}
 	
 	/**

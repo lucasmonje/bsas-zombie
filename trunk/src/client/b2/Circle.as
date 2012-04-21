@@ -10,7 +10,7 @@ package client.b2
 	 * ...
 	 * @author lmonje
 	 */
-	public class Box extends b2Body 
+	public class Circle extends b2Body 
 	{
 		private var _initialStageBounds:Rectangle;
 		private var _initialWorldBounds:Rectangle;
@@ -18,7 +18,7 @@ package client.b2
 		private var _physicProps:PhysicDefinition;
 		private var _userData:Object;
 		
-		public function Box(bd:b2BodyDef, world:b2World) {
+		public function Circle(bd:b2BodyDef, world:b2World) {
 			super(bd, world);
 		}
 		

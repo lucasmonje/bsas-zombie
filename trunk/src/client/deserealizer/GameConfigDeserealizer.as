@@ -2,7 +2,6 @@ package client.deserealizer
 {
 	import client.definitions.ItemAffectingAreaDefinition;
 	import client.definitions.ItemDefinition;
-	import client.definitions.ItemPhysicDefinition;
 	import client.definitions.ItemPropertiesDefinition;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

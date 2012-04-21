@@ -1,5 +1,6 @@
 package client.b2 
 {
+	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
@@ -12,13 +13,12 @@ package client.b2
 	 * ...
 	 * @author lmonje
 	 */
-	public class BoxBuilder {
+	public class CircleBuilder {
 		
-		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):Box {
+		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):Circle {
 			var worldBounds:Rectangle = new Rectangle(stageBounds.x / worldScale, stageBounds.y / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
 			
-			var shape:b2PolygonShape = new b2PolygonShape();
-			shape.SetAsBox(worldBounds.width, worldBounds.height);
+			var shape:b2CircleShape = new b2CircleShape(worldBounds.width);
 			
 			var fixture:b2FixtureDef = new b2FixtureDef();
 			if (physicProps) {
@@ -37,15 +37,15 @@ package client.b2
 			}
 			bodyDef.position.Set(worldBounds.x, worldBounds.y);
 			
-			var box:Box = world.CreateBox(bodyDef);
-			box.CreateFixture(fixture);
-			box.ResetMassData();
-			box.initialStageBounds = stageBounds;
-			box.initialWorldBounds = worldBounds;
-			box.userData = userData;
-			box.physicProps = physicProps;
-			box.isDynamic = isDynamic;
-			return box;
+			var circle:Circle = world.CreateCircle(bodyDef);
+			circle.CreateFixture(fixture);
+			circle.ResetMassData();
+			circle.initialStageBounds = stageBounds;
+			circle.initialWorldBounds = worldBounds;
+			circle.userData = userData;
+			circle.physicProps = physicProps;
+			circle.isDynamic = isDynamic;
+			return circle;
 		}
 		
 	}

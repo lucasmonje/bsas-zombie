@@ -7,7 +7,7 @@ package client.utils
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
-	import client.definitions.ItemPhysicDefinition;
+	import client.definitions.PhysicDefinition;
 	import flash.geom.Rectangle;
 	/**
 	 * ...
@@ -29,7 +29,7 @@ package client.utils
 			return revoluteJointDef;
 		}
 			
-		public static function createBox(worldBounds:Rectangle, world:b2World, body:b2Body = null, isDynamic:Boolean = false, physicProps:ItemPhysicDefinition = null, userData:Object = null):b2Body {
+		public static function createBox(worldBounds:Rectangle, world:b2World, body:b2Body = null, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):b2Body {
 			
 			var shape:b2PolygonShape = new b2PolygonShape();
 			shape.SetAsBox(worldBounds.width, worldBounds.height);

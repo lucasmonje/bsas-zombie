@@ -2,7 +2,7 @@ package client.deserealizer
 {
 	import client.definitions.ItemAffectingAreaDefinition;
 	import client.definitions.ItemDefinition;
-	import client.definitions.ItemPhysicDefinition;
+	import client.definitions.PhysicDefinition;
 	import client.definitions.ItemPropertiesDefinition;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -53,7 +53,7 @@ package client.deserealizer
 			var items:Array = [];
 			
 			for each(var element:XML in xml.elements()) {
-				var physic:ItemPhysicDefinition = new ItemPhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution);
+				var physic:PhysicDefinition = new PhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution);
 				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits);
 				var area:ItemAffectingAreaDefinition = new ItemAffectingAreaDefinition(element.affectingArea.@radius, element.affectingArea.@times, element.affectingArea.@hit);
 				

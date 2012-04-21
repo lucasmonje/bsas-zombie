@@ -4,13 +4,13 @@ package client.definitions
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class ItemPhysicDefinition 
+	public class PhysicDefinition 
 	{
 		private var _density:Number;
 		private var _friction:Number;
 		private var _restitution:Number;
 		
-		public function ItemPhysicDefinition(density:Number, friction:Number, restitution:Number) 
+		public function PhysicDefinition(density:Number, friction:Number, restitution:Number) 
 		{
 			_density = density;
 			_friction = friction;

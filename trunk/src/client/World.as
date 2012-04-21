@@ -12,8 +12,10 @@ package client
 	import client.b2.BoxBuilder;
 	import client.b2.Clientb2ContactListener;
 	import client.definitions.ItemDefinition;
-	import client.definitions.ItemPhysicDefinition;
+	import client.definitions.PhysicDefinition;
+	import client.definitions.PhysicDefinition;
 	import client.entities.Trash;
+	import client.entities.Zombie;
 	import client.enum.PlayerStatesEnum;
 	import client.utils.B2Utils;
 	import client.utils.DisplayUtil;
@@ -46,6 +48,7 @@ package client
 		private var _mcPlayer:MovieClip;
 		private var _currentTrash:Trash;
 		private var _trashList:Vector.<Trash>;		
+		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
 		private var _powering:Boolean;
 		private var _power:Number;
@@ -62,6 +65,8 @@ package client
 			b2BodyTrashMap = new Dictionary();
 			_power = 0;
 			_trashList = new Vector.<Trash>();
+			_zombieList = new Vector.<Zombie>();
+			
 			var stageClass:Class = AssetLoader.instance.getAssetDefinition("stage01", "stage01");
 			mcStage = new stageClass();
 			_poweringArrow = mcStage.getChildByName("mcPoweringContainer") as MovieClip;
@@ -69,15 +74,16 @@ package client
 			_mcPlayer = mcStage.getChildByName("mcPlayer") as MovieClip;
 			
 			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
-			
-			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var body2:Box = BoxBuilder.build(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
-			var box1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new ItemPhysicDefinition(1, 0.3, 0.1));
+			/*
+			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
+			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
+			var body2:Box = BoxBuilder.build(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
+			var box1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
 			
 			B2Utils.setRevoluteJoint(box1, body2, new b2Vec2(box1.initialWorldBounds.x + box1.initialWorldBounds.width/2, box1.initialWorldBounds.y + box1.initialWorldBounds.height), _world, -0.25, -0.25);
 			B2Utils.setRevoluteJoint(body2, body3, new b2Vec2(body3.initialWorldBounds.x + body3.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
 			B2Utils.setRevoluteJoint(body2, body4, new b2Vec2(body4.initialWorldBounds.x + body4.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
+			*/
 			
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
 			addFloor(floor.width, floor.height, floor.x, floor.y);
@@ -85,6 +91,9 @@ package client
 			addChild(mcStage);
 			var newTrash:Trash = createTrash();
 			_mcTrashCont.addChild(newTrash);
+			
+			var zombie:Zombie = createZombie();
+			_mcTrashCont.addChild(zombie);
 			
 			DisplayUtil.bringToFront(_poweringArrow);
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
@@ -276,6 +285,13 @@ package client
 			_currentTrash = trash;
 			b2BodyTrashMap[trash.box] = trash;
 			return trash;
+		}
+		
+		private function createZombie():Zombie {
+			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(10, 0.3, 0.1), 10);
+			zombie.init(_world, _worldScale);
+			_zombieList.push(zombie);
+			return zombie;
 		}
 		
 		private function destroyTrash(trash:Trash):void {

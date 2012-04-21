@@ -12,10 +12,10 @@ package client.definitions
 		private var _type:String;
 		
 		private var _itemProps:ItemPropertiesDefinition;
-		private var _physicProps:ItemPhysicDefinition;
+		private var _physicProps:PhysicDefinition;
 		private var _areaAffecting:ItemAffectingAreaDefinition;
 		
-		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:ItemPhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
+		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:PhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
 		{
 			_name = name;
 			_code = code;
@@ -32,7 +32,7 @@ package client.definitions
 			return _itemProps;
 		}
 		
-		public function get physicProps():ItemPhysicDefinition 
+		public function get physicProps():PhysicDefinition 
 		{
 			return _physicProps;
 		}
