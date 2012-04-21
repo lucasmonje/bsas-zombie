@@ -10,11 +10,13 @@ package client.events
 	{
 		
 		public static const CHANGE_WEAPON:String = "change_weapon";
+		public static const TRASH_HIT:String = "trash_hit";
+		public static const STATE_CHANGED:String = "state_changed";
 		
 		private var _newValue:String;
 		private var _oldValue:String;
 		
-		public function PlayerEvents(type:String, newValue:String, oldValue:String) 
+		public function PlayerEvents(type:String, newValue:String = '', oldValue:String = '') 
 		{ 
 			super(type);
 			_newValue = newValue;

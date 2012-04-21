@@ -16,7 +16,7 @@ package client.deserealizer
 	public class GameConfigDeserealizer extends EventDispatcher
 	{
 		[Embed(source = '..\\resources\\xmls\\game-config.xml', mimeType = "application/octet-stream")]
-		public var cXml:Class;
+		private var cXml:Class;
 		
 		private static var _instanciable:Boolean;
 		private static var _instance:GameConfigDeserealizer;

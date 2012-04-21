@@ -17,20 +17,16 @@ package client
 	import client.entities.Trash;
 	import client.entities.Zombie;
 	import client.enum.PlayerStatesEnum;
+	import client.events.PlayerEvents;
 	import client.utils.B2Utils;
-	import client.utils.DisplayUtil;
 	import client.utils.MathUtils;
-	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
-	
+	import client.utils.DisplayUtil;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -41,18 +37,12 @@ package client
 		private var _worldScale:int = 30;
 		private static var PHYSICS_SCALE:Number = 1 / 30;
 		private var customContact:b2ContactListener;
-		private var _assets:Loader;
 		private var mcStage:MovieClip;
-		private var _poweringArrow:MovieClip;
 		private var _mcTrashCont:MovieClip;
-		private var _mcPlayer:MovieClip;
 		private var _currentTrash:Trash;
 		private var _trashList:Vector.<Trash>;		
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
-		private var _powering:Boolean;
-		private var _power:Number;
-		private var _angle:Number;
 		private var b2BodyTrashMap:Dictionary;
 		
 		public function World() {
@@ -63,17 +53,14 @@ package client
 			customContact = new Clientb2ContactListener();
 			_world.SetContactListener(customContact);
 			b2BodyTrashMap = new Dictionary();
-			_power = 0;
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
-			
-			var stageClass:Class = AssetLoader.instance.getAssetDefinition("stage01", "stage01");
-			mcStage = new stageClass();
-			_poweringArrow = mcStage.getChildByName("mcPoweringContainer") as MovieClip;
+			// Carga el background
+			var _cBackground:Class = AssetLoader.instance.getAssetDefinition('stage01', "stage01") as Class;
+			mcStage = new _cBackground();
 			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
-			_mcPlayer = mcStage.getChildByName("mcPlayer") as MovieClip;
 			
-			Trash.initialPosition = new Point(_poweringArrow.x, _poweringArrow.y);
+			UserModel.instance.player.initPlayer(mcStage);
 			/*
 			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
 			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
@@ -90,12 +77,11 @@ package client
 			
 			addChild(mcStage);
 			var newTrash:Trash = createTrash();
-			_mcTrashCont.addChild(newTrash);
+			_mcTrashCont.addChildAt(newTrash, 0);
 			
 			var zombie:Zombie = createZombie();
 			_mcTrashCont.addChild(zombie);
 			
-			DisplayUtil.bringToFront(_poweringArrow);
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
 			var debug:b2DebugDraw = new b2DebugDraw();
@@ -106,10 +92,9 @@ package client
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_world.SetDebugDraw(debug);
 			
-			addPlayerListeners();
 			addEventListener(Event.ENTER_FRAME, updateWorld);
 			
-			ApplicationModel.instance.stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
 			
 			dispatchEvent(new Event(Event.COMPLETE));	
 		}
@@ -119,55 +104,14 @@ package client
 			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
-		private function trashMoved(e:MouseEvent):void {
-			setNewAngle();
-			_poweringArrow.rotation = _angle * 75;
-		}
-		
-		private function setNewAngle():void {
-			var destPoint:Point = new Point(mouseX, mouseY);
-			var distanceX:Number = destPoint.x - Trash.initialPosition.x;
-			var distanceY:Number = destPoint.y - Trash.initialPosition.y;
-			var newAngle:Number = Math.atan2(distanceY, distanceX);	
-			if (newAngle <= GameProperties.ANGLE_TOP)  {
-				_angle = GameProperties.ANGLE_TOP;
-			} else if (newAngle >= GameProperties.ANGLE_BOTTOM) {
-				_angle = GameProperties.ANGLE_BOTTOM;
-			} else {
-				_angle = newAngle;
-			}
-		}
-		
-		private function trashMouseDown(e:MouseEvent):void {
-			_powering = true;
-		}
-		
-		private function trashMouseUp(e:MouseEvent):void {
-			if (_powering) {
-				_powering = false;
-				updatePowerBar();
-				setNewAngle();
-				removePlayerListeners();			
-				UserModel.instance.player.state = PlayerStatesEnum.SHOOTING;
-				_mcPlayer.addEventListener('player_hit', onPlayerHit);
-				_mcPlayer.addEventListener('player_ready', onPlayerReady);
-				_mcPlayer.gotoAndPlay(1);	
-			}			
-		}
-		
-		private function onPlayerHit(e:Event):void {
-			_mcPlayer.removeEventListener('player_hit', onPlayerHit);
-			_poweringArrow.visible = false;
-			_currentTrash.shot(new b2Vec2((_power * Math.cos(_angle)) / 4, (_power * Math.sin(_angle)) / 4));
-		}
-		
-		private function onPlayerReady(e:Event):void {
-			_mcPlayer.removeEventListener('player_ready', onPlayerHit);
-			_mcTrashCont.addChild(createTrash());
-			DisplayUtil.bringToFront(_poweringArrow);
-			_poweringArrow.visible = true;
+		private function onShootTrash(e:PlayerEvents):void {
+			
+			var power:Number = UserModel.instance.player.power;
+			var angle:Number = UserModel.instance.player.angle;
+			
+			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
-			addPlayerListeners();
+			createTrash();
 		}
 		
 		private function addFloor(w:Number,h:Number,px:Number,py:Number):void {
@@ -190,19 +134,11 @@ package client
 			floor.CreateFixture(floorFixture);
 		}
 		
-		private function keyUp(e:KeyboardEvent):void {
-			if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.RIGHT) {
-				UserModel.instance.changeWeapon(e.charCode == Keyboard.LEFT);
-			}
-		}
-		
 		public function get worldScale():int {
 			return _worldScale;
 		}
 		
 		private function updateWorld(e:Event):void {
-			updatePowerBar();
-			
 			_world.Step(1 / _worldScale, 6, 2);
 			
 			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
@@ -244,44 +180,12 @@ package client
 			_world.DrawDebugData();
 		}
 		
-		private function updatePowerBar():void {
-			if (_powering) {
-				_power += GameProperties.POWER_INCREMENT;
-				if (_power > 100) {
-					_power = 100;
-				}
-				_poweringArrow.gotoAndStop(_power);
-			} else {
-				_poweringArrow.gotoAndStop(1);
-			}
-		}
-		
-		private function addPlayerListeners():void {
-			if (!this.hasEventListener(MouseEvent.MOUSE_MOVE)) {
-				addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);				
-			}
-			if (!this.hasEventListener(MouseEvent.MOUSE_DOWN)) {
-				addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			}
-			if (!this.hasEventListener(MouseEvent.MOUSE_UP)) {
-				addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-			}
-		}
-
-		private function removePlayerListeners():void {
-			removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
-			
-		}
-		
 		private function createTrash():Trash {
 			
 			var itemDef:ItemDefinition = getTrash();
 			var trash:Trash = new Trash(itemDef);
 			trash.init(_world, _worldScale);
 			_trashList.push(trash);
-			_power = 0;
 			_currentTrash = trash;
 			b2BodyTrashMap[trash.box] = trash;
 			return trash;

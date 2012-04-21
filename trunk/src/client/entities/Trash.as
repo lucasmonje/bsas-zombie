@@ -17,7 +17,7 @@ package client.entities
 	 */
 	public class Trash extends Sprite
 	{
-		public static var initialPosition:Point;
+		public static var initialPosition:Point = new Point(250, 300);
 		
 		private var _props:ItemDefinition;
 		
