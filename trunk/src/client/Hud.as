@@ -34,7 +34,7 @@ package client
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = AssetLoader.instance.getAssetDefinition(UserModel.instance.weapons[UserModel.instance.player.actualWeapon].props.icon);
+			var cAsset:Class = AssetLoader.instance.getAssetDefinition("commonAssets", UserModel.instance.weapons[UserModel.instance.player.actualWeapon].props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

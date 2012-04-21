@@ -35,7 +35,7 @@ package client.entities
 			_world = world;
 			_worldScale = worldScale;
 			
-			var cAsset:Class = AssetLoader.instance.getAssetDefinition(_props.name);
+			var cAsset:Class = AssetLoader.instance.getAssetDefinition("commonAssets", _props.name);
 			_mc = new cAsset();
 			addChild(_mc);
 		

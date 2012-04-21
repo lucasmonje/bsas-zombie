@@ -33,57 +33,37 @@ package client
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class World extends Sprite
-	{
-		[Embed (source = "resources\\assets\\stage01.swf", mimeType = "application/octet-stream")] private var _cAssets:Class;
+	public class World extends Sprite {
 		
-		private var _world:b2World=new b2World(new b2Vec2(0,10),true);
+		private var _world:b2World;
 		private var _worldScale:int = 30;
 		private static var PHYSICS_SCALE:Number = 1 / 30;
-
-		
 		private var customContact:b2ContactListener;
-		
 		private var _assets:Loader;
-		
 		private var mcStage:MovieClip;
 		private var _poweringArrow:MovieClip;
 		private var _mcTrashCont:MovieClip;
 		private var _mcPlayer:MovieClip;
 		private var _currentTrash:Trash;
-		private var _trashList:Vector.<Trash>;
-		
-		private var _shotReset:Sprite;
-		
-		private var _following:Boolean = false;
-		
-		private var _powering:Boolean = false;
-		
+		private var _trashList:Vector.<Trash>;		
+		private var _following:Boolean;
+		private var _powering:Boolean;
 		private var _power:Number;
-		
 		private var _angle:Number;
-		
 		private var b2BodyTrashMap:Dictionary;
 		
-		public function World() 
-		{
+		public function World() {
 		}
 		
 		public function init():void {
+			_world =  new b2World(new b2Vec2(0, 10), true);
 			customContact = new Clientb2ContactListener();
 			_world.SetContactListener(customContact);
 			b2BodyTrashMap = new Dictionary();
 			_power = 0;
 			_trashList = new Vector.<Trash>();
-			_assets = new Loader();
-			_assets.loadBytes(new _cAssets());
-			_assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAssetLoded);
-		}
-		
-		private function onAssetLoded(e:Event):void {
-			// Carga el background
-			var _cBackground:Class = _assets.contentLoaderInfo.applicationDomain.getDefinition("stage01") as Class;
-			mcStage = new _cBackground();
+			var stageClass:Class = AssetLoader.instance.getAssetDefinition("stage01", "stage01");
+			mcStage = new stageClass();
 			_poweringArrow = mcStage.getChildByName("mcPoweringContainer") as MovieClip;
 			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
 			_mcPlayer = mcStage.getChildByName("mcPlayer") as MovieClip;
@@ -201,30 +181,20 @@ package client
 			floor.CreateFixture(floorFixture);
 		}
 		
-		public function keyUp(e:KeyboardEvent):void {
+		private function keyUp(e:KeyboardEvent):void {
 			if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.RIGHT) {
 				UserModel.instance.changeWeapon(e.charCode == Keyboard.LEFT);
 			}
 		}
 		
-		public function get worldScale():int 
-		{
+		public function get worldScale():int {
 			return _worldScale;
 		}
 		
 		private function updateWorld(e:Event):void {
 			updatePowerBar();
 			
-			_world.Step(1 / 30, 6, 2);
-			/*
-			// Chequea que la basura se fue de pantalla y la resetea
-			if (_trash.position.x > 800 || _trash.position.y > 600) {
-				destroyTrash();
-				createTrash();
-
-				_power = 0;
-			}
-			*/
+			_world.Step(1 / _worldScale, 6, 2);
 			
 			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				if (currentBody.GetUserData()) {
@@ -251,20 +221,16 @@ package client
 				}
 			}
 			if (_following) {
-				var posX:Number=_currentTrash.x;
-				posX=stage.stageWidth/2-posX;
-				if (posX>0) {
-					posX=0;
+				var posX:Number = _currentTrash.x;
+				posX = stage.stageWidth / 2 - posX;
+				if (posX > 0) {
+					posX = 0;
 				}
-				if (posX<-800) {
-					posX=-800;
+				if (posX < -800) {
+					posX = -800;
 				}
-				x=posX;
+				x = posX;
 			}
-			/*
-			World.ClearForces();
-			World.DrawDebugData();
-			*/
 			_world.ClearForces();
 			_world.DrawDebugData();
 		}
