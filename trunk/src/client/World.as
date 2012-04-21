@@ -1,5 +1,7 @@
 package client 
 {
+	import adobe.utils.CustomActions;
+	import Box2D.Collision.IBroadPhase;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
@@ -40,6 +42,7 @@ package client
 		private var mcStage:MovieClip;
 		private var _mcTrashCont:MovieClip;
 		private var _currentTrash:Trash;
+		private var _currentItem:Trash;
 		private var _trashList:Vector.<Trash>;		
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
@@ -95,13 +98,9 @@ package client
 			addEventListener(Event.ENTER_FRAME, updateWorld);
 			
 			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
+			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			
 			dispatchEvent(new Event(Event.COMPLETE));	
-		}
-		
-		private function getTrash():ItemDefinition {
-			var items:Array = ApplicationModel.instance.getTrashes().concat();
-			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
 		private function onShootTrash(e:PlayerEvents):void {
@@ -112,6 +111,15 @@ package client
 			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			createTrash();
+		}
+		
+		private function onThrewItem(e:PlayerEvents):void {
+			var power:Number = UserModel.instance.player.power;
+			var angle:Number = UserModel.instance.player.angle;
+			
+			_currentItem = createItem(e.newValue);
+			_currentItem.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
+			UserModel.instance.player.state = PlayerStatesEnum.READY;
 		}
 		
 		private function addFloor(w:Number,h:Number,px:Number,py:Number):void {
@@ -178,6 +186,33 @@ package client
 			}
 			_world.ClearForces();
 			_world.DrawDebugData();
+		}
+		
+		private function createItem(itemName:String):Trash {
+			var itemDef:ItemDefinition;
+			var items:Array = ApplicationModel.instance.getWeapons().concat();
+			for each(var def:ItemDefinition in items) {
+				if (def.name == itemName) {
+					itemDef = def;
+					break;
+				}
+			}
+			
+			if (!itemDef) {
+				throw new Error("No existe el item a arrojar");
+			}
+			
+			var trash:Trash = new Trash(itemDef);
+			trash.init(_world, _worldScale);
+			_trashList.push(trash);
+			
+			return trash;
+		}
+		
+		
+		private function getTrash():ItemDefinition {
+			var items:Array = ApplicationModel.instance.getTrashes().concat();
+			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
 		private function createTrash():Trash {

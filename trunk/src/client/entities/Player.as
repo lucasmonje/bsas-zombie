@@ -1,6 +1,7 @@
 package client.entities 
 {
 	import client.events.PlayerEvents;
+	import client.utils.Animation;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -37,6 +38,8 @@ package client.entities
 		
 		private var _weapons:Vector.<Item>;
 		
+		private var _animation:Animation;
+		
 		public function Player(weapons:Vector.<Item>) {
 			_stage = ApplicationModel.instance.stage;
 			_weapons = weapons;
@@ -50,16 +53,19 @@ package client.entities
 			_content = content;
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
-			
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
-
+			
 			_state = PlayerStatesEnum.WAITING;
 			
 			_isAnimatingShooting = false;
 			_powering = false;
 			_power = 0;
 			
-			_mcPlayer.stop();
+			_animation = new Animation(_mcPlayer);
+			_animation.addAnimation("battable", 1, 20);
+			_animation.addAnimation("handable", 34, 53);
+			_animation.setAnim("battable");
+			
 			_mcPlayer.addEventListener(Event.ENTER_FRAME, onUpdate);
 			_stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
@@ -96,10 +102,13 @@ package client.entities
 					onChargingPower();
 				}
 			}else if (_state == PlayerStatesEnum.SHOOTING) {
-				if (_isAnimatingShooting) {
-					if (_mcPlayer.currentFrame == (_mcPlayer.totalFrames >> 1)) {
-						dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT));
-						_mcPlayer.stop();
+				if (_animation.isPlaying) {
+					if (_animation.currentFrame == (_animation.totalFrames >> 1)) {
+						if (getActualWeapon().props.type == "battable"){
+							dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT));
+						}else {
+							dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, getActualWeapon().props.name));
+						}
 					}
 				}
 			}
@@ -109,7 +118,6 @@ package client.entities
 		 * El player esta listo para lanzar un item
 		 */
 		private function readyToShoot():void {
-			_mcPlayer.gotoAndStop(1);
 			_power = 0;
 			_poweringArrow.gotoAndStop(0);
 			
@@ -130,7 +138,7 @@ package client.entities
 			
 			_powering = false;
 			_isAnimatingShooting = true;
-			_mcPlayer.gotoAndPlay('batting');
+			_animation.play(getActualWeapon().props.type);
 		}
 		
 		/**
@@ -156,7 +164,6 @@ package client.entities
 		 */
 		private function trashMoved(e:MouseEvent):void {
 			setNewAngle();
-			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
 			_poweringArrow.rotation = _angle * 75;
 		}
 		
@@ -223,6 +230,7 @@ package client.entities
 		public function set actualWeapon(value:int):void {
 			var old:int = _actualWeapon;
 			_actualWeapon = value;
+			_animation.setAnim(getActualWeapon().props.type);
 			dispatchEvent(new PlayerEvents(PlayerEvents.CHANGE_WEAPON, _actualWeapon.toString(), old.toString()));
 		}
 		
