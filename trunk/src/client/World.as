@@ -24,6 +24,7 @@ package client
 	import client.entities.Trash;
 	import client.entities.Zombie;
 	import client.enum.PlayerStatesEnum;
+	import client.events.GameTimerEvent;
 	import client.events.PlayerEvents;
 	import client.managers.ItemManager;
 	import client.utils.B2Utils;
@@ -38,6 +39,7 @@ package client
 	import client.utils.DisplayUtil;
 	import client.enum.AssetsEnum;
 	import client.enum.PhysicObjectType;
+	import client.managers.GameTimer;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -46,6 +48,8 @@ package client
 		
 		private static const DEBUG_MODE:Boolean = false;
 		private static var PHYSICS_SCALE:Number = 1 / 30;
+		private static var TIMER_UPDATE:int = 1000 / 30;
+		private static var ZOMBIE_MAKE_TIME:Number = 3000;
 		
 		private var _world:b2World;
 		private var _worldScale:int = 30;
@@ -61,6 +65,7 @@ package client
 		private var bodiesMap:Dictionary;
 		private var _affectingAreas:Vector.<AffectingArea>;
 		private var _trashPosition:Point;
+		private var _stageInitialBounds:Rectangle;
 		
 		private var _itemManager:ItemManager;
 		
@@ -80,6 +85,7 @@ package client
 			// Carga el Stage
 			var stageClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.STAGE01, "stage01") as Class;
 			mcStage = new stageClass();
+			_stageInitialBounds = mcStage.getBounds(null);
 			
 			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
 			_mcZombieCont = mcStage.getChildByName("mcZombieCont") as MovieClip;
@@ -97,18 +103,11 @@ package client
 			DisplayUtil.remove(mcTrashPosition);
 			
 			createTrash(_trashPosition);
-			createZombie(new Point(500, 350));
-			createZombie(new Point(550, 350));
-			createZombie(new Point(600, 350));
-			createZombie(new Point(650, 350));
-			createZombie(new Point(700, 350));
-			createZombie(new Point(750, 350));
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
 			addChild(mcStage);
 			
-			addEventListener(Event.ENTER_FRAME, updateWorld);
 			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
 			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			dispatchEvent(new Event(Event.COMPLETE));
@@ -116,6 +115,14 @@ package client
 			if (DEBUG_MODE) {
 				setDebugMode();
 			}
+			GameTimer.instance.callMeEvery(TIMER_UPDATE, updateWorld);
+			GameTimer.instance.callMeEvery(ZOMBIE_MAKE_TIME, makeZombie);
+			GameTimer.instance.start();
+		}
+		
+		private function makeZombie():void {
+			
+			createZombie(new Point(_stageInitialBounds.width - 100, 350));
 		}
 		
 		private function setDebugMode():void {
@@ -151,29 +158,36 @@ package client
 			return _worldScale;
 		}
 		
-		private function updateWorld(e:Event):void {
+		private function updateWorld():void {
 			_world.Step(1 / _worldScale, 6, 2);
 			
 			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				
-				var data:Object = currentBody.GetUserData();
-				if (Boolean(data)) {
-					if (data.assetSprite != null && currentBody is PhysicInformable) {						
-						var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
+				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
+				
+				if (bodyInfo && bodyInfo.userData) {
+					if (bodyInfo.userData.assetSprite != null) {						
+
 						var pos:b2Vec2 = currentBody.GetPosition();
-						data.assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
-						data.assetSprite.x = pos.x * _worldScale;
-						data.assetSprite.y = pos.y * _worldScale;
+						if (bodyInfo.type == PhysicObjectType.ZOMBIE) {
+							pos.x = pos.x - 0.025;
+							currentBody.SetPosition(pos);
+						}
+						bodyInfo.userData.assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
+						bodyInfo.userData.assetSprite.x = pos.x * _worldScale;
+						bodyInfo.userData.assetSprite.y = pos.y * _worldScale;
 					}
-					if (data.remove) {
-						if (currentBody.GetUserData().assetSprite!=null) {
+					
+					
+					if (bodyInfo.userData.remove) {
+						if (bodyInfo.userData.assetSprite != null) {
 							removeChild(currentBody.GetUserData().assetSprite);
 						}
 						_world.DestroyBody(currentBody);
 					}
 					
-					if (data.hits != null) {
-						var hits:int = data.hits;
+					if (bodyInfo.userData.hits != null) {
+						var hits:int = bodyInfo.userData.hits;
 						if (hits == 0) {
 							if (Boolean(bodiesMap[currentBody])) {
 								switch ((currentBody as PhysicInformable).type) {
@@ -183,7 +197,6 @@ package client
 									case PhysicObjectType.TRASH:
 										destroyTrash(bodiesMap[currentBody] as Trash);
 										break;
-										
 								}
 							}
 						}

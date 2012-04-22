@@ -3,8 +3,8 @@ package client
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import client.deserealizer.ItemConfigDeserealizer;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
+	import client.managers.FullscreenManager;
+	import client.utils.StageReference;
 
 	/**
 	 * ...
@@ -28,10 +28,8 @@ package client
 
 		private function init(e:Event = null):void 
 		{
-			
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			
+			StageReference.initReference(stage);
+			FullscreenManager.instance.root = this;
 			_resources = 2;
 			_loaded = 0;
 			
