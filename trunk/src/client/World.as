@@ -42,7 +42,7 @@ package client
 	 */
 	public class World extends Sprite {
 		
-		private static const DEBUG_MODE:Boolean = true;
+		private static const DEBUG_MODE:Boolean = false;
 		private static var PHYSICS_SCALE:Number = 1 / 30;
 		
 		private var _world:b2World;
