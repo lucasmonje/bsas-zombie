@@ -59,7 +59,7 @@ package client
 		
 		public function getAssetDefinition(assetName:String, definitionName:String):Class {
 			var loader:Loader = getLoader(assetName);
-			if (loader) {
+			if (loader && loader.contentLoaderInfo.applicationDomain.hasDefinition(definitionName)) {
 				var classAsset:Class = loader.contentLoaderInfo.applicationDomain.getDefinition(definitionName) as Class;
 				return classAsset;
 			}

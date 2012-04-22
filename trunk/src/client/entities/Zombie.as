@@ -75,9 +75,13 @@ package client.entities
 						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
 						trace(mc.name + " " +bounds.toString());
 						assetClass = AssetLoader.instance.getAssetDefinition(_zombieName, mc.name);
-						asset = new assetClass();
-						addChild(asset);
-						_assetsList.push(asset);
+						if (Boolean(assetClass)) {
+							asset = new assetClass();
+							addChild(asset);							
+							_assetsList.push(asset);
+						} else {
+							trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
+						}
 						
 						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset));
 						box.SetActive(false);
@@ -88,9 +92,11 @@ package client.entities
 					} else if (type.indexOf("circle") > -1) {
 						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
 						assetClass = AssetLoader.instance.getAssetDefinition(_zombieName, mc.name);
-						asset = new assetClass();
-						addChild(asset);
-						_assetsList.push(asset);
+						if (Boolean(assetClass)) {
+							asset = new assetClass();
+							addChild(asset);							
+							_assetsList.push(asset);
+						}
 						
 						var circle:Circle = CircleBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset));
 						circle.SetActive(false);
