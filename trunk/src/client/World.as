@@ -25,6 +25,7 @@ package client
 	import client.entities.Zombie;
 	import client.enum.PlayerStatesEnum;
 	import client.events.PlayerEvents;
+	import client.managers.ItemManager;
 	import client.utils.B2Utils;
 	import client.utils.MathUtils;
 	import flash.display.MovieClip;
@@ -53,13 +54,14 @@ package client
 		private var _mcZombieCont:MovieClip;
 		private var _mcDebug:MovieClip;
 		private var _currentTrash:Trash;
-		private var _currentItem:Trash;
 		private var _trashList:Vector.<Trash>;		
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
 		private var b2BodyTrashMap:Dictionary;
 		private var _affectingAreas:Vector.<AffectingArea>;
 		private var _trashPosition:Point;
+		
+		private var _itemManager:ItemManager;
 		
 		public function World() {
 		}
@@ -72,6 +74,7 @@ package client
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
 			_affectingAreas = new Vector.<AffectingArea>();
+			_itemManager = new ItemManager(_world, _worldScale);
 			
 			// Carga el Stage
 			var stageClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.STAGE01, "stage01") as Class;
@@ -133,8 +136,8 @@ package client
 			var power:Number = UserModel.instance.player.power;
 			var angle:Number = UserModel.instance.player.angle;
 			
-			_currentItem = createItem(e.newValue);
-			_currentItem.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
+			var item:Trash = createItem(e.newValue);
+			item.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 		}
 		
@@ -218,7 +221,7 @@ package client
 					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
 					_affectingAreas.push(areaAffected);
 					addChild(areaAffected.content);
-					destroyTrash(_currentItem);
+					destroyTrash(b2BodyTrashMap[contact.GetFixtureA().GetBody()]);
 				}else if ((userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') &&
 				   !(userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'battable')) {
 					trace("Objeto B es un item! " + ItemDefinition(userDataB.props).name);
@@ -227,7 +230,7 @@ package client
 					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
 					_affectingAreas.push(areaAffected);
 					addChild(areaAffected.content);
-					destroyTrash(_currentItem);
+					destroyTrash(b2BodyTrashMap[contact.GetFixtureB().GetBody()]);
 				}
 			}
 		}
