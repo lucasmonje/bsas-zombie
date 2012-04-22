@@ -49,7 +49,8 @@ package client
 		private static const DEBUG_MODE:Boolean = false;
 		private static var PHYSICS_SCALE:Number = 1 / 30;
 		private static var TIMER_UPDATE:int = 1000 / 30;
-		private static var ZOMBIE_MAKE_TIME:Number = 3000;
+		private static var ZOMBIE_MAKE_TIME:Number = 2000;
+		private static var MAX_ZOMBIES_IN_SCREEN:Number = 12;
 		
 		private var _world:b2World;
 		private var _worldScale:int = 30;
@@ -65,6 +66,7 @@ package client
 		private var bodiesMap:Dictionary;
 		private var _affectingAreas:Vector.<AffectingArea>;
 		private var _trashPosition:Point;
+		private var _wagonPosition:Point;
 		private var _stageInitialBounds:Rectangle;
 		
 		private var _itemManager:ItemManager;
@@ -102,6 +104,10 @@ package client
 			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
 			DisplayUtil.remove(mcTrashPosition);
 			
+			var mcWagonPosition:MovieClip = mcStage.getChildByName("mcWagonPosition") as MovieClip;
+			_wagonPosition = new Point(mcWagonPosition.x, mcWagonPosition.y);
+			DisplayUtil.remove(mcWagonPosition);
+			
 			createTrash(_trashPosition);
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
@@ -121,8 +127,9 @@ package client
 		}
 		
 		private function makeZombie():void {
-			
-			createZombie(new Point(_stageInitialBounds.width/2, 350));
+			if (_zombieList.length < MAX_ZOMBIES_IN_SCREEN) {
+				createZombie(new Point(_stageInitialBounds.width/2, 350));				
+			}
 		}
 		
 		private function setDebugMode():void {
@@ -177,10 +184,12 @@ package client
 								destroyZombie(bodiesMap[currentBody] as Zombie);
 								return;
 							}
-							pos.x = pos.x - 0.025;
-							currentBody.SetPosition(pos);
+							if ((pos.x * _worldScale) > _wagonPosition.x) {
+								pos.x = pos.x - bodyInfo.speed;
+								currentBody.SetPosition(pos);								
+							}
 						}
-						bodyInfo.userData.assetSprite.rotation = rotation
+						bodyInfo.userData.assetSprite.rotation = rotation;
 						bodyInfo.userData.assetSprite.x = pos.x * _worldScale;
 						bodyInfo.userData.assetSprite.y = pos.y * _worldScale;
 					}
@@ -300,7 +309,8 @@ package client
 		}
 		
 		private function createZombie(initialPosition:Point):void {
-			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(100, 0.3, 0.0), 2);
+			var speedRandom:Number = Math.random() * 0.075;
+			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(100, 0.3, 0.0), 3, speedRandom);
 			zombie.init(_world, _worldScale, initialPosition);
 			_zombieList.push(zombie);
 			
@@ -316,7 +326,7 @@ package client
 			}
 			var i:int = _trashList.indexOf(trash);
 			if (i > -1) {
-				_trashList.slice(i, 1);
+				_trashList.splice(i, 1);
 			}
 			delete bodiesMap[trash.box];
 			trash.destroy();
@@ -328,7 +338,7 @@ package client
 			}
 			var i:int = _zombieList.indexOf(zombie);
 			if (i > -1) {
-				_zombieList.slice(i, 1);
+				_zombieList.splice(i, 1);
 			}
 			
 			for each (var body:PhysicInformable in zombie.compositionMap.arrayMode) {

@@ -97,6 +97,10 @@ package client.b2
 				_userData.hits--;
 			}
 		}
+		
+		public function get speed():Number {
+			return _userData.speed;
+		}
 	}
 
 }

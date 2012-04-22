@@ -42,10 +42,13 @@ package client.entities
 		
 		private var _assetsList:Vector.<MovieClip>;
 		
-		public function Zombie(zombieName:String, physicProps:PhysicDefinition, hits:uint = 10) {
+		private var _speed:Number;
+		
+		public function Zombie(zombieName:String, physicProps:PhysicDefinition, hits:uint = 10, speed:Number = 0.025) {
 			_zombieName = zombieName;
 			_physicProps = physicProps;
 			_hits = hits;
+			_speed = speed;
 		}
 		
 		public function init(world:b2World, worldScale:int, initialPosition:Point):void {
@@ -80,10 +83,10 @@ package client.entities
 							addChild(asset);							
 							_assetsList.push(asset);
 						} else {
-							trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
+							//trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
 						}
 						
-						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset));
+						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset), -1);
 						box.SetActive(false);
 						_world.registerBox(box);
 						_compositionMap[mc.name] = box;
@@ -142,6 +145,7 @@ package client.entities
 			obj.collisionAccepts = ["A"];
 			obj.type = PhysicObjectType.ZOMBIE;
 			obj.hits = _hits;
+			obj.speed = _speed;
 			return obj;
 		}
 		

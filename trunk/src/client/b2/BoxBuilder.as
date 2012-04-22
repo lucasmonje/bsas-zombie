@@ -14,7 +14,7 @@ package client.b2
 	 */
 	public class BoxBuilder {
 		
-		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):Box {
+		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null, groupIndex:int = 1):Box {
 			var worldBounds:Rectangle = new Rectangle((stageBounds.x) / worldScale, (stageBounds.y) / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
 			var shape:b2PolygonShape = new b2PolygonShape();
 			shape.SetAsBox(worldBounds.width, worldBounds.height);
@@ -31,6 +31,7 @@ package client.b2
 			var box:Box = new Box(bodyDef, world);
 			
 			var fixture:b2FixtureDef = new b2FixtureDef();
+			fixture.filter.groupIndex = groupIndex;
 			if (physicProps) {
 				fixture.density = physicProps.density;
 				fixture.friction = physicProps.friction;
@@ -38,7 +39,6 @@ package client.b2
 			}
 			fixture.shape = shape;
 			box.CreateFixture(fixture);
-			//box.ResetMassData();
 			box.initialStageBounds = stageBounds;
 			box.initialWorldBounds = worldBounds;
 			box.userData = userData;

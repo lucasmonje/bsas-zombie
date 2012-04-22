@@ -23,6 +23,7 @@ package client.b2
 		function get collisionId():String;
 		function get collisionAccepts():Array;
 		function get hits():int;
+		function get speed():Number;
 		function applyHit():void;
 	}
 	

@@ -213,7 +213,7 @@ package client.entities
 			if (getActualWeapon().props.type == 'handable') {
 				var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.name);
 				var container:MovieClip = MovieClip(_mcPlayer.item);
-				while (container.numChildren > 0) {
+				while (container && container.numChildren > 0) {
 					container.removeChildAt(0);
 				}
 				container.addChild(new clazz());
