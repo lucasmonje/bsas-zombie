@@ -235,7 +235,7 @@ package client
 					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
 					_affectingAreas.push(areaAffected);
 					addChild(areaAffected.content);
-					destroyTrash(b2BodyTrashMap[contact.GetFixtureA().GetBody()]);
+					destroyTrash(bodiesMap[contact.GetFixtureA().GetBody()]);
 				}else if ((userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') &&
 				   !(userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'battable')) {
 					trace("Objeto B es un item! " + ItemDefinition(userDataB.props).name);
@@ -244,7 +244,7 @@ package client
 					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
 					_affectingAreas.push(areaAffected);
 					addChild(areaAffected.content);
-					destroyTrash(b2BodyTrashMap[contact.GetFixtureB().GetBody()]);
+					destroyTrash(bodiesMap[contact.GetFixtureB().GetBody()]);
 				}
 			}
 		}
