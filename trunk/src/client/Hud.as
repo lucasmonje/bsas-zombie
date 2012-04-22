@@ -4,6 +4,7 @@ package client
 	import flash.display.Sprite;
 	import client.UserModel;
 	import client.events.PlayerEvents;
+	import client.enum.AssetsEnum;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -34,7 +35,7 @@ package client
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = AssetLoader.instance.getAssetDefinition('commonAssets', UserModel.instance.player.getActualWeapon().props.icon);
+			var cAsset:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

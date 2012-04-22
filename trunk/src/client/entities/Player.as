@@ -14,6 +14,7 @@ package client.entities
 	import flash.geom.Point;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import client.enum.AssetsEnum;
 	/**
 	 * ...
 	 * @author lmonje
@@ -207,6 +208,11 @@ package client.entities
 				actualWeapon = actualWeapon == 0? len - 1: actualWeapon-1;
 			}else {
 				actualWeapon = actualWeapon == len -1? 0: actualWeapon+1;
+			}
+			
+			if (getActualWeapon().props.type == 'handable') {
+				var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.name);
+				MovieClip(_mcPlayer.item).addChild(new clazz());
 			}
 		}
 		

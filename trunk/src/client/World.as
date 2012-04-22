@@ -35,6 +35,7 @@ package client
 	import flash.utils.Dictionary;
 	import client.b2.CircleBuilder;
 	import client.utils.DisplayUtil;
+	import client.enum.AssetsEnum;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -73,7 +74,7 @@ package client
 			_affectingAreas = new Vector.<AffectingArea>();
 			
 			// Carga el Stage
-			var stageClass:Class = AssetLoader.instance.getAssetDefinition('stage01', "stage01") as Class;
+			var stageClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.STAGE01, "stage01") as Class;
 			mcStage = new stageClass();
 			
 			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
@@ -98,7 +99,7 @@ package client
 			
 			addChild(mcStage);
 			
-			addEventListener(Event.ENTER_FRAME, updateWorld);			
+			addEventListener(Event.ENTER_FRAME, updateWorld);
 			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
 			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			dispatchEvent(new Event(Event.COMPLETE));
@@ -209,7 +210,8 @@ package client
 				
 				var userDataA:Object = contact.GetFixtureA().GetBody().GetUserData();
 				var userDataB:Object = contact.GetFixtureB().GetBody().GetUserData();
-				if (userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'handable') {
+				if ((userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'handable') &&
+				   !(userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'battable')) {
 					trace("Objeto A es un item! " + ItemDefinition(userDataA.props).name);
 					bodyCollided = contact.GetFixtureA().GetBody();
 					areaAffectedDef = ItemDefinition(userDataA.props).areaAffecting;
@@ -217,7 +219,8 @@ package client
 					_affectingAreas.push(areaAffected);
 					addChild(areaAffected.content);
 					destroyTrash(_currentItem);
-				}else if (userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') {
+				}else if ((userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') &&
+				   !(userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'battable')) {
 					trace("Objeto B es un item! " + ItemDefinition(userDataB.props).name);
 					bodyCollided = contact.GetFixtureB().GetBody();
 					areaAffectedDef = ItemDefinition(userDataB.props).areaAffecting;
@@ -230,24 +233,18 @@ package client
 		}
 			
 		private function createItem(itemName:String):Trash {
-			var itemDef:ItemDefinition;
-			var items:Array = ApplicationModel.instance.getWeapons().concat();
-			for each(var def:ItemDefinition in items) {
-				if (def.name == itemName) {
-					itemDef = def;
-					break;
-				}
-			}
-			
+			var itemDef:ItemDefinition = ApplicationModel.instance.getWeaponByName(itemName);
 			if (!itemDef) {
 				throw new Error("No existe el item a arrojar");
 			}
 			
-			var trash:Trash = new Trash(itemDef, _trashPosition);
-			trash.init(_world, _worldScale);
-			_trashList.push(trash);
+			var item:Trash = new Trash(itemDef, _trashPosition);
+			item.init(_world, _worldScale);
+			_trashList.push(item);
+			b2BodyTrashMap[item.box] = item;
+			_mcTrashCont.addChild(item);
 			
-			return trash;
+			return item;
 		}
 		
 		private function getTrash():ItemDefinition {

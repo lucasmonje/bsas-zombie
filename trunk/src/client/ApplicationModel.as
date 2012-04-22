@@ -1,5 +1,6 @@
 package client 
 {
+	import client.definitions.ItemDefinition;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.utils.Dictionary;
@@ -48,6 +49,17 @@ package client
 		
 		public function getWeapons():Array {
 			return _map[ConfigNodes.WEAPONS];
+		}
+		
+		public function getWeaponByName(name:String):ItemDefinition {
+			var items:Array = _map[ConfigNodes.WEAPONS];
+			for each(var def:ItemDefinition in items) {
+				if (def.name == name) {
+					return def;
+				}
+			}
+			
+			return null;
 		}
 	}
 

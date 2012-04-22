@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 	<trashes>
-		<trash name="TrashSplit" code="100001">
+		<trash name="TrashSplit" code="100001" type="battable">
 			<physicProps density="3" friction="0.3" restitution="0.15" />
 			<properties hits="2" />
 		</trash>
-		<trash name="TrashNotebook" code="100002">
+		<trash name="TrashNotebook" code="100002" type="battable">
 			<physicProps density="1" friction="0.3" restitution="0.1" />
 			<properties hits="2" />
 		</trash>	
-		<trash name="TrashTV" code="100002">
+		<trash name="TrashTV" code="100002" type="battable">
 			<physicProps density="3" friction="0.3" restitution="0.1" />
 			<properties hits="2" />
 		</trash>
