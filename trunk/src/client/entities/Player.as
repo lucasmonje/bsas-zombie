@@ -195,7 +195,7 @@ package client.entities
 		 */
 		public function keyUp(e:KeyboardEvent):void {
 			if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.RIGHT) {
-				changeWeapon(e.charCode == Keyboard.LEFT);
+				changeWeapon(e.keyCode == Keyboard.LEFT);
 			}
 		}
 		
@@ -212,7 +212,11 @@ package client.entities
 			
 			if (getActualWeapon().props.type == 'handable') {
 				var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.name);
-				MovieClip(_mcPlayer.item).addChild(new clazz());
+				var container:MovieClip = MovieClip(_mcPlayer.item);
+				while (container.numChildren > 0) {
+					container.removeChildAt(0);
+				}
+				container.addChild(new clazz());
 			}
 		}
 		
