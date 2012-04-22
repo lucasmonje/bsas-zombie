@@ -40,7 +40,7 @@ package client.entities
 			_mc = new cAsset();
 			addChild(_mc);
 		
-			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x - (_mc.width / 2), _initPos.y + _mc.y - (_mc.height/2), _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
+			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
 			_box.SetActive(false);
 			_world.registerBox(_box);
 		}
