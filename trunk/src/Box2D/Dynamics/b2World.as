@@ -175,47 +175,42 @@ public class b2World
 		
 	}
 
-	public function CreateBox(def:b2BodyDef):Box {
+	public function registerBox(registrable:Box):Boolean {
 		
 		if (IsLocked() == true) {
-			return null;
+			return false;
 		}
-		
-		var b:Box = new Box(def, this);
 		
 		// Add to world doubly linked list.
-		b.m_prev = null;
-		b.m_next = m_bodyList;
+		registrable.m_prev = null;
+		registrable.m_next = m_bodyList;
 		if (m_bodyList)
 		{
-			m_bodyList.m_prev = b;
+			m_bodyList.m_prev = registrable;
 		}
-		m_bodyList = b;
+		m_bodyList = registrable;
 		++m_bodyCount;
 		
-		return b;
-		
+		return true;
 	}
 	
-	public function CreateCircle(def:b2BodyDef):Circle {
+	public function registerCircle(registrable:Circle):Boolean {
 		
 		if (IsLocked() == true) {
-			return null;
+			return false;
 		}
-		
-		var c:Circle = new Circle(def, this);
 		
 		// Add to world doubly linked list.
-		c.m_prev = null;
-		c.m_next = m_bodyList;
+		registrable.m_prev = null;
+		registrable.m_next = m_bodyList;
 		if (m_bodyList)
 		{
-			m_bodyList.m_prev = c;
+			m_bodyList.m_prev = registrable;
 		}
-		m_bodyList = c;
+		m_bodyList = registrable;
 		++m_bodyCount;
 		
-		return c;	
+		return true;
 	}
 	
 	/**

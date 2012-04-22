@@ -15,18 +15,10 @@ package client.b2
 	public class BoxBuilder {
 		
 		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):Box {
-			var worldBounds:Rectangle = new Rectangle(stageBounds.x / worldScale, stageBounds.y / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
-			
+			var worldBounds:Rectangle = new Rectangle((stageBounds.x + (stageBounds.width/2)) / worldScale, (stageBounds.y + (stageBounds.height / 2)) / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
+			trace(worldBounds.toString());
 			var shape:b2PolygonShape = new b2PolygonShape();
 			shape.SetAsBox(worldBounds.width, worldBounds.height);
-			
-			var fixture:b2FixtureDef = new b2FixtureDef();
-			if (physicProps) {
-				fixture.density = physicProps.density;
-				fixture.friction = physicProps.friction;
-				fixture.restitution = physicProps.restitution;				
-			}
-			fixture.shape = shape;
 			
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			if (isDynamic) {
@@ -37,9 +29,17 @@ package client.b2
 			}
 			bodyDef.position.Set(worldBounds.x, worldBounds.y);
 			
-			var box:Box = world.CreateBox(bodyDef);
+			var box:Box = new Box(bodyDef, world);
+			
+			var fixture:b2FixtureDef = new b2FixtureDef();
+			if (physicProps) {
+				fixture.density = physicProps.density;
+				fixture.friction = physicProps.friction;
+				fixture.restitution = physicProps.restitution;				
+			}
+			fixture.shape = shape;
 			box.CreateFixture(fixture);
-			box.ResetMassData();
+			//box.ResetMassData();
 			box.initialStageBounds = stageBounds;
 			box.initialWorldBounds = worldBounds;
 			box.userData = userData;

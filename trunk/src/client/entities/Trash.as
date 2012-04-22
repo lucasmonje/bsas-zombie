@@ -17,7 +17,7 @@ package client.entities
 	 */
 	public class Trash extends Sprite
 	{
-		public static var initialPosition:Point = new Point(250, 300);
+		public var _initPos:Point;
 		
 		private var _props:ItemDefinition;
 		
@@ -27,8 +27,9 @@ package client.entities
 		private var _world:b2World;
 		private var _worldScale:int;
 		
-		public function Trash(props:ItemDefinition) {
+		public function Trash(props:ItemDefinition, initialPosition:Point) {
 			_props = props;
+			_initPos = initialPosition;
 		}
 		
 		public function init(world:b2World, worldScale:int):void {
@@ -39,11 +40,9 @@ package client.entities
 			_mc = new cAsset();
 			addChild(_mc);
 		
-			var bounds:Rectangle = _mc.getBounds(null);
-			bounds.x = initialPosition.x;
-			bounds.y = initialPosition.y;
-			_box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
+			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x - (_mc.width / 2), _initPos.y + _mc.y - (_mc.height/2), _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
 			_box.SetActive(false);
+			_world.registerBox(_box);
 		}
 		
 		public function reset():void {

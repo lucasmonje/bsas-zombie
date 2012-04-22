@@ -16,7 +16,7 @@ package client.b2
 	public class CircleBuilder {
 		
 		public static function build(stageBounds:Rectangle, world:b2World, worldScale:Number, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):Circle {
-			var worldBounds:Rectangle = new Rectangle(stageBounds.x / worldScale, stageBounds.y / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
+			var worldBounds:Rectangle = new Rectangle((stageBounds.x + (stageBounds.width/2)) / worldScale, (stageBounds.y + (stageBounds.height / 2)) / worldScale, (stageBounds.width / 2) * (1 / worldScale), (stageBounds.height / 2) * (1 / worldScale))
 			
 			var shape:b2CircleShape = new b2CircleShape(worldBounds.width);
 			
@@ -37,7 +37,7 @@ package client.b2
 			}
 			bodyDef.position.Set(worldBounds.x, worldBounds.y);
 			
-			var circle:Circle = world.CreateCircle(bodyDef);
+			var circle:Circle = new Circle(bodyDef, world);
 			circle.CreateFixture(fixture);
 			circle.ResetMassData();
 			circle.initialStageBounds = stageBounds;

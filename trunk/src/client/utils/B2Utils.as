@@ -16,7 +16,7 @@ package client.utils
 	public class B2Utils 
 	{
 		
-		public static function setRevoluteJoint(body1:b2Body, body2:b2Body, anchor:b2Vec2, world:b2World, lowerAngle:int = -0.15, upperAngle:int = 0.15, enableLimit:Boolean  = true, maxMotorTorque:int = 10, motorSpeed:int = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
+		public static function setRevoluteJoint(body1:b2Body, body2:b2Body, anchor:b2Vec2, world:b2World, lowerAngle:Number = -0.15, upperAngle:Number = 0.15, enableLimit:Boolean  = true, maxMotorTorque:Number = 10, motorSpeed:Number = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
 			var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
 			revoluteJointDef.Initialize(body1, body2, anchor);
 			revoluteJointDef.lowerAngle = lowerAngle; 

@@ -10,7 +10,7 @@ package client.b2
 	 * ...
 	 * @author lmonje
 	 */
-	public class Box extends b2Body 
+	public class Box extends b2Body implements PhysicInformable
 	{
 		private var _initialStageBounds:Rectangle;
 		private var _initialWorldBounds:Rectangle;

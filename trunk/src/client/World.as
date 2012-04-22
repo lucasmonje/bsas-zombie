@@ -13,7 +13,9 @@ package client
 	import Box2D.Dynamics.Contacts.b2Contact;
 	import client.b2.Box;
 	import client.b2.BoxBuilder;
+	import client.b2.Circle;
 	import client.b2.Clientb2ContactListener;
+	import client.b2.PhysicInformable;
 	import client.definitions.ItemAffectingAreaDefinition;
 	import client.definitions.ItemDefinition;
 	import client.definitions.PhysicDefinition;
@@ -31,6 +33,7 @@ package client
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	import client.b2.CircleBuilder;
 	import client.utils.DisplayUtil;
 	/*
 	 * ...
@@ -38,12 +41,16 @@ package client
 	 */
 	public class World extends Sprite {
 		
+		private static const DEBUG_MODE:Boolean = true;
+		private static var PHYSICS_SCALE:Number = 1 / 30;
+		
 		private var _world:b2World;
 		private var _worldScale:int = 30;
-		private static var PHYSICS_SCALE:Number = 1 / 30;
 		private var customContact:b2ContactListener;
 		private var mcStage:MovieClip;
 		private var _mcTrashCont:MovieClip;
+		private var _mcZombieCont:MovieClip;
+		private var _mcDebug:MovieClip;
 		private var _currentTrash:Trash;
 		private var _currentItem:Trash;
 		private var _trashList:Vector.<Trash>;		
@@ -51,6 +58,7 @@ package client
 		private var _following:Boolean;
 		private var b2BodyTrashMap:Dictionary;
 		private var _affectingAreas:Vector.<AffectingArea>;
+		private var _trashPosition:Point;
 		
 		public function World() {
 		}
@@ -63,49 +71,51 @@ package client
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
 			_affectingAreas = new Vector.<AffectingArea>();
-			// Carga el background
-			var _cBackground:Class = AssetLoader.instance.getAssetDefinition('stage01', "stage01") as Class;
-			mcStage = new _cBackground();
+			
+			// Carga el Stage
+			var stageClass:Class = AssetLoader.instance.getAssetDefinition('stage01', "stage01") as Class;
+			mcStage = new stageClass();
+			
 			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
-			
+			_mcZombieCont = mcStage.getChildByName("mcZombieCont") as MovieClip;
+			_mcDebug = mcStage.getChildByName("mcDebug") as MovieClip;
 			UserModel.instance.player.initPlayer(mcStage);
-			/*
-			var body3:Box = BoxBuilder.build(new Rectangle(485, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
-			var body4:Box = BoxBuilder.build(new Rectangle(520, 400, 15, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
-			var body2:Box = BoxBuilder.build(new Rectangle(500, 300, 50, 100), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
-			var box1:Box = BoxBuilder.build(new Rectangle(500, 250, 40, 50), _world, _worldScale, true, new PhysicDefinition(1, 0.3, 0.1));
 			
-			B2Utils.setRevoluteJoint(box1, body2, new b2Vec2(box1.initialWorldBounds.x + box1.initialWorldBounds.width/2, box1.initialWorldBounds.y + box1.initialWorldBounds.height), _world, -0.25, -0.25);
-			B2Utils.setRevoluteJoint(body2, body3, new b2Vec2(body3.initialWorldBounds.x + body3.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
-			B2Utils.setRevoluteJoint(body2, body4, new b2Vec2(body4.initialWorldBounds.x + body4.initialWorldBounds.width/2, body2.initialWorldBounds.y + body2.initialWorldBounds.height), _world, -0.75, 1);
-			*/
-			
+			//add floor
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
-			addFloor(floor.width, floor.height, floor.x, floor.y);
+			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y,floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), {assetName:"wall",assetSprite:null,remove:false});
+			box.SetActive(true);
+			_world.registerBox(box);
+						
+			var mcTrashPosition:MovieClip = mcStage.getChildByName("mcTrashPosition") as MovieClip;
+			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
+			DisplayUtil.remove(mcTrashPosition);
 			
-			addChild(mcStage);
-			var newTrash:Trash = createTrash();
-			_mcTrashCont.addChildAt(newTrash, 0);
-			
-			var zombie:Zombie = createZombie();
-			_mcTrashCont.addChild(zombie);
+			createTrash(_trashPosition);
+			createZombie();
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
+			addChild(mcStage);
+			
+			addEventListener(Event.ENTER_FRAME, updateWorld);			
+			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
+			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
+			dispatchEvent(new Event(Event.COMPLETE));
+			
+			if (DEBUG_MODE) {
+				setDebugMode();
+			}
+		}
+		
+		private function setDebugMode():void {
 			var debug:b2DebugDraw = new b2DebugDraw();
 			var sprite:Sprite = new Sprite();
-			addChild(sprite);
 			debug.SetSprite(sprite);
 			debug.SetDrawScale(1 / PHYSICS_SCALE);
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_world.SetDebugDraw(debug);
-			
-			addEventListener(Event.ENTER_FRAME, updateWorld);
-			
-			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
-			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
-			
-			dispatchEvent(new Event(Event.COMPLETE));	
+			_mcDebug.addChild(sprite);
 		}
 		
 		private function onShootTrash(e:PlayerEvents):void {
@@ -115,7 +125,7 @@ package client
 			
 			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
-			createTrash();
+			createTrash(_trashPosition);
 		}
 		
 		private function onThrewItem(e:PlayerEvents):void {
@@ -127,26 +137,6 @@ package client
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 		}
 		
-		private function addFloor(w:Number,h:Number,px:Number,py:Number):void {
-			var floorShape:b2PolygonShape = new b2PolygonShape();
-			floorShape.SetAsBox(w/_worldScale,h/_worldScale);
-			
-			var floorFixture:b2FixtureDef = new b2FixtureDef();
-			floorFixture.density=0;
-			floorFixture.friction=10;
-			floorFixture.restitution=0.1;
-			floorFixture.shape=floorShape;
-		
-			var floorBodyDef:b2BodyDef = new b2BodyDef();
-			px = px / worldScale;
-			py = (py + h) / worldScale;
-			floorBodyDef.position.Set(px,py);
-			floorBodyDef.userData={assetName:"wall",assetSprite:null,remove:false};
-			
-			var floor:b2Body=_world.CreateBody(floorBodyDef);
-			floor.CreateFixture(floorFixture);
-		}
-		
 		public function get worldScale():int {
 			return _worldScale;
 		}
@@ -155,21 +145,25 @@ package client
 			_world.Step(1 / _worldScale, 6, 2);
 			
 			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
-				if (currentBody.GetUserData()) {
-					if (currentBody.GetUserData().assetSprite != null) {
-						currentBody.GetUserData().assetSprite.x=currentBody.GetPosition().x*_worldScale;
-						currentBody.GetUserData().assetSprite.y = currentBody.GetPosition().y * _worldScale;
-						currentBody.GetUserData().assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
+				
+				var data:Object = currentBody.GetUserData();
+				if (Boolean(data)) {
+					if (data.assetSprite != null && currentBody is PhysicInformable) {
+						var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
+						var pos:b2Vec2 = currentBody.GetPosition();
+						data.assetSprite.x = (pos.x - bodyInfo.initialWorldBounds.width) *_worldScale;
+						data.assetSprite.y = (pos.y - bodyInfo.initialWorldBounds.height) * _worldScale;
+						data.assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
 					}
-					if (currentBody.GetUserData().remove) {
+					if (data.remove) {
 						if (currentBody.GetUserData().assetSprite!=null) {
 							removeChild(currentBody.GetUserData().assetSprite);
 						}
 						_world.DestroyBody(currentBody);
 					}
 					
-					if (currentBody.GetUserData().hits != null) {
-						var hits:int = currentBody.GetUserData().hits;
+					if (data.hits != null) {
+						var hits:int = data.hits;
 						if (hits == 0) {
 							if (Boolean(b2BodyTrashMap[currentBody])) {
 								destroyTrash(b2BodyTrashMap[currentBody] as Trash);								
@@ -249,35 +243,33 @@ package client
 				throw new Error("No existe el item a arrojar");
 			}
 			
-			var trash:Trash = new Trash(itemDef);
+			var trash:Trash = new Trash(itemDef, _trashPosition);
 			trash.init(_world, _worldScale);
 			_trashList.push(trash);
 			
 			return trash;
 		}
-		
 		
 		private function getTrash():ItemDefinition {
 			var items:Array = ApplicationModel.instance.getTrashes().concat();
 			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
-		private function createTrash():Trash {
-			
+		private function createTrash(initialPosition:Point):void {
 			var itemDef:ItemDefinition = getTrash();
-			var trash:Trash = new Trash(itemDef);
+			var trash:Trash = new Trash(itemDef, initialPosition);
 			trash.init(_world, _worldScale);
 			_trashList.push(trash);
 			_currentTrash = trash;
 			b2BodyTrashMap[trash.box] = trash;
-			return trash;
+			_mcTrashCont.addChild(trash);
 		}
 		
-		private function createZombie():Zombie {
-			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(10, 0.3, 0.1), 10);
-			zombie.init(_world, _worldScale);
+		private function createZombie():void {
+			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(10, 0.3, 0.1));
+			zombie.init(_world, _worldScale, new Point(500, 350));
 			_zombieList.push(zombie);
-			return zombie;
+			_mcZombieCont.addChild(zombie);
 		}
 		
 		private function destroyTrash(trash:Trash):void {
