@@ -11,6 +11,7 @@ package client.entities
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import client.enum.AssetsEnum;
+	import client.enum.PhysicObjectType;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -40,9 +41,21 @@ package client.entities
 			_mc = new cAsset();
 			addChild(_mc);
 		
-			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, { assetName:_props.name, assetSprite:_mc, remove:false, props: _props} );
+			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, getUserData(_mc) );
 			_box.SetActive(false);
 			_world.registerBox(_box);
+		}
+		
+		private function getUserData(asset:MovieClip):Object {
+			var obj:Object = new Object();
+			obj.assetName = _props.name;
+			obj.assetSprite = asset;
+			obj.remove = false;
+			obj.type = PhysicObjectType.TRASH;
+			obj.collisionId = "A";
+			obj.collisionAccepts = ["A", "B"];
+			obj.hits = _props.itemProps.hits;
+			return obj;
 		}
 		
 		public function reset():void {

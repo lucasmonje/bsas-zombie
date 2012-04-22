@@ -37,6 +37,7 @@ package client
 	import client.b2.CircleBuilder;
 	import client.utils.DisplayUtil;
 	import client.enum.AssetsEnum;
+	import client.enum.PhysicObjectType;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -57,7 +58,7 @@ package client
 		private var _trashList:Vector.<Trash>;		
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
-		private var b2BodyTrashMap:Dictionary;
+		private var bodiesMap:Dictionary;
 		private var _affectingAreas:Vector.<AffectingArea>;
 		private var _trashPosition:Point;
 		
@@ -70,7 +71,7 @@ package client
 			_world =  new b2World(new b2Vec2(0, 10), true);
 			customContact = new Clientb2ContactListener();
 			_world.SetContactListener(customContact);
-			b2BodyTrashMap = new Dictionary();
+			bodiesMap = new Dictionary();
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
 			_affectingAreas = new Vector.<AffectingArea>();
@@ -87,7 +88,7 @@ package client
 			
 			//add floor
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
-			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y,floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), {assetName:"wall",assetSprite:null,remove:false});
+			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y, floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), { assetName:"wall", assetSprite:null, remove:false, type: PhysicObjectType.FLOOR, collisionId: "C", collisionAccepts: [], hits:0} );
 			box.SetActive(true);
 			_world.registerBox(box);
 						
@@ -96,7 +97,12 @@ package client
 			DisplayUtil.remove(mcTrashPosition);
 			
 			createTrash(_trashPosition);
-			createZombie();
+			createZombie(new Point(500, 350));
+			createZombie(new Point(550, 350));
+			createZombie(new Point(600, 350));
+			createZombie(new Point(650, 350));
+			createZombie(new Point(700, 350));
+			createZombie(new Point(750, 350));
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
@@ -169,8 +175,16 @@ package client
 					if (data.hits != null) {
 						var hits:int = data.hits;
 						if (hits == 0) {
-							if (Boolean(b2BodyTrashMap[currentBody])) {
-								destroyTrash(b2BodyTrashMap[currentBody] as Trash);								
+							if (Boolean(bodiesMap[currentBody])) {
+								switch ((currentBody as PhysicInformable).type) {
+									case PhysicObjectType.ZOMBIE:
+										destroyZombie(bodiesMap[currentBody] as Zombie);
+										break;
+									case PhysicObjectType.TRASH:
+										destroyTrash(bodiesMap[currentBody] as Trash);
+										break;
+										
+								}
 							}
 						}
 					}
@@ -244,7 +258,7 @@ package client
 			var item:Trash = new Trash(itemDef, _trashPosition);
 			item.init(_world, _worldScale);
 			_trashList.push(item);
-			b2BodyTrashMap[item.box] = item;
+			bodiesMap[item.box] = item;
 			_mcTrashCont.addChild(item);
 			
 			return item;
@@ -261,14 +275,18 @@ package client
 			trash.init(_world, _worldScale);
 			_trashList.push(trash);
 			_currentTrash = trash;
-			b2BodyTrashMap[trash.box] = trash;
+			bodiesMap[trash.box] = trash;
 			_mcTrashCont.addChild(trash);
 		}
 		
-		private function createZombie():void {
-			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(10, 0.3, 0.1));
-			zombie.init(_world, _worldScale, new Point(500, 350));
+		private function createZombie(initialPosition:Point):void {
+			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(100, 0.3, 0.0), 2);
+			zombie.init(_world, _worldScale, initialPosition);
 			_zombieList.push(zombie);
+			
+			for each (var body:PhysicInformable in zombie.compositionMap.arrayMode) {
+				bodiesMap[body] = zombie;
+			}
 			_mcZombieCont.addChild(zombie);
 		}
 		
@@ -280,8 +298,23 @@ package client
 			if (i > -1) {
 				_trashList.slice(i, 1);
 			}
-			delete b2BodyTrashMap[trash];
+			delete bodiesMap[trash.box];
 			trash.destroy();
+		}
+		
+		private function destroyZombie(zombie:Zombie):void {
+			if (Boolean(zombie.parent)) {
+				zombie.parent.removeChild(zombie);
+			}
+			var i:int = _zombieList.indexOf(zombie);
+			if (i > -1) {
+				_zombieList.slice(i, 1);
+			}
+			
+			for each (var body:PhysicInformable in zombie.compositionMap.arrayMode) {
+				delete bodiesMap[body];
+			}
+			zombie.destroy();
 		}
 	}
 }

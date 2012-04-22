@@ -19,6 +19,11 @@ package client.b2
 		function set physicProps(value:PhysicDefinition):void;
 		function get userData():Object;
 		function set userData(value:Object):void;
+		function get type():String;
+		function get collisionId():String;
+		function get collisionAccepts():Array;
+		function get hits():int;
+		function applyHit():void;
 	}
 	
 }

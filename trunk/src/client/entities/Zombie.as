@@ -18,6 +18,7 @@ package client.entities
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	import client.utils.B2Utils;
+	import client.enum.PhysicObjectType;
 	
 	/**
 	 * ...
@@ -41,7 +42,7 @@ package client.entities
 		
 		private var _assetsList:Vector.<MovieClip>;
 		
-		public function Zombie(zombieName:String, physicProps:PhysicDefinition, hits:uint = 0) {
+		public function Zombie(zombieName:String, physicProps:PhysicDefinition, hits:uint = 10) {
 			_zombieName = zombieName;
 			_physicProps = physicProps;
 			_hits = hits;
@@ -138,9 +139,10 @@ package client.entities
 			obj.assetName = _zombieName;
 			obj.assetSprite = asset;
 			obj.remove = false;
-			if (_hits > 0) {
-				obj.hits = _hits;
-			}
+			obj.collisionId = "B";
+			obj.collisionAccepts = ["A"];
+			obj.type = PhysicObjectType.ZOMBIE;
+			obj.hits = _hits;
 			return obj;
 		}
 		
@@ -153,6 +155,18 @@ package client.entities
 			}
 			return 0; 
 		}
+		
+		public function get compositionMap():Dictionary {
+			return _compositionMap;
+		}
+		
+		
+		public function destroy():void {
+			for each (var body:PhysicInformable in _compositionMap.arrayMode) {
+				_world.DestroyBody(body as b2Body);				
+			}
+		}
+		
 		/*
 		public function get position():Point {
 			return new Point(_box.GetPosition().x * _worldScale, _box.GetPosition().y * _worldScale);

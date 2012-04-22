@@ -19,20 +19,23 @@ package client.b2
 		
 		override public function BeginContact(contact:b2Contact):void {
 			super.BeginContact(contact);
-			var userData:Object;
-			discountHits(contact.GetFixtureA());
-			discountHits(contact.GetFixtureB());
+			
+			var fix1:b2Fixture = contact.GetFixtureA();
+			var fix2:b2Fixture = contact.GetFixtureB();
+			var body1:PhysicInformable = fix1.GetBody() as PhysicInformable;
+			var body2:PhysicInformable = fix2.GetBody() as PhysicInformable;
+			
+			if (validateCollision(body1, body2)) {
+				body1.applyHit();
+			}
+			
+			if (validateCollision(body2, body1)) {
+				body2.applyHit();	
+			}
 		}
 		
-		private function discountHits(fix:b2Fixture):void {
-			var body:b2Body = fix.GetBody();
-			var userData:Object = body.GetUserData();
-			if (Boolean(userData)) {
-				if (Boolean(userData.hits)) {
-					userData.hits--;
-					body.SetUserData(userData);					
-				}
-			}
+		private function validateCollision(body1:PhysicInformable, body2:PhysicInformable):Boolean {
+			return body2.collisionAccepts.indexOf(body1.collisionId) > -1;
 		}
 	}
 
