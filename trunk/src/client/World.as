@@ -122,7 +122,7 @@ package client
 		
 		private function makeZombie():void {
 			
-			createZombie(new Point(_stageInitialBounds.width - 100, 350));
+			createZombie(new Point(_stageInitialBounds.width/2, 350));
 		}
 		
 		private function setDebugMode():void {
@@ -169,11 +169,18 @@ package client
 					if (bodyInfo.userData.assetSprite != null) {						
 
 						var pos:b2Vec2 = currentBody.GetPosition();
+						var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
+						
+						
 						if (bodyInfo.type == PhysicObjectType.ZOMBIE) {
+							if (rotation > 90 || rotation < -90) {
+								destroyZombie(bodiesMap[currentBody] as Zombie);
+								return;
+							}
 							pos.x = pos.x - 0.025;
 							currentBody.SetPosition(pos);
 						}
-						bodyInfo.userData.assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
+						bodyInfo.userData.assetSprite.rotation = rotation
 						bodyInfo.userData.assetSprite.x = pos.x * _worldScale;
 						bodyInfo.userData.assetSprite.y = pos.y * _worldScale;
 					}

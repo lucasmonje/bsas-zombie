@@ -74,7 +74,6 @@ package client.entities
 					
 					if (type.indexOf("box") > -1) {
 						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
-						trace(mc.name + " " +bounds.toString());
 						assetClass = AssetLoader.instance.getAssetDefinition(_zombieName, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
