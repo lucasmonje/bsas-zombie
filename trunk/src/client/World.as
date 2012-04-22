@@ -149,12 +149,12 @@ package client
 				
 				var data:Object = currentBody.GetUserData();
 				if (Boolean(data)) {
-					if (data.assetSprite != null && currentBody is PhysicInformable) {
+					if (data.assetSprite != null && currentBody is PhysicInformable) {						
 						var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
 						var pos:b2Vec2 = currentBody.GetPosition();
-						data.assetSprite.x = (pos.x - bodyInfo.initialWorldBounds.width) *_worldScale;
-						data.assetSprite.y = (pos.y - bodyInfo.initialWorldBounds.height) * _worldScale;
 						data.assetSprite.rotation = currentBody.GetAngle() * (180 / Math.PI);
+						data.assetSprite.x = pos.x * _worldScale;
+						data.assetSprite.y = pos.y * _worldScale;
 					}
 					if (data.remove) {
 						if (currentBody.GetUserData().assetSprite!=null) {
