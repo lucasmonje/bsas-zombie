@@ -36,15 +36,15 @@ package client
 	public class World extends Sprite {
 		
 		private static const DEBUG_MODE:Boolean = false;
-		private static var PHYSICS_SCALE:Number = 1 / 30;
-		private static var TIMER_UPDATE:int = 1000 / 30;
-		private static var ZOMBIE_MAKE_TIME:Number = 2000;
-		private static var MAX_ZOMBIES_IN_SCREEN:Number = 12;
+		private static const PHYSICS_SCALE:Number = 1 / 30;
+		private static const TIMER_UPDATE:int = 1000 / 30;
+		private static const ZOMBIE_MAKE_TIME:Number = 2000;
+		private static const MAX_ZOMBIES_IN_SCREEN:Number = 12;
 		
 		private var _world:b2World;
 		private var _worldScale:int = 30;
-		private var customContact:b2ContactListener;
-		private var mcStage:MovieClip;
+		private var _customContact:b2ContactListener;
+		private var _mcStage:MovieClip;
 		private var _mcTrashCont:MovieClip;
 		private var _mcZombieCont:MovieClip;
 		private var _mcDebug:MovieClip;
@@ -52,8 +52,7 @@ package client
 		private var _trashList:Vector.<Trash>;		
 		private var _zombieList:Vector.<Zombie>;		
 		private var _following:Boolean;
-		private var bodiesMap:Dictionary;
-		private var _affectingAreas:Vector.<AffectingArea>;
+		private var _bodiesMap:Dictionary;
 		private var _trashPosition:Point;
 		private var _wagonPosition:Point;
 		private var _stageInitialBounds:Rectangle;
@@ -65,35 +64,34 @@ package client
 		
 		public function init():void {
 			_world =  new b2World(new b2Vec2(0, 10), true);
-			customContact = new Clientb2ContactListener();
-			_world.SetContactListener(customContact);
-			bodiesMap = new Dictionary();
+			_customContact = new Clientb2ContactListener();
+			_world.SetContactListener(_customContact);
+			_bodiesMap = new Dictionary();
 			_trashList = new Vector.<Trash>();
 			_zombieList = new Vector.<Zombie>();
-			_affectingAreas = new Vector.<AffectingArea>();
 			_itemManager = new ItemManager(_world, _worldScale);
 			
 			// Carga el Stage
 			var stageClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.STAGE01, "stage01") as Class;
-			mcStage = new stageClass();
-			_stageInitialBounds = mcStage.getBounds(null);
+			_mcStage = new stageClass();
+			_stageInitialBounds = _mcStage.getBounds(null);
 			
-			_mcTrashCont = mcStage.getChildByName("mcTrashCont") as MovieClip;
-			_mcZombieCont = mcStage.getChildByName("mcZombieCont") as MovieClip;
-			_mcDebug = mcStage.getChildByName("mcDebug") as MovieClip;
-			UserModel.instance.player.initPlayer(mcStage);
+			_mcTrashCont = _mcStage.getChildByName("mcTrashCont") as MovieClip;
+			_mcZombieCont = _mcStage.getChildByName("mcZombieCont") as MovieClip;
+			_mcDebug = _mcStage.getChildByName("mcDebug") as MovieClip;
+			UserModel.instance.player.initPlayer(_mcStage);
 			
 			//add floor
-			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
+			var floor:MovieClip = _mcStage.getChildByName("mcFloor") as MovieClip;
 			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y, floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), { assetName:"wall", assetSprite:null, remove:false, type: PhysicObjectType.FLOOR, entity:new Floor("C", [])} );
 			box.SetActive(true);
 			_world.registerBox(box);
 						
-			var mcTrashPosition:MovieClip = mcStage.getChildByName("mcTrashPosition") as MovieClip;
+			var mcTrashPosition:MovieClip = _mcStage.getChildByName("mcTrashPosition") as MovieClip;
 			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
 			DisplayUtil.remove(mcTrashPosition);
 			
-			var mcWagonPosition:MovieClip = mcStage.getChildByName("mcWagonPosition") as MovieClip;
+			var mcWagonPosition:MovieClip = _mcStage.getChildByName("mcWagonPosition") as MovieClip;
 			_wagonPosition = new Point(mcWagonPosition.x, mcWagonPosition.y);
 			DisplayUtil.remove(mcWagonPosition);
 			
@@ -101,7 +99,7 @@ package client
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
-			addChild(mcStage);
+			addChild(_mcStage);
 			
 			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
 			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
@@ -183,7 +181,7 @@ package client
 						
 						if (bodyInfo.type == PhysicObjectType.ZOMBIE) {
 							if (rotation > 90 || rotation < -90) {
-								destroyZombie(bodiesMap[currentBody] as Zombie);
+								destroyZombie(_bodiesMap[currentBody] as Zombie);
 								return;
 							}
 							if ((pos.x * _worldScale) > _wagonPosition.x) {
@@ -231,7 +229,7 @@ package client
 			var item:Trash = new Trash(itemDef, _trashPosition);
 			item.init(_world, _worldScale);
 			_trashList.push(item);
-			bodiesMap[item.box] = item;
+			_bodiesMap[item.box] = item;
 			_mcTrashCont.addChild(item);
 			
 			return item;
@@ -259,7 +257,7 @@ package client
 			_zombieList.push(zombie);
 			
 			for each (var body:PhysicInformable in zombie.compositionMap.arrayMode) {
-				bodiesMap[body] = zombie;
+				_bodiesMap[body] = zombie;
 			}
 			_mcZombieCont.addChild(zombie);
 		}
@@ -278,7 +276,7 @@ package client
 			}
 			
 			for each (var body:PhysicInformable in zombie.compositionMap.arrayMode) {
-				delete bodiesMap[body];
+				delete _bodiesMap[body];
 			}
 			zombie.destroy();
 		}
