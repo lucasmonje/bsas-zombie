@@ -11,6 +11,7 @@ package client.entities
 	import client.b2.PhysicInformable;
 	import client.definitions.ItemDefinition;
 	import client.definitions.PhysicDefinition;
+	import client.interfaces.Collisionable;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -19,20 +20,14 @@ package client.entities
 	import flash.utils.Dictionary;
 	import client.utils.B2Utils;
 	import client.enum.PhysicObjectType;
-	
+	import client.utils.MathUtils;
 	/**
 	 * ...
 	 * @author Lucas Monje
 	 */
-	public class Zombie extends Sprite {
-		
-		private var _zombieName:String;
+	public class Zombie extends Sprite implements Collisionable{
 		
 		private var _physicMapView:MovieClip;
-		
-		private var _physicProps:PhysicDefinition;
-		
-		private var _hits:uint;
 		
 		private var _compositionMap:Dictionary;
 		
@@ -42,13 +37,17 @@ package client.entities
 		
 		private var _assetsList:Vector.<MovieClip>;
 		
+		private var _props:ItemDefinition;
 		private var _speed:Number;
+		private var _hits:uint;
+		private var _life:int;
 		
-		public function Zombie(zombieName:String, physicProps:PhysicDefinition, hits:uint = 10, speed:Number = 0.025) {
-			_zombieName = zombieName;
-			_physicProps = physicProps;
-			_hits = hits;
-			_speed = speed;
+		
+		public function Zombie(props:ItemDefinition) {
+			_props = props;
+			_hits = _props.itemProps.hits;
+			_life = _props.itemProps.life;
+			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
 		}
 		
 		public function init(world:b2World, worldScale:int, initialPosition:Point):void {
@@ -58,7 +57,7 @@ package client.entities
 			_compositionMap.arrayMode = new Array();
 			_assetsList = new Vector.<MovieClip>();
 			
-			var PhysicMapViewClass:Class = AssetLoader.instance.getAssetDefinition(_zombieName, "PhysicDefinition");
+			var PhysicMapViewClass:Class = AssetLoader.instance.getAssetDefinition(_props.name, "PhysicDefinition");
 			_physicMapView = new PhysicMapViewClass();
 			var defBounds:Rectangle = _physicMapView.getBounds(null);
 			
@@ -77,7 +76,7 @@ package client.entities
 					
 					if (type.indexOf("box") > -1) {
 						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
-						assetClass = AssetLoader.instance.getAssetDefinition(_zombieName, mc.name);
+						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
 							addChild(asset);							
@@ -86,7 +85,7 @@ package client.entities
 							//trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
 						}
 						
-						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset), -1);
+						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, getUserData(asset), -1);
 						box.SetActive(false);
 						_world.registerBox(box);
 						_compositionMap[mc.name] = box;
@@ -94,14 +93,14 @@ package client.entities
 						
 					} else if (type.indexOf("circle") > -1) {
 						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
-						assetClass = AssetLoader.instance.getAssetDefinition(_zombieName, mc.name);
+						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
 							addChild(asset);							
 							_assetsList.push(asset);
 						}
 						
-						var circle:Circle = CircleBuilder.build(bounds, _world, _worldScale, true, _physicProps, getUserData(asset));
+						var circle:Circle = CircleBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, getUserData(asset));
 						circle.SetActive(false);
 						_world.registerCircle(circle);
 						_compositionMap[mc.name] = circle;
@@ -138,14 +137,12 @@ package client.entities
 		
 		private function getUserData(asset:MovieClip):Object {
 			var obj:Object = new Object();
-			obj.assetName = _zombieName;
+			obj.assetName = _props.name;
 			obj.assetSprite = asset;
 			obj.remove = false;
-			obj.collisionId = "B";
-			obj.collisionAccepts = ["A"];
 			obj.type = PhysicObjectType.ZOMBIE;
-			obj.hits = _hits;
 			obj.speed = _speed;
+			obj.entity = this;
 			return obj;
 		}
 		
@@ -170,6 +167,31 @@ package client.entities
 			}
 		}
 		
+		public function isDestroyed():Boolean {
+			return _life == 0;
+		}
+		
+		public function getCollisionId():String {
+			return _props.itemProps.collisionId;
+		}
+		
+		public function getCollisionAccept():Array {
+			return _props.itemProps.collisionAccepts.concat();
+		}
+		
+		public function collide(who:Collisionable):void {
+			if (Trash(who)){
+				if ((_life - Trash(who).hits) >= 0){
+					_life-=Trash(who).hits;
+				}else {
+					_life = 0;
+				}
+			}
+		}
+		
+		public function isCollisioning(who:Collisionable):Boolean {
+			return getCollisionAccept().indexOf(who.getCollisionId()) > -1;
+		}
 		/*
 		public function get position():Point {
 			return new Point(_box.GetPosition().x * _worldScale, _box.GetPosition().y * _worldScale);

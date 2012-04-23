@@ -2,6 +2,7 @@ package client.managers
 {
 	import Box2D.Dynamics.b2World;
 	import client.definitions.ItemDefinition;
+	import client.entities.Item;
 	import client.entities.Trash;
 	import flash.geom.Point;
 	/**
@@ -44,6 +45,21 @@ package client.managers
 			item.init(_world, _worldScale);
 			
 			return item;
+		}
+		
+		public function update():void {
+			var i:int = 0;
+			var item:Trash;
+			while (i < _items.length) {
+				item = _items[i];
+				if (item.isDestroyed()) {
+					item.destroy();
+					item = null;
+					_items.splice(i, 1);
+				}else {
+					i++;
+				}
+			}
 		}
 	}
 

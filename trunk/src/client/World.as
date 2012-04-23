@@ -1,33 +1,27 @@
 package client 
 {
-	import adobe.utils.CustomActions;
-	import Box2D.Collision.IBroadPhase;
-	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2DebugDraw;
-	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
-	import Box2D.Dynamics.Contacts.b2Contact;
 	import client.b2.Box;
 	import client.b2.BoxBuilder;
-	import client.b2.Circle;
 	import client.b2.Clientb2ContactListener;
 	import client.b2.PhysicInformable;
-	import client.definitions.ItemAffectingAreaDefinition;
 	import client.definitions.ItemDefinition;
 	import client.definitions.PhysicDefinition;
-	import client.definitions.PhysicDefinition;
 	import client.entities.AffectingArea;
+	import client.entities.Floor;
 	import client.entities.Trash;
 	import client.entities.Zombie;
+	import client.enum.AssetsEnum;
+	import client.enum.PhysicObjectType;
 	import client.enum.PlayerStatesEnum;
-	import client.events.GameTimerEvent;
 	import client.events.PlayerEvents;
+	import client.managers.GameTimer;
 	import client.managers.ItemManager;
-	import client.utils.B2Utils;
+	import client.utils.DisplayUtil;
 	import client.utils.MathUtils;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -35,11 +29,6 @@ package client
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import client.b2.CircleBuilder;
-	import client.utils.DisplayUtil;
-	import client.enum.AssetsEnum;
-	import client.enum.PhysicObjectType;
-	import client.managers.GameTimer;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -96,7 +85,7 @@ package client
 			
 			//add floor
 			var floor:MovieClip = mcStage.getChildByName("mcFloor") as MovieClip;
-			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y, floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), { assetName:"wall", assetSprite:null, remove:false, type: PhysicObjectType.FLOOR, collisionId: "C", collisionAccepts: [], hits:0} );
+			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y, floor.width, floor.height), _world, _worldScale, false, new PhysicDefinition(0, 10, 0.1), { assetName:"wall", assetSprite:null, remove:false, type: PhysicObjectType.FLOOR, entity:new Floor("C", [])} );
 			box.SetActive(true);
 			_world.registerBox(box);
 						
@@ -168,6 +157,19 @@ package client
 		private function updateWorld():void {
 			_world.Step(1 / _worldScale, 6, 2);
 			
+			// Chequea por items destruidos
+			for each(var trash:Trash in _trashList) {
+				if (trash.isDestroyed()) {
+					trash.destroy();
+				}
+			}
+			
+			for each(var zombie:Zombie in _zombieList) {
+				if (zombie.isDestroyed()) {
+					destroyZombie(zombie);
+				}
+			}
+			
 			for (var currentBody:b2Body = _world.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				
 				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
@@ -202,26 +204,8 @@ package client
 						_world.DestroyBody(currentBody);
 					}
 					
-					if (bodyInfo.userData.hits != null) {
-						var hits:int = bodyInfo.userData.hits;
-						if (hits == 0) {
-							if (Boolean(bodiesMap[currentBody])) {
-								switch ((currentBody as PhysicInformable).type) {
-									case PhysicObjectType.ZOMBIE:
-										destroyZombie(bodiesMap[currentBody] as Zombie);
-										break;
-									case PhysicObjectType.TRASH:
-										destroyTrash(bodiesMap[currentBody] as Trash);
-										break;
-								}
-							}
-						}
-					}
 				}
 			}
-			
-			// Chequea las colisiones
-			checkCollisions();
 			
 			if (_following) {
 				var posX:Number = _currentTrash.x;
@@ -238,46 +222,6 @@ package client
 			_world.DrawDebugData();
 		}
 		
-		/**
-		 * Chequea las colisiones entre los objetos fisicos
-		 */
-		private function checkCollisions():void {
-			if (_world.GetContactCount() > 0) {
-				var contact:b2Contact = _world.GetContactList();
-				
-				if (!contact) {
-					return;
-				}
-				
-				// Colision de un item con affecting area. Lo agrega a la lista de areas afectadas
-				var bodyCollided:b2Body;
-				var areaAffectedDef:ItemAffectingAreaDefinition;
-				var areaAffected:AffectingArea;
-				
-				var userDataA:Object = contact.GetFixtureA().GetBody().GetUserData();
-				var userDataB:Object = contact.GetFixtureB().GetBody().GetUserData();
-				if ((userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'handable') &&
-				   !(userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'battable')) {
-					trace("Objeto A es un item! " + ItemDefinition(userDataA.props).name);
-					bodyCollided = contact.GetFixtureA().GetBody();
-					areaAffectedDef = ItemDefinition(userDataA.props).areaAffecting;
-					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
-					_affectingAreas.push(areaAffected);
-					addChild(areaAffected.content);
-					destroyTrash(bodiesMap[contact.GetFixtureA().GetBody()]);
-				}else if ((userDataB && ItemDefinition(userDataB.props) && ItemDefinition(userDataB.props).type == 'handable') &&
-				   !(userDataA && ItemDefinition(userDataA.props) && ItemDefinition(userDataA.props).type == 'battable')) {
-					trace("Objeto B es un item! " + ItemDefinition(userDataB.props).name);
-					bodyCollided = contact.GetFixtureB().GetBody();
-					areaAffectedDef = ItemDefinition(userDataB.props).areaAffecting;
-					areaAffected = new AffectingArea(new Point(bodyCollided.GetPosition().x, bodyCollided.GetPosition().y), areaAffectedDef.radius, areaAffectedDef.times, areaAffectedDef.hit, _worldScale);
-					_affectingAreas.push(areaAffected);
-					addChild(areaAffected.content);
-					destroyTrash(bodiesMap[contact.GetFixtureB().GetBody()]);
-				}
-			}
-		}
-			
 		private function createItem(itemName:String):Trash {
 			var itemDef:ItemDefinition = ApplicationModel.instance.getWeaponByName(itemName);
 			if (!itemDef) {
@@ -302,15 +246,15 @@ package client
 			var itemDef:ItemDefinition = getTrash();
 			var trash:Trash = new Trash(itemDef, initialPosition);
 			trash.init(_world, _worldScale);
-			_trashList.push(trash);
 			_currentTrash = trash;
-			bodiesMap[trash.box] = trash;
 			_mcTrashCont.addChild(trash);
+			_trashList.push(trash);
 		}
 		
 		private function createZombie(initialPosition:Point):void {
-			var speedRandom:Number = Math.random() * 0.075;
-			var zombie:Zombie = new Zombie("zombie01", new PhysicDefinition(100, 0.3, 0.0), 3, speedRandom);
+			var itemDef:ItemDefinition = ApplicationModel.instance.getZombies()[0];
+			
+			var zombie:Zombie = new Zombie(itemDef);
 			zombie.init(_world, _worldScale, initialPosition);
 			_zombieList.push(zombie);
 			
@@ -320,19 +264,11 @@ package client
 			_mcZombieCont.addChild(zombie);
 		}
 		
-		private function destroyTrash(trash:Trash):void {
-			if (Boolean(trash.parent)) {
-				trash.parent.removeChild(trash);
-			}
-			var i:int = _trashList.indexOf(trash);
-			if (i > -1) {
-				_trashList.splice(i, 1);
-			}
-			delete bodiesMap[trash.box];
-			trash.destroy();
-		}
-		
 		private function destroyZombie(zombie:Zombie):void {
+			if (!zombie) {
+				return;
+			}
+			
 			if (Boolean(zombie.parent)) {
 				zombie.parent.removeChild(zombie);
 			}

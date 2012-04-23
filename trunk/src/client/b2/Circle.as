@@ -77,27 +77,6 @@ package client.b2
 			return _userData.type;
 		}
 		
-		public function get collisionAccepts():Array
-		{
-			return _userData.collisionAccepts;
-		}
-		
-		public function get collisionId():String
-		{
-			return _userData.collisionId;
-		}
-		
-		public function get hits():int
-		{
-			return _userData.hits;
-		}
-		
-		public function applyHit():void {
-			if (hits > 0) {
-				_userData.hits--;
-			}
-		}
-		
 		public function get speed():Number {
 			return _userData.speed;
 		}

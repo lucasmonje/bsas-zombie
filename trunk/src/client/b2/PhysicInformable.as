@@ -20,11 +20,7 @@ package client.b2
 		function get userData():Object;
 		function set userData(value:Object):void;
 		function get type():String;
-		function get collisionId():String;
-		function get collisionAccepts():Array;
-		function get hits():int;
 		function get speed():Number;
-		function applyHit():void;
 	}
 	
 }

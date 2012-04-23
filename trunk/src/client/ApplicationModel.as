@@ -61,6 +61,10 @@ package client
 			
 			return null;
 		}
+		
+		public function getZombies():Array {
+			return _map[ConfigNodes.ZOMBIES];
+		}
 	}
 
 }

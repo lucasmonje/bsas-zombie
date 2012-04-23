@@ -6,6 +6,7 @@ package client.entities
 	import client.b2.Box;
 	import client.b2.BoxBuilder;
 	import client.definitions.ItemDefinition;
+	import client.interfaces.Collisionable;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -16,7 +17,7 @@ package client.entities
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class Trash extends Sprite
+	public class Trash extends Sprite implements Collisionable
 	{
 		public var _initPos:Point;
 		
@@ -28,9 +29,14 @@ package client.entities
 		private var _world:b2World;
 		private var _worldScale:int;
 		
+		private var _hits:int;
+		private var _life:int;
+		
 		public function Trash(props:ItemDefinition, initialPosition:Point) {
 			_props = props;
 			_initPos = initialPosition;
+			_hits = props.itemProps.hits;
+			_life = props.itemProps.life;
 		}
 		
 		public function init(world:b2World, worldScale:int):void {
@@ -40,7 +46,7 @@ package client.entities
 			var cAsset:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, _props.name);
 			_mc = new cAsset();
 			addChild(_mc);
-		
+			
 			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, getUserData(_mc) );
 			_box.SetActive(false);
 			_world.registerBox(_box);
@@ -52,9 +58,7 @@ package client.entities
 			obj.assetSprite = asset;
 			obj.remove = false;
 			obj.type = PhysicObjectType.TRASH;
-			obj.collisionId = "A";
-			obj.collisionAccepts = ["A", "B"];
-			obj.hits = _props.itemProps.hits;
+			obj.entity = this;
 			return obj;
 		}
 		
@@ -71,14 +75,46 @@ package client.entities
 			return _box;
 		}
 		
+		public function get hits():int 
+		{
+			return _hits;
+		}
+		
 		public function shot(vel:b2Vec2):void {
 			_box.SetActive(true);
 			_box.SetLinearVelocity(vel);
 			_box.SetAngularDamping(10);
 		}
-
+		
+		public function isDestroyed():Boolean {
+			return _life == 0;
+		}
+		
 		public function destroy():void {
+			
+			if (Boolean(this.parent)) {
+				this.parent.removeChild(this);
+			}
+			
 			_world.DestroyBody(_box);
+		}
+		
+		public function getCollisionId():String {
+			return _props.itemProps.collisionId;
+		}
+		
+		public function getCollisionAccept():Array {
+			return _props.itemProps.collisionAccepts.concat();
+		}
+		
+		public function collide(who:Collisionable):void {
+			if (_life > 0) {
+				_life--;
+			}
+		}
+		
+		public function isCollisioning(who:Collisionable):Boolean {
+			return getCollisionAccept().indexOf(who.getCollisionId()) > -1;
 		}
 	}
 

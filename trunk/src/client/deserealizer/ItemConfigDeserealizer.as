@@ -45,6 +45,7 @@ package client.deserealizer
 			
 			decodeItems(ConfigNodes.TRASHES, xml.trashes);
 			decodeItems(ConfigNodes.WEAPONS, xml.weapons);
+			decodeItems(ConfigNodes.ZOMBIES, xml.zombies);
 			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -54,7 +55,7 @@ package client.deserealizer
 			
 			for each(var element:XML in xml.elements()) {
 				var physic:PhysicDefinition = new PhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution);
-				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits);
+				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits, element.properties.@life, element.properties.@collisionId, String(element.properties.@collisionAccept).split(","), element.properties.@speedMin, element.properties.@speedMax);
 				var area:ItemAffectingAreaDefinition = new ItemAffectingAreaDefinition(element.affectingArea.@radius, element.affectingArea.@times, element.affectingArea.@hit);
 				
 				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area);

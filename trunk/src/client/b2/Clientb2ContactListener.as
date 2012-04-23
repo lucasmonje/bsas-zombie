@@ -4,6 +4,7 @@ package client.b2
 	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.Contacts.b2Contact;
+	import client.interfaces.Collisionable;
 	
 	/**
 	 * ...
@@ -25,17 +26,17 @@ package client.b2
 			var body1:PhysicInformable = fix1.GetBody() as PhysicInformable;
 			var body2:PhysicInformable = fix2.GetBody() as PhysicInformable;
 			
-			if (validateCollision(body1, body2)) {
-				body1.applyHit();
-			}
+			var entityA:Collisionable = Collisionable(body1.userData.entity);
+			var entityB:Collisionable = Collisionable(body2.userData.entity);
 			
-			if (validateCollision(body2, body1)) {
-				body2.applyHit();	
+			if (validateCollision(entityA, entityB)) {
+				entityA.collide(entityB);
+				entityB.collide(entityA);
 			}
 		}
 		
-		private function validateCollision(body1:PhysicInformable, body2:PhysicInformable):Boolean {
-			return body2.collisionAccepts.indexOf(body1.collisionId) > -1;
+		private function validateCollision(entityA:Collisionable, entityB:Collisionable):Boolean {
+			return entityA.isCollisioning(entityB) || entityB.isCollisioning(entityA);
 		}
 	}
 
