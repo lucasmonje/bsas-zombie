@@ -13,9 +13,9 @@ package client.definitions
 		
 		private var _itemProps:ItemPropertiesDefinition;
 		private var _physicProps:PhysicDefinition;
-		private var _areaAffecting:ItemAffectingAreaDefinition;
+		private var _damageArea:ItemDamageAreaDefinition;
 		
-		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:PhysicDefinition, affectingArea:ItemAffectingAreaDefinition) 
+		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:PhysicDefinition, damageArea:ItemDamageAreaDefinition) 
 		{
 			_name = name;
 			_code = code;
@@ -24,7 +24,7 @@ package client.definitions
 			
 			_itemProps = props;
 			_physicProps = physic;
-			_areaAffecting = affectingArea;
+			_damageArea = damageArea;
 		}
 		
 		public function get itemProps():ItemPropertiesDefinition 
@@ -37,9 +37,9 @@ package client.definitions
 			return _physicProps;
 		}
 		
-		public function get areaAffecting():ItemAffectingAreaDefinition 
+		public function get damageAreaProps():ItemDamageAreaDefinition
 		{
-			return _areaAffecting;
+			return _damageArea;
 		}
 		
 		public function get name():String 

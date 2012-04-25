@@ -1,15 +1,14 @@
 package client.deserealizer 
 {
-	import client.definitions.ItemAffectingAreaDefinition;
+	import client.ApplicationModel;
+	import client.definitions.ItemDamageAreaDefinition;
 	import client.definitions.ItemDefinition;
-	import client.definitions.PhysicDefinition;
 	import client.definitions.ItemPropertiesDefinition;
+	import client.definitions.PhysicDefinition;
+	import client.enum.ConfigNodes;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
-	import flash.xml.XMLNode;
-	import client.ApplicationModel;
-	import client.enum.ConfigNodes;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -56,7 +55,7 @@ package client.deserealizer
 			for each(var element:XML in xml.elements()) {
 				var physic:PhysicDefinition = new PhysicDefinition(element.physicProps.@density, element.physicProps.@friction, element.physicProps.@restitution);
 				var props:ItemPropertiesDefinition = new ItemPropertiesDefinition(element.properties.@hits, element.properties.@life, element.properties.@collisionId, String(element.properties.@collisionAccept).split(","), element.properties.@speedMin, element.properties.@speedMax);
-				var area:ItemAffectingAreaDefinition = new ItemAffectingAreaDefinition(element.affectingArea.@radius, element.affectingArea.@times, element.affectingArea.@hit);
+				var area:ItemDamageAreaDefinition = new ItemDamageAreaDefinition(element.damageArea.@radius, element.damageArea.@times, element.damageArea.@hit);
 				
 				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area);
 				

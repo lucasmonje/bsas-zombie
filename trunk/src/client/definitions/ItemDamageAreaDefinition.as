@@ -4,13 +4,13 @@ package client.definitions
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class ItemAffectingAreaDefinition 
+	public class ItemDamageAreaDefinition 
 	{
 		private var _radius:Number;
 		private var _times:uint;
 		private var _hit:uint;
 		
-		public function ItemAffectingAreaDefinition(radius:Number, times:uint, hit:uint) 
+		public function ItemDamageAreaDefinition(radius:Number, times:uint, hit:uint) 
 		{
 			_radius = radius;
 			_times = times;

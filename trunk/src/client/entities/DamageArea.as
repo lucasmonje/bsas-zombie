@@ -1,12 +1,13 @@
 package client.entities 
 {
+	import client.definitions.ItemDamageAreaDefinition;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class AffectingArea 
+	public class DamageArea 
 	{
 		private var _xA:Number;
 		private var _xB:Number;
@@ -15,12 +16,16 @@ package client.entities
 		private var _hits:int;
 		private var _content:Sprite;
 		
-		public function AffectingArea(position:Point, radius:Number, times:int, hits:int, worldScale:int) 
+		private var _props:ItemDamageAreaDefinition;
+		
+		public function DamageArea(position:Point, props:ItemDamageAreaDefinition, worldScale:int) 
 		{
-			_xA = position.x - radius;
-			_xB = position.x + radius;
-			_times = times;
-			_hits = hits;
+			_props = props;
+			
+			_xA = position.x - _props.radius;
+			_xB = position.x + _props.radius;
+			_times = _props.times;
+			_hits = _props.hits;
 			_currentTimes = 0;
 			
 			_content = new Sprite();

@@ -11,7 +11,6 @@ package client
 	import client.b2.PhysicInformable;
 	import client.definitions.ItemDefinition;
 	import client.definitions.PhysicDefinition;
-	import client.entities.AffectingArea;
 	import client.entities.Floor;
 	import client.entities.Trash;
 	import client.entities.Zombie;

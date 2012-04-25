@@ -19,11 +19,11 @@
 		<weapon name="Bat" code="200001" icon="Bat" type="battable" />
 		<weapon name="Molotov" code="100003" icon="Molotov" type="handable">
 			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-			<affectingArea radius="1" times="10" hit="2" />
+			<damageArea radius="1" times="10" hit="2" />
 		</weapon>
 		<weapon name="Grenade" code="100004" icon="Grenade" type="handable">
 			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-			<affectingArea radius="2" times="10" hit="5" />
+			<damageArea radius="2" times="10" hit="5" />
 			<locks> <!-- A futuro para desarrollar -->
 				<level value="4" />
 			</locks>
