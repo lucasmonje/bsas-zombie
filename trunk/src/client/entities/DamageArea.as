@@ -12,7 +12,6 @@ package client.entities
 		private var _xA:Number;
 		private var _xB:Number;
 		private var _times:int;
-		private var _currentTimes:int;
 		private var _hits:int;
 		private var _content:Sprite;
 		
@@ -25,19 +24,14 @@ package client.entities
 			_xA = position.x - _props.radius;
 			_xB = position.x + _props.radius;
 			_times = _props.times;
-			_hits = _props.hits;
-			_currentTimes = 0;
+			_hits = _props.hit;
 			
 			_content = new Sprite();
 			_content.graphics.beginFill(0xff0000);
 			_content.graphics.drawRect(0, 0, (_xB - _xA) * worldScale, 20);
 			_content.graphics.endFill();
 			_content.x = _xA * worldScale;
-			_content.y = 500;
-		}
-		
-		public function isEnded():Boolean {
-			return _currentTimes == _times;
+			_content.y = 490; // (position.y * worldScale) + _content.height;
 		}
 		
 		public function get hits():int 
@@ -58,6 +52,16 @@ package client.entities
 		public function get content():Sprite 
 		{
 			return _content;
+		}
+		
+		public function set times(value:int):void 
+		{
+			_times = value;
+		}
+		
+		public function get times():int 
+		{
+			return _times;
 		}
 		
 		public function isInside(position:Point):Boolean {

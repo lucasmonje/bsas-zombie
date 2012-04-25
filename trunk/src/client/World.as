@@ -18,6 +18,7 @@ package client
 	import client.enum.PhysicObjectType;
 	import client.enum.PlayerStatesEnum;
 	import client.events.PlayerEvents;
+	import client.managers.DamageAreaManager;
 	import client.managers.GameTimer;
 	import client.managers.ItemManager;
 	import client.utils.DisplayUtil;
@@ -74,11 +75,15 @@ package client
 			var stageClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.STAGE01, "stage01") as Class;
 			_mcStage = new stageClass();
 			_stageInitialBounds = _mcStage.getBounds(null);
-			
 			_mcTrashCont = _mcStage.getChildByName("mcTrashCont") as MovieClip;
 			_mcZombieCont = _mcStage.getChildByName("mcZombieCont") as MovieClip;
 			_mcDebug = _mcStage.getChildByName("mcDebug") as MovieClip;
+			addChild(_mcStage);
+
 			UserModel.instance.player.initPlayer(_mcStage);
+			
+			DamageAreaManager.instance.init(_worldScale);
+			addChild(DamageAreaManager.instance.content);
 			
 			//add floor
 			var floor:MovieClip = _mcStage.getChildByName("mcFloor") as MovieClip;
@@ -98,7 +103,6 @@ package client
 			
 			UserModel.instance.player.state = PlayerStatesEnum.READY;
 			
-			addChild(_mcStage);
 			
 			UserModel.instance.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
 			UserModel.instance.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);

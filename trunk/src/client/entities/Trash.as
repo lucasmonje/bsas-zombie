@@ -13,6 +13,7 @@ package client.entities
 	import flash.geom.Rectangle;
 	import client.enum.AssetsEnum;
 	import client.enum.PhysicObjectType;
+	import client.managers.DamageAreaManager;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -80,6 +81,11 @@ package client.entities
 			return _hits;
 		}
 		
+		public function get props():ItemDefinition 
+		{
+			return _props;
+		}
+		
 		public function shot(vel:b2Vec2):void {
 			_box.SetActive(true);
 			_box.SetLinearVelocity(vel);
@@ -110,6 +116,9 @@ package client.entities
 		public function collide(who:Collisionable):void {
 			if (_life > 0) {
 				_life--;
+				if (_life == 0 && props.type == 'handable') {
+					DamageAreaManager.instance.addDamageArea(new Point(_box.GetPosition().x, _box.GetPosition().y), props.damageAreaProps);
+				}
 			}
 		}
 		
