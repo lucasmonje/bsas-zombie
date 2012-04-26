@@ -27,8 +27,8 @@ import Box2D.Dynamics.Contacts.*;
 import Box2D.Dynamics.Controllers.b2Controller;
 import Box2D.Dynamics.Controllers.b2ControllerEdge;
 import Box2D.Dynamics.Joints.*;
-import client.b2.Box;
-import client.b2.Circle;
+import com.sevenbrains.trashingDead.b2.Box;
+import com.sevenbrains.trashingDead.b2.Circle;
 
 import Box2D.Common.b2internal;
 use namespace b2internal;
