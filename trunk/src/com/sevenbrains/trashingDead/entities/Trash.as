@@ -35,14 +35,6 @@ package com.sevenbrains.trashingDead.entities
 			}
 		}
 		
-		override public function collide(who:Collisionable):void {
-			if (_life > 0) {
-				_life--;
-				if (_life == 0 && props.type == 'handable') {
-					DamageAreaManager.instance.addDamageArea(getBodyPosition(), props.damageAreaProps);
-				}
-			}
-		}
 	}
 
 }

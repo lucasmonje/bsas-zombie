@@ -2,6 +2,7 @@ package com.sevenbrains.trashingDead.managers
 {
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
@@ -30,7 +31,7 @@ package com.sevenbrains.trashingDead.managers
 			if (!itemDef) {
 				throw new Error("No existe el item a arrojar");
 			}
-			var item:Trash = new Trash(itemDef, initialPosition);
+			var item:Item = new Item(itemDef, initialPosition);
 			item.init();
 			_trashList.push(item);
 			return item;

@@ -1,18 +1,32 @@
 package com.sevenbrains.trashingDead.entities 
 {
+	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.interfaces.Collisionable;
+	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
 	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class Item extends Entity 
+	public class Item extends Trash 
 	{
 		
 		public function Item(props:ItemDefinition, initialPosition:Point) 
 		{
-			super(props, initialPosition, PhysicObjectType.ITEM);
+			super(props, initialPosition);
+			_type = PhysicObjectType.ITEM;
+		}
+		
+		override public function collide(who:Collisionable):void {
+			if (_life > 0) {
+				_life--;
+				if (_life == 0) {
+					DamageAreaManager.instance.addDamageArea(getBodyPosition(), props.damageAreaProps);
+				}
+			}
 		}
 		
 	}

@@ -215,9 +215,9 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function collide(who:Collisionable):void {
-			if (Trash(who)){
-				if ((_life - Trash(who).hits) >= 0){
-					_life-=Trash(who).hits;
+			if (Entity(who)){
+				if ((_life - Entity(who).hits) >= 0){
+					_life-=Entity(who).hits;
 				}else {
 					_life = 0;
 				}
