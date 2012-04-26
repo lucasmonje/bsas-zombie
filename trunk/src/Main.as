@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import com.sevenbrains.trashingDead.deserealizer.ItemConfigDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.WorldConfigDeserealizer;
 	import com.sevenbrains.trashingDead.managers.FullscreenManager;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	import com.sevenbrains.trashingDead.managers.AssetLoader;
@@ -32,22 +33,31 @@ package
 		{
 			StageReference.initReference(stage);
 			FullscreenManager.instance.root = this;
-			_resources = 2;
+			_resources = 3;
 			_loaded = 0;
 			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			
-			ItemConfigDeserealizer.instance.addEventListener(Event.COMPLETE, onItemConfigLoaded);
+			ItemConfigDeserealizer.instance.addEventListener(Event.COMPLETE, onItemsConfigLoaded);
 			ItemConfigDeserealizer.instance.init();
+			
+			WorldConfigDeserealizer.instance.addEventListener(Event.COMPLETE, onWorldsConfigLoaded);
+			WorldConfigDeserealizer.instance.init();
 			
 			AssetLoader.instance.addEventListener(Event.COMPLETE, onAssetLoaded);
 			AssetLoader.instance.init();
 			
 		}
 		
-		private function onItemConfigLoaded(e:Event):void {
-			ItemConfigDeserealizer.instance.removeEventListener(Event.COMPLETE, onItemConfigLoaded);
+		private function onItemsConfigLoaded(e:Event):void {
+			ItemConfigDeserealizer.instance.removeEventListener(Event.COMPLETE, onItemsConfigLoaded);
+			
+			begin();
+		}
+		
+		private function onWorldsConfigLoaded(e:Event):void {
+			WorldConfigDeserealizer.instance.removeEventListener(Event.COMPLETE, onWorldsConfigLoaded);
 			
 			begin();
 		}

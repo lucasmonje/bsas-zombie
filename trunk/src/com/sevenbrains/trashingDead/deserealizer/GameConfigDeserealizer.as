@@ -34,21 +34,7 @@ package com.sevenbrains.trashingDead.deserealizer
 			return _instance;
 		}
 		
-		public function init():void {
-			var byteArray:ByteArray = new cXml() as ByteArray;
-			var xml:XML = new XML(byteArray.readUTFBytes(byteArray.length));
-			
-			for each(var element:XML in xml.elements()) {
-				var playerXml:XML = element.player;
-				for each (var playerElement:XML in playerXml) {
-					
-				}
-			}
-			
-			ApplicationModel.instance.addMap(ConfigNodes.ITEMS, items);
-			
-			dispatchEvent(new Event(Event.COMPLETE));
-		}
+		
 	}
 
 }

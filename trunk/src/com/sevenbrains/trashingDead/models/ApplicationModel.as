@@ -43,6 +43,9 @@ package com.sevenbrains.trashingDead.models
 			return _map[ConfigNodes.TRASHES];
 		}
 		
+		public function getWorlds():Array {
+			return _map[ConfigNodes.WORLDS];
+		}
 		
 		public function getWeapons():Array {
 			return _map[ConfigNodes.WEAPONS];
@@ -61,6 +64,17 @@ package com.sevenbrains.trashingDead.models
 		
 		public function getZombies():Array {
 			return _map[ConfigNodes.ZOMBIES];
+		}
+		
+		public function getZombieByCode(code:uint):ItemDefinition {
+			var zombies:Array = _map[ConfigNodes.ZOMBIES];
+			for each(var def:ItemDefinition in zombies) {
+				if (def.code == code) {
+					return def;
+				}
+			}
+			
+			return null;
 		}
 	}
 

@@ -18,7 +18,7 @@ package com.sevenbrains.trashingDead.managers
 	{
 		private var _itemList:Vector.<Trash>;
 		private var _trashList:Vector.<Trash>;		
-		private var _zombieList:Vector.<Zombie>;	
+		private var _zombieList:Vector.<Zombie>;
 		
 		public function ItemManager() {
 			_itemList = new Vector.<Trash>();
@@ -50,15 +50,15 @@ package com.sevenbrains.trashingDead.managers
 			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
-		public function createZombie(initialPosition:Point):Zombie {
-			var zombie:Zombie;
-			if (_zombieList.length < GameProperties.MAX_ZOMBIES_IN_SCREEN) {
-				var itemDef:ItemDefinition = ApplicationModel.instance.getZombies()[0];
-				zombie = new Zombie(itemDef, initialPosition);
-				zombie.init();
-				_zombieList.push(zombie);				
-			}
+		public function createZombie(props:ItemDefinition, initialPosition:Point):Zombie {
+			var zombie:Zombie = new Zombie(props, initialPosition);
+			zombie.init();
+			_zombieList.push(zombie);				
 			return zombie;
+		}
+		
+		public function getZombieAmount():uint {
+			return _zombieList.length;
 		}
 		
 		public function destroyZombie(zombie:Zombie):void {

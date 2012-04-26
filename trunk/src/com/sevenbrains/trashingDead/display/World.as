@@ -9,7 +9,10 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.Clientb2ContactListener;
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
+	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
+	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
 	import com.sevenbrains.trashingDead.entities.Floor;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
@@ -23,18 +26,22 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.managers.ItemManager;
 	import com.sevenbrains.trashingDead.models.UserModel;
+	import com.sevenbrains.trashingDead.definitions.GameProperties;
+	import com.sevenbrains.trashingDead.utils.MathUtils;
+	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class World extends Sprite {
+		
+		private var _props:WorldDefinition;
 		
 		private var _assetLoader:AssetLoader;
 		private var _damageArea:DamageAreaManager;
@@ -56,12 +63,16 @@ package com.sevenbrains.trashingDead.display
 		
 		private var _itemManager:ItemManager;
 		
-		public function World() {
+		public function World(props:WorldDefinition) {
+			
+			_props = props;
+			
 			_backgroundLayer = createLayer();
 			_playerLayer = createLayer();
 			_debugLayer = createLayer();
 			_zombiesLayer = createLayer();
 			_trashLayer = createLayer();
+			
 			initModels();
 		}
 		
@@ -86,7 +97,7 @@ package com.sevenbrains.trashingDead.display
 			_itemManager = new ItemManager();
 			
 			// Carga el Stage
-			var stageClass:Class = _assetLoader.getAssetDefinition(AssetsEnum.BACKGROUND_01, "Asset") as Class;
+			var stageClass:Class = _assetLoader.getAssetDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);
@@ -114,8 +125,7 @@ package com.sevenbrains.trashingDead.display
 			_userModel.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			
 			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
-			//_gameTimer.callMeEvery(GameProperties.ZOMBIE_MAKE_TIME, makeZombie);
-			_gameTimer.callMeIn(GameProperties.ZOMBIE_MAKE_TIME, makeZombie);
+			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
 			_gameTimer.start();			
 			
 			if (GameProperties.DEBUG_MODE) {
@@ -126,8 +136,26 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		private function makeZombie():void {
-			var z:Zombie = _itemManager.createZombie(new Point(_stageInitialBounds.width/2, 350));
-			if (z) {
+			if (_itemManager.getZombieAmount() < _props.zombieMaxInScreen) {
+				
+				var wzd:WorldEntitiesDefinition;
+				var code:uint;
+				var weight:uint = 1;
+				for each(wzd in _props.zombies) {
+					weight += wzd.weight;
+				}
+				var rnd:Number = MathUtils.getRandom(1, weight);
+				weight = 1;
+				for each(wzd in _props.zombies) {
+					weight += wzd.weight;
+					if (rnd <= weight) {
+						code = wzd.code;
+						break;
+					}
+				}
+				
+				var zombieProps:ItemDefinition = ApplicationModel.instance.getZombieByCode(code);
+				var z:Zombie = _itemManager.createZombie(zombieProps, new Point(_stageInitialBounds.width/2, 350));
 				_zombiesLayer.addChild(z);
 			}
 		}

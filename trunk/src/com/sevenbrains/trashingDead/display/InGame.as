@@ -4,6 +4,7 @@ package com.sevenbrains.trashingDead.display
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -20,6 +21,8 @@ package com.sevenbrains.trashingDead.display
 		private var _world:World;
 		private var _hud:Hud;
 		
+		private var _currentLevel:int;
+		
 		public function InGame() 
 		{
 			_oldState = NONE;
@@ -27,7 +30,9 @@ package com.sevenbrains.trashingDead.display
 			
 			UserModel.instance.init();
 			
-			_world = new World();
+			_currentLevel = 0;
+			
+			_world = new World(ApplicationModel.instance.getWorlds()[_currentLevel]);
 			_hud = new Hud();
 			
 			changeState();
