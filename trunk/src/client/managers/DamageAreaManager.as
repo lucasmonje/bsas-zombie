@@ -5,6 +5,7 @@ package client.managers
 	import client.events.GameTimerEvent;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import client.GameProperties;
 	
 	/**
 	 * ...
@@ -28,9 +29,7 @@ package client.managers
 		private var _damageAreas:Vector.<DamageArea>;
 		
 		private var _content:Sprite;
-		
-		private var _worldScale:int;
-		
+				
 		public function DamageAreaManager() 
 		{
 			if (!_instanciable) {
@@ -38,15 +37,14 @@ package client.managers
 			}
 		}
 		
-		public function init(worldScale:int):void {
+		public function init():void {
 			_damageAreas = new Vector.<DamageArea>();
 			_content = new Sprite();
-			_worldScale = worldScale;
 			GameTimer.instance.addEventListener(GameTimerEvent.TIME_UPDATE_SECOND, update);
 		}
 		
 		public function addDamageArea(pos:Point, props:ItemDamageAreaDefinition):void {
-			var damageArea:DamageArea = new DamageArea(pos, props, _worldScale);
+			var damageArea:DamageArea = new DamageArea(pos, props);
 			
 			_content.addChild(damageArea.content);
 			

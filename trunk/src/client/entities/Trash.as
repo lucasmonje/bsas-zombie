@@ -6,20 +6,23 @@ package client.entities
 	import client.b2.Box;
 	import client.b2.BoxBuilder;
 	import client.definitions.ItemDefinition;
+	import client.enum.AssetsEnum;
+	import client.enum.PhysicObjectType;
+	import client.GameProperties;
 	import client.interfaces.Collisionable;
+	import client.managers.DamageAreaManager;
+	import client.WorldModel;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import client.enum.AssetsEnum;
-	import client.enum.PhysicObjectType;
-	import client.managers.DamageAreaManager;
+	import client.interfaces.Destroyable;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class Trash extends Sprite implements Collisionable
-	{
+	public class Trash extends Sprite implements Destroyable, Collisionable {
+		
 		public var _initPos:Point;
 		
 		private var _props:ItemDefinition;
@@ -27,7 +30,7 @@ package client.entities
 		private var _mc:MovieClip;
 		private var _box:Box;
 		
-		private var _world:b2World;
+		private var _physicWorld:b2World;
 		private var _worldScale:int;
 		
 		private var _hits:int;
@@ -40,17 +43,17 @@ package client.entities
 			_life = props.itemProps.life;
 		}
 		
-		public function init(world:b2World, worldScale:int):void {
-			_world = world;
-			_worldScale = worldScale;
+		public function init():void {
+			_physicWorld = WorldModel.instance.currentWorld.physicWorld;
+			_worldScale = GameProperties.WORLD_SCALE;
 			
 			var cAsset:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, _props.name);
 			_mc = new cAsset();
 			addChild(_mc);
 			
-			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _world, _worldScale, true, _props.physicProps, getUserData(_mc) );
+			_box = BoxBuilder.build(new Rectangle(_initPos.x + _mc.x, _initPos.y + _mc.y, _mc.width, _mc.height),  _physicWorld, _worldScale, true, _props.physicProps, getUserData(_mc) );
 			_box.SetActive(false);
-			_world.registerBox(_box);
+			_physicWorld.registerBox(_box);
 		}
 		
 		private function getUserData(asset:MovieClip):Object {
@@ -102,7 +105,7 @@ package client.entities
 				this.parent.removeChild(this);
 			}
 			
-			_world.DestroyBody(_box);
+			_physicWorld.DestroyBody(_box);
 		}
 		
 		public function getCollisionId():String {

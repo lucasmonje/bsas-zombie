@@ -19,11 +19,14 @@ package client
 		[Embed (source = "resources\\assets\\common.swf", mimeType = "application/octet-stream")] 
 		private var commonAssets:Class;
 		
-		[Embed (source = "resources\\assets\\stage01.swf", mimeType = "application/octet-stream")] 
-		private var stage01:Class;
+		[Embed (source = "resources\\assets\\backgrounds\\background01.swf", mimeType = "application/octet-stream")] 
+		private var background01:Class;
 		
-		[Embed (source = "resources\\assets\\zombie01.swf", mimeType = "application/octet-stream")] 
+		[Embed (source = "resources\\assets\\zombies\\zombie01.swf", mimeType = "application/octet-stream")] 
 		private var zombie01:Class;
+
+		[Embed (source = "resources\\assets\\players\\player01.swf", mimeType = "application/octet-stream")]
+		private var player01:Class;
 
 		private static var _instanciable:Boolean;
 		
@@ -75,8 +78,9 @@ package client
 			
 		private function buildClassList():void {
 			_allClass.push(commonAssets);
-			_allClass.push(stage01);
+			_allClass.push(background01);
 			_allClass.push(zombie01);
+			_allClass.push(player01);
 		}
 		
 		private function loadAllClass():void {

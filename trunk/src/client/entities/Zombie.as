@@ -10,49 +10,48 @@ package client.entities
 	import client.b2.CircleBuilder;
 	import client.b2.PhysicInformable;
 	import client.definitions.ItemDefinition;
-	import client.definitions.PhysicDefinition;
+	import client.enum.PhysicObjectType;
+	import client.GameProperties;
 	import client.interfaces.Collisionable;
+	import client.utils.B2Utils;
+	import client.utils.MathUtils;
+	import client.WorldModel;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import client.utils.B2Utils;
-	import client.enum.PhysicObjectType;
-	import client.utils.MathUtils;
+	import client.interfaces.Destroyable;
 	/**
 	 * ...
 	 * @author Lucas Monje
 	 */
-	public class Zombie extends Sprite implements Collisionable{
+	public class Zombie extends Sprite implements Destroyable, Collisionable {
 		
 		private var _physicMapView:MovieClip;
-		
 		private var _compositionMap:Dictionary;
-		
-		private var _world:b2World;
-		
+		private var _physicWorld:b2World;
 		private var _worldScale:int;
-		
 		private var _assetsList:Vector.<MovieClip>;
-		
 		private var _props:ItemDefinition;
 		private var _speed:Number;
 		private var _hits:uint;
 		private var _life:int;
+		private var _initialPosition:Point;
 		
-		
-		public function Zombie(props:ItemDefinition) {
+		public function Zombie(props:ItemDefinition, initialPosition:Point) {
 			_props = props;
 			_hits = _props.itemProps.hits;
 			_life = _props.itemProps.life;
+			_initialPosition = initialPosition;
 			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
 		}
 		
-		public function init(world:b2World, worldScale:int, initialPosition:Point):void {
-			_world = world;
-			_worldScale = worldScale;
+		public function init():void {
+			_physicWorld = WorldModel.instance.currentWorld.physicWorld;
+			_worldScale = GameProperties.WORLD_SCALE;
+			
 			_compositionMap = new Dictionary();
 			_compositionMap.arrayMode = new Array();
 			_assetsList = new Vector.<MovieClip>();
@@ -75,7 +74,7 @@ package client.entities
 					var type:String = mc.name.split("_").shift().toString().toLowerCase();
 					
 					if (type.indexOf("box") > -1) {
-						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
+						bounds = new Rectangle(dispObj.x + _initialPosition.x, dispObj.y + _initialPosition.y, dispObj.width, dispObj.height);
 						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
@@ -85,14 +84,14 @@ package client.entities
 							//trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
 						}
 						
-						var box:Box = BoxBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, getUserData(asset), -1);
+						var box:Box = BoxBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset), -1);
 						box.SetActive(false);
-						_world.registerBox(box);
+						_physicWorld.registerBox(box);
 						_compositionMap[mc.name] = box;
 						_compositionMap.arrayMode.push(box);
 						
 					} else if (type.indexOf("circle") > -1) {
-						bounds = new Rectangle(dispObj.x + initialPosition.x, dispObj.y + initialPosition.y, dispObj.width, dispObj.height);
+						bounds = new Rectangle(dispObj.x + _initialPosition.x, dispObj.y + _initialPosition.y, dispObj.width, dispObj.height);
 						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
@@ -100,9 +99,9 @@ package client.entities
 							_assetsList.push(asset);
 						}
 						
-						var circle:Circle = CircleBuilder.build(bounds, _world, _worldScale, true, _props.physicProps, getUserData(asset));
+						var circle:Circle = CircleBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset));
 						circle.SetActive(false);
-						_world.registerCircle(circle);
+						_physicWorld.registerCircle(circle);
 						_compositionMap[mc.name] = circle;
 						_compositionMap.arrayMode.push(circle);
 						
@@ -121,7 +120,7 @@ package client.entities
 				var body1:b2Body = _compositionMap[bodies[1]];
 				var body2:b2Body = _compositionMap[bodies[2]];
 				
-				B2Utils.setRevoluteJoint(body1, body2, new b2Vec2((anchor.x + initialPosition.x)/_worldScale, (anchor.y + initialPosition.y)/_worldScale), _world);	
+				B2Utils.setRevoluteJoint(body1, body2, new b2Vec2((anchor.x + _initialPosition.x)/_worldScale, (anchor.y + _initialPosition.y)/_worldScale), _physicWorld);	
 			}
 
 			
@@ -163,7 +162,7 @@ package client.entities
 		
 		public function destroy():void {
 			for each (var body:PhysicInformable in _compositionMap.arrayMode) {
-				_world.DestroyBody(body as b2Body);				
+				_physicWorld.DestroyBody(body as b2Body);				
 			}
 		}
 		
@@ -192,11 +191,7 @@ package client.entities
 		public function isCollisioning(who:Collisionable):Boolean {
 			return getCollisionAccept().indexOf(who.getCollisionId()) > -1;
 		}
-		/*
-		public function get position():Point {
-			return new Point(_box.GetPosition().x * _worldScale, _box.GetPosition().y * _worldScale);
-		}
-		*/
+
 	}
 
 }

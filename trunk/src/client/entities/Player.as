@@ -15,6 +15,7 @@ package client.entities
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import client.enum.AssetsEnum;
+	import client.utils.DisplayUtil;
 	/**
 	 * ...
 	 * @author lmonje
@@ -34,7 +35,8 @@ package client.entities
 		private var _powering:Boolean;
 		private var _power:Number;
 		private var _angle:Number;
-		
+		private var _trashPosition:Point;
+		private var _wagonPosition:Point;
 		private var _content:MovieClip;
 		
 		private var _weapons:Vector.<Item>;
@@ -55,6 +57,12 @@ package client.entities
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
+			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
+			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
+			DisplayUtil.remove(mcTrashPosition);
+			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
+			_wagonPosition = new Point(mcWagonPosition.x, mcWagonPosition.y);
+			DisplayUtil.remove(mcWagonPosition);
 			
 			_state = PlayerStatesEnum.WAITING;
 			
@@ -252,6 +260,16 @@ package client.entities
 		public function get angle():Number 
 		{
 			return _angle;
+		}
+		
+		public function get wagonPosition():Point 
+		{
+			return _wagonPosition;
+		}
+		
+		public function get trashPosition():Point 
+		{
+			return _trashPosition;
 		}
 		
 	}

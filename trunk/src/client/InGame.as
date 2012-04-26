@@ -1,8 +1,8 @@
 package client 
 {
+	import client.UserModel;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import client.UserModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -42,6 +42,7 @@ package client
 		
 		private function initWorld():void {
 			_world.addEventListener(Event.COMPLETE, onWorldLoaded);
+			WorldModel.instance.currentWorld = _world;
 			_world.init();
 		}
 		
@@ -51,12 +52,6 @@ package client
 			addChild(_world);
 			addChild(_hud);
 		}
-		
-		/* Escucha evento del mapa y le llega que nivel seleccionó
-		private function levelSelecetd():void {
-			
-		}
-		*/
 	}
 
 }

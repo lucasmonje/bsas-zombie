@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-	<world name="park">
-		<items>
-			<item code="100001" weight="3" />
-			<item code="100002" weight="1" />
-		</items>
-		<zombies>
-			<zombie code="200001" weight="1" />
-			<zombie code="200002" weight="1" />
-		</zombies>
-	</world>
+	<worlds>
+		<world asset="stage01" >
+			<items>
+				<item code="100001" weight="3" />
+				<item code="100002" weight="1" />
+				<item code="100003" weight="1" />
+			</items>
+			<zombies maxInScreen="12" >
+				<zombie code="200001" weight="1" />
+			</zombies>
+		</world>
+	</worlds>
 </data>

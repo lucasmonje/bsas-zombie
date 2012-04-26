@@ -1,61 +1,93 @@
 package client.managers 
 {
-	import Box2D.Dynamics.b2World;
+	import client.ApplicationModel;
 	import client.definitions.ItemDefinition;
-	import client.entities.Item;
 	import client.entities.Trash;
+	import client.entities.Zombie;
+	import client.GameProperties;
+	import client.interfaces.Collisionable;
+	import client.interfaces.Destroyable;
+	import client.utils.DisplayUtil;
 	import flash.geom.Point;
+	import client.utils.MathUtils;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class ItemManager 
 	{
-		private var _world:b2World;
-		private var _worldScale:int;
-		private var _items:Vector.<Trash>;
+		private var _itemList:Vector.<Trash>;
+		private var _trashList:Vector.<Trash>;		
+		private var _zombieList:Vector.<Zombie>;	
 		
-		public function ItemManager(world:b2World, worldScale:int) 
-		{
-			_items = new Vector.<Trash>();
-			_world = world;
-			_worldScale = worldScale;
+		public function ItemManager() {
+			_itemList = new Vector.<Trash>();
+			_trashList = new Vector.<Trash>();
+			_zombieList = new Vector.<Zombie>();
 		}
-		
-		
-		public function add(itemDef:ItemDefinition, position:Point):Trash {
-			var item:Trash;
-			if (itemDef.type == 'handable') {
-				item = createItem(itemDef, position);
-			}
-			
-			return item;
-		}
-		
-		private function createTrash(itemDef:ItemDefinition, position:Point):Trash {
-			return null;
-		}
-		
-		private function createItem(itemDef:ItemDefinition, position:Point):Trash {
+
+		public function createItem(itemName:String, initialPosition:Point):Trash {
+			var itemDef:ItemDefinition = ApplicationModel.instance.getWeaponByName(itemName);
 			if (!itemDef) {
 				throw new Error("No existe el item a arrojar");
 			}
-			
-			var item:Trash = new Trash(itemDef, position);
-			item.init(_world, _worldScale);
-			
+			var item:Trash = new Trash(itemDef, initialPosition);
+			item.init();
+			_trashList.push(item);
 			return item;
+		}		
+		
+		public function createRandomTrash(initialPosition:Point):Trash {
+			var itemDef:ItemDefinition = getTrash();
+			var trash:Trash = new Trash(itemDef, initialPosition);
+			trash.init();
+			_trashList.push(trash);
+			return trash;
+		}
+		
+		private function getTrash():ItemDefinition {
+			var items:Array = ApplicationModel.instance.getTrashes().concat();
+			return items[MathUtils.getRandomInt(1, items.length) - 1];
+		}
+		
+		public function createZombie(initialPosition:Point):Zombie {
+			var zombie:Zombie;
+			if (_zombieList.length < GameProperties.MAX_ZOMBIES_IN_SCREEN) {
+				var itemDef:ItemDefinition = ApplicationModel.instance.getZombies()[0];
+				zombie = new Zombie(itemDef, initialPosition);
+				zombie.init();
+				_zombieList.push(zombie);				
+			}
+			return zombie;
+		}
+		
+		public function destroyZombie(zombie:Zombie):void {
+			if (!zombie) {
+				return;
+			}
+			DisplayUtil.remove(zombie);
+			var i:int = _zombieList.indexOf(zombie);
+			if (i > -1) {
+				_zombieList.splice(i, 1);
+			}
+			zombie.destroy();
 		}
 		
 		public function update():void {
+			updateList(_itemList);
+			updateList(_trashList);
+			updateList(_zombieList);
+		}
+			
+		private function updateList(list:Object):void {
 			var i:int = 0;
-			var item:Trash;
-			while (i < _items.length) {
-				item = _items[i];
+			var item:Destroyable;
+			while (i < list.length) {
+				item = list[i];
 				if (item.isDestroyed()) {
 					item.destroy();
 					item = null;
-					_items.splice(i, 1);
+					list.splice(i, 1);
 				}else {
 					i++;
 				}

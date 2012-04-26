@@ -3,6 +3,7 @@ package client.entities
 	import client.definitions.ItemDamageAreaDefinition;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import client.GameProperties
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -17,7 +18,7 @@ package client.entities
 		
 		private var _props:ItemDamageAreaDefinition;
 		
-		public function DamageArea(position:Point, props:ItemDamageAreaDefinition, worldScale:int) 
+		public function DamageArea(position:Point, props:ItemDamageAreaDefinition) 
 		{
 			_props = props;
 			
@@ -28,9 +29,9 @@ package client.entities
 			
 			_content = new Sprite();
 			_content.graphics.beginFill(0xff0000);
-			_content.graphics.drawRect(0, 0, (_xB - _xA) * worldScale, 20);
+			_content.graphics.drawRect(0, 0, (_xB - _xA) * GameProperties.WORLD_SCALE, 20);
 			_content.graphics.endFill();
-			_content.x = _xA * worldScale;
+			_content.x = _xA * GameProperties.WORLD_SCALE;
 			_content.y = 490; // (position.y * worldScale) + _content.height;
 		}
 		
