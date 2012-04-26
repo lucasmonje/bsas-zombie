@@ -2,12 +2,16 @@ package com.sevenbrains.trashingDead.managers
 {
 	import com.sevenbrains.trashingDead.utils.ArrayUtil;
 	import com.sevenbrains.trashingDead.utils.ClassUtil;
+	import com.sevenbrains.trashingDead.utils.CustomLoader;
 	import com.sevenbrains.trashingDead.utils.Subscription;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.net.URLRequest;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	/**
 	 * ...
@@ -16,33 +20,17 @@ package com.sevenbrains.trashingDead.managers
 	 */
 	public class AssetLoader extends EventDispatcher {
 		
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\common.swf", mimeType = "application/octet-stream")] 
-		private var commonAssets:Class;
-		
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\backgrounds\\background01.swf", mimeType = "application/octet-stream")] 
-		private var background01:Class;
-		
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\zombies\\zombie01.swf", mimeType = "application/octet-stream")] 
-		private var zombie01:Class;
-
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\players\\player01.swf", mimeType = "application/octet-stream")]
-		private var player01:Class;
-		
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\trash\\trashTv.swf", mimeType = "application/octet-stream")]
-		private var trashTv:Class;
-
-		[Embed (source = "..\\..\\..\\..\\..\\assets\\item\\itemMolotov.swf", mimeType = "application/octet-stream")]
-		private var itemMolotov:Class;
+		[Embed(source = '..\\..\\..\\..\\..\\resources\\assets-config.xml', mimeType = "application/octet-stream")]
+		private var cXml:Class;
 
 		private static var _instanciable:Boolean;
 		
 		private static var _instance:AssetLoader;
 		
-		private var _suscriptionsMap:Dictionary;
+		private var _map:Dictionary;
 		
-		private var _allClass:Vector.<Class>;
-		
-		private var _loaderMap:Dictionary;
+		private var _counter:int;
+		private var _total:int;
 		
 		public function AssetLoader() {
 			if (!_instanciable) {
@@ -61,82 +49,74 @@ package com.sevenbrains.trashingDead.managers
 		}
 		
 		public function init():void {
-			initializeVars();
-			buildClassList();
-			loadAllClass();
+			var byteArray:ByteArray = new cXml() as ByteArray;
+			var xml:XML = new XML(byteArray.readUTFBytes(byteArray.length));
+			
+			_map = new Dictionary();
+			_total = 0;
+			_counter = 0;
+			
+			decodeSwfs("swfs", xml.swfs);
+		}
+		
+		private function decodeSwfs(key:String, xml:XMLList):void {
+			var swfs:Dictionary = new Dictionary();
+			
+			for each(var element:XML in xml.elements()) {
+				_total++;
+				var loader:CustomLoader = new CustomLoader(swfs, element.@name);
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaderEvent);
+				//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loaderEvent);
+				//loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderEvent);
+				
+				var folder:String = element.@folder;
+				var assetName:String = element.@name;
+				
+				var assetUrl:String = folder?(folder + "/" + assetName):assetName;
+				var url:String = "../assets/" + assetUrl + ".swf";
+				trace(url);
+				loader.load(new URLRequest(url));
+			}
+			
+			_map[key] = swfs;
 		}
 		
 		public function getAssetDefinition(assetName:String, definitionName:String):Class {
+			var swfs:Dictionary = _map["swfs"];
+			var loader:CustomLoader = swfs[assetName];
+			if (loader && loader.contentLoaderInfo.applicationDomain.hasDefinition(definitionName)) {
+				var classAsset:Class = loader.contentLoaderInfo.applicationDomain.getDefinition(definitionName) as Class;
+				return classAsset;
+			}
+			/*
 			var loader:Loader = getLoader(assetName);
 			if (loader && loader.contentLoaderInfo.applicationDomain.hasDefinition(definitionName)) {
 				var classAsset:Class = loader.contentLoaderInfo.applicationDomain.getDefinition(definitionName) as Class;
 				return classAsset;
 			}
+			*/
 			return null;
 		}
 		
-		private function initializeVars():void {
-			_allClass = new Vector.<Class>();
-			_suscriptionsMap = new Dictionary();
-			_suscriptionsMap.arrayMode = new Array();
-			_loaderMap = new Dictionary();
-		}
+		private function loaderEvent(e:Event):void {
+			var loaderInfo:LoaderInfo = e.currentTarget as LoaderInfo;
+			var loader:CustomLoader = loaderInfo.loader as CustomLoader;
 			
-		private function buildClassList():void {
-			_allClass.push(commonAssets);
-			_allClass.push(background01);
-			_allClass.push(zombie01);
-			_allClass.push(player01);
-			_allClass.push(trashTv);
-			_allClass.push(itemMolotov);
-		}
-		
-		private function loadAllClass():void {
-			for each (var clazz:Class in _allClass) {
-				loadClass(clazz);
-			}
-		}
-			
-		private function loadClass(clazz:Class):void {
-			var loader:Loader = new Loader();
-			var className:String = ClassUtil.getName(clazz);
-			className = className.split("_").pop();
-			_loaderMap[className] = loader;
-			var suscriptions:Vector.<Subscription> = new Vector.<Subscription>();
-			suscriptions.push(new Subscription(loader.contentLoaderInfo, Event.COMPLETE, loaderEvent, false));
-			suscriptions.push(new Subscription(loader.contentLoaderInfo, IOErrorEvent.IO_ERROR, loaderEvent, false));
-			suscriptions.push(new Subscription(loader.contentLoaderInfo, SecurityErrorEvent.SECURITY_ERROR, loaderEvent, false));
-			_suscriptionsMap[loader] = suscriptions;
-			_suscriptionsMap.arrayMode.push(suscriptions);
-			loader.loadBytes(new clazz());
-		}
-		
-		private function cancelSuscriptions(suscriptions:Vector.<Subscription>):void {
-			for each (var suscription:Subscription in suscriptions) {
-				suscription.cancel();
-				suscription = null;
-			}
-			ArrayUtil.remove(_suscriptionsMap.arrayMode as Array, suscriptions);
-		}
-		
-		private function loaderEvent(e:*):void {
-			var loader:Loader = e.currentTarget as Loader;
-			var suscriptions:Vector.<Subscription> = _suscriptionsMap[e.currentTarget.loader];
-			cancelSuscriptions(suscriptions);
-			delete _suscriptionsMap[e.currentTarget];
-			
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, loaderEvent);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loaderEvent);
+			loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderEvent);
+				
 			if (e.hasOwnProperty("errorMessage")) {
-				trace(e.errorMessage);
-			}
-			
-			if (_suscriptionsMap.arrayMode.length == 0) {
-				dispatchEvent(new Event(Event.COMPLETE));				
+				//trace(e.errorMessage);
+			}else {
+				var map:Dictionary = loader.map;
+				map[loader.assetName] = loader;
+				if (_total == ++_counter){
+					dispatchEvent(new Event(Event.COMPLETE));
+				}
 			}
 		}
 		
-		private function getLoader(className:String):Loader {
-			return _loaderMap[className] as Loader;
-		}
 	}
 
 }
