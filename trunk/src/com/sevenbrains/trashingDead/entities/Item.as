@@ -21,11 +21,10 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		override public function collide(who:Collisionable):void {
-			if (_life > 0) {
-				_life--;
-				if (_life == 0) {
-					DamageAreaManager.instance.addDamageArea(getBodyPosition(), props.damageAreaProps);
-				}
+			super.collide(who);
+			
+			if (isDestroyed()){
+				DamageAreaManager.instance.addDamageArea(getBodyPosition(), props.damageAreaProps);
 			}
 		}
 		

@@ -215,12 +215,12 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function collide(who:Collisionable):void {
-			if (Entity(who)){
-				if ((_life - Entity(who).hits) >= 0){
-					_life-=Entity(who).hits;
-				}else {
-					_life = 0;
-				}
+			var whoHits:int = who is Entity?Entity(who).hits:1;
+
+			if ((_life - whoHits) >= 0){
+				_life-=whoHits;
+			}else {
+				_life = 0;
 			}
 		}
 		
