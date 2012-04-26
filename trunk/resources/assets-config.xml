@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 	<swfs>
-		<swf name="common" />
-		<swf name="background01" folder="backgrounds" />
-		<swf name="zombie01" folder="zombies" />
-		<swf name="player01" folder="players" />
-		<swf name="trashTv" folder="trash" />
-		<swf name="itemMolotov" folder="item" />
+		<swf id="common" path="common.swf" />
+		<swf id="background01" path="backgrounds/background01.swf" />
+		<swf id="zombie01" path="zombies/zombie01.swf" />
+		<swf id="player01" path="players/player01.swf" />
+		<swf id="trashTv" path="trash/trashTv.swf" />
+		<swf id="itemMolotov" path="item/itemMolotov.swf" />
 	</swfs>
 	<audios>
 		

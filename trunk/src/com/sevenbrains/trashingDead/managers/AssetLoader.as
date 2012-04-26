@@ -64,18 +64,12 @@ package com.sevenbrains.trashingDead.managers
 			
 			for each(var element:XML in xml.elements()) {
 				_total++;
-				var loader:CustomLoader = new CustomLoader(swfs, element.@name);
+				var loader:CustomLoader = new CustomLoader(swfs, element.@id);
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaderEvent);
 				//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loaderEvent);
 				//loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderEvent);
 				
-				var folder:String = element.@folder;
-				var assetName:String = element.@name;
-				
-				var assetUrl:String = folder?(folder + "/" + assetName):assetName;
-				var url:String = "../assets/" + assetUrl + ".swf";
-				trace(url);
-				loader.load(new URLRequest(url));
+				loader.load(new URLRequest("../assets/" + element.@path));
 			}
 			
 			_map[key] = swfs;
