@@ -26,7 +26,7 @@ package com.sevenbrains.trashingDead.managers
 			_zombieList = new Vector.<Zombie>();
 		}
 
-		public function createItem(itemName:String, initialPosition:Point):Trash {
+		public function createItem(itemName:String, initialPosition:Point):Item {
 			var itemDef:ItemDefinition = ApplicationModel.instance.getWeaponByName(itemName);
 			if (!itemDef) {
 				throw new Error("No existe el item a arrojar");

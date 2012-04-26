@@ -11,6 +11,7 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.entities.Floor;
+	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
@@ -155,8 +156,9 @@ package com.sevenbrains.trashingDead.display
 			var power:Number = UserModel.instance.player.power;
 			var angle:Number = UserModel.instance.player.angle;
 			
-			var item:Trash = _itemManager.createItem(e.newValue, _userModel.player.trashPosition);
+			var item:Item = _itemManager.createItem(e.newValue, _userModel.player.trashPosition);
 			item.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
+			addChild(item);
 			_userModel.player.state = PlayerStatesEnum.READY;
 		}
 		
