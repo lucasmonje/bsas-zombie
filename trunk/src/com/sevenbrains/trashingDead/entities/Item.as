@@ -1,31 +1,20 @@
 package com.sevenbrains.trashingDead.entities 
 {
+	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class Item 
+	public class Item extends Entity 
 	{
-		private var _props:ItemDefinition;
 		
-		public function Item(props:ItemDefinition) 
+		public function Item(props:ItemDefinition, initialPosition:Point) 
 		{
-			_props = props;
+			super(props, initialPosition, PhysicObjectType.ITEM);
 		}
 		
-		public function get props():ItemDefinition 
-		{
-			return _props;
-		}
-		
-		/**
-		 * Devuelve si el arma esta activa.
-		 * Corresponde a los locks que tenga.
-		 */
-		public function isEnabled():Boolean {
-			return true;
-		}
 	}
 
 }

@@ -3,6 +3,8 @@ package com.sevenbrains.trashingDead.models
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Player;
+	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import flash.geom.Point;
 	
 	/**
 	 * ...
@@ -37,7 +39,7 @@ package com.sevenbrains.trashingDead.models
 			
 			var weapons:Vector.<Item> = new Vector.<Item>();
 			for each (var weaponDef:ItemDefinition in ApplicationModel.instance.getWeapons()) {
-				weapons.push(new Item(weaponDef));
+				weapons.push(new Item(weaponDef, new Point()));
 			}
 			
 			_player = new Player(weapons);

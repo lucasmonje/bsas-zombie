@@ -68,6 +68,18 @@ package com.sevenbrains.trashingDead.managers
 				}
 			}
 		}
+		
+		public function destroy():void {
+			GameTimer.instance.removeEventListener(GameTimerEvent.TIME_UPDATE_SECOND, update);
+			while (_content.numChildren > 0) {
+				_content.removeChildAt(0);
+			}
+			for each (var damageArea:DamageArea in _damageAreas) {
+				damageArea.destroy();
+			}
+			_damageAreas = null;
+			_content = null;
+		}
 	}
 
 }

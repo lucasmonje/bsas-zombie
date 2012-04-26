@@ -16,13 +16,14 @@ package com.sevenbrains.trashingDead.utils
 			var low:Number = minValue;
 			var high:Number = maxValue;
 				
-			if(isNaN(low))
-			{
-			throw new Error("low must be defined");
+			if(isNaN(low)){
+				throw new Error("low must be defined");
+			}if(isNaN(high)){
+				throw new Error("high must be defined");
 			}
-			if(isNaN(high))
-			{
-			throw new Error("high must be defined");
+			
+			if (low == high) {
+				return low;
 			}
 
 			return Math.round(Math.random() * (high - low)) + low;

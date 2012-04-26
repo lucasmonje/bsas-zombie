@@ -68,6 +68,11 @@ package com.sevenbrains.trashingDead.entities
 		public function isInside(position:Point):Boolean {
 			return (position.x >= _xA && position.x <= _xB);
 		}
+		
+		public function destroy():void {
+			_props = null;
+			_content = null;
+		}
 	}
 
 }

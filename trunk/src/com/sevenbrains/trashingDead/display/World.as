@@ -113,7 +113,8 @@ package com.sevenbrains.trashingDead.display
 			_userModel.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			
 			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
-			_gameTimer.callMeEvery(GameProperties.ZOMBIE_MAKE_TIME, makeZombie);
+			//_gameTimer.callMeEvery(GameProperties.ZOMBIE_MAKE_TIME, makeZombie);
+			_gameTimer.callMeIn(GameProperties.ZOMBIE_MAKE_TIME, makeZombie);
 			_gameTimer.start();			
 			
 			if (GameProperties.DEBUG_MODE) {

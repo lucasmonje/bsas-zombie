@@ -73,11 +73,11 @@ package com.sevenbrains.trashingDead.b2
 	
 		public function get type():String 
 		{
-			return _userData.type;
+			return _userData.entity.type;
 		}
 		
 		public function get speed():Number {
-			return _userData.speed;
+			return _userData.entity.speed;
 		}
 	}
 

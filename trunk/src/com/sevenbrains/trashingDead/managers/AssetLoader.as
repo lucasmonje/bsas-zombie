@@ -27,6 +27,12 @@ package com.sevenbrains.trashingDead.managers
 
 		[Embed (source = "..\\..\\..\\..\\..\\assets\\players\\player01.swf", mimeType = "application/octet-stream")]
 		private var player01:Class;
+		
+		[Embed (source = "..\\..\\..\\..\\..\\assets\\trash\\trashTv.swf", mimeType = "application/octet-stream")]
+		private var trashTv:Class;
+
+		[Embed (source = "..\\..\\..\\..\\..\\assets\\item\\itemMolotov.swf", mimeType = "application/octet-stream")]
+		private var itemMolotov:Class;
 
 		private static var _instanciable:Boolean;
 		
@@ -81,6 +87,8 @@ package com.sevenbrains.trashingDead.managers
 			_allClass.push(background01);
 			_allClass.push(zombie01);
 			_allClass.push(player01);
+			_allClass.push(trashTv);
+			_allClass.push(itemMolotov);
 		}
 		
 		private function loadAllClass():void {
