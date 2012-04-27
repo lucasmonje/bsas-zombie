@@ -64,7 +64,6 @@ package com.sevenbrains.trashingDead.entities
 			
 			var PhysicMapViewClass:Class = AssetLoader.instance.getAssetDefinition(_props.name, "PhysicDefinition");
 			_physicMapView = new PhysicMapViewClass();
-			var defBounds:Rectangle = _physicMapView.getBounds(null);
 			
 			var anchors:Vector.<MovieClip> = new Vector.<MovieClip>();
 			var assetClass:Class;
@@ -78,9 +77,9 @@ package com.sevenbrains.trashingDead.entities
 					
 					var mc:MovieClip = dispObj as MovieClip;
 					var type:String = mc.name.split("_").shift().toString().toLowerCase();
+					bounds = new Rectangle(_initialPosition.x + dispObj.x, _initialPosition.y + dispObj.y, dispObj.width, dispObj.height);
 					
 					if (type.indexOf("box") > -1) {
-						bounds = new Rectangle(dispObj.x + _initialPosition.x, dispObj.y + _initialPosition.y, dispObj.width, dispObj.height);
 						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
@@ -97,7 +96,6 @@ package com.sevenbrains.trashingDead.entities
 						_compositionMap.arrayMode.push(box);
 						
 					} else if (type.indexOf("circle") > -1) {
-						bounds = new Rectangle(dispObj.x + _initialPosition.x, dispObj.y + _initialPosition.y, dispObj.width, dispObj.height);
 						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
@@ -150,9 +148,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		private function getUserData(asset:MovieClip):Object {
 			var obj:Object = new Object();
-			obj.assetName = _props.name;
 			obj.assetSprite = asset;
-			obj.remove = false;
 			obj.entity = this;
 			return obj;
 		}
@@ -180,7 +176,6 @@ package com.sevenbrains.trashingDead.entities
 		{
 			return _type;
 		}
-		
 		
 		public function getItemPosition():Point {
 			var body:b2Body = _compositionMap.arrayMode[0];

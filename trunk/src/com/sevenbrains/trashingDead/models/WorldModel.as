@@ -1,10 +1,13 @@
 package com.sevenbrains.trashingDead.models 
 {
 	import com.sevenbrains.trashingDead.display.World;
+	import flash.geom.Rectangle;
 	
 	public class WorldModel {
 		
 		private var _currentWorld:World;
+		
+		private var _floorRect:Rectangle;
 		
 		private static var _instanciable:Boolean;
 		private static var _instance:WorldModel;
@@ -32,6 +35,16 @@ package com.sevenbrains.trashingDead.models
 		public function set currentWorld(value:World):void 
 		{
 			_currentWorld = value;
+		}
+		
+		public function get floorRect():Rectangle 
+		{
+			return _floorRect;
+		}
+		
+		public function set floorRect(value:Rectangle):void 
+		{
+			_floorRect = value;
 		}
 		
 	}

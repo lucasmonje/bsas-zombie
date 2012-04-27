@@ -11,11 +11,13 @@ package com.sevenbrains.trashingDead.entities
 	{
 		private var _collisionId:String;
 		private var _collisionAccept:Array;
+		private var _type:String;
 		
-		public function Floor(collisionId:String, collisionAccept:Array) 
+		public function Floor(collisionId:String, collisionAccept:Array, type:String) 
 		{
 			_collisionId = collisionId;
 			_collisionAccept = collisionAccept.concat();
+			_type =  type;
 		}
 		
 		/* INTERFACE interfaces.Collisionable */
@@ -39,6 +41,12 @@ package com.sevenbrains.trashingDead.entities
 		{
 			return _collisionAccept.concat();
 		}
+				
+		public function get type():String 
+		{
+			return _type;
+		}
+		
 		
 	}
 

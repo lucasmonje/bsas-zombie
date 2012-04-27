@@ -35,6 +35,8 @@ package com.sevenbrains.trashingDead.display
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -47,6 +49,7 @@ package com.sevenbrains.trashingDead.display
 		private var _damageArea:DamageAreaManager;
 		private var _userModel:UserModel;
 		private var _gameTimer:GameTimer;
+		private var _worldModel:WorldModel;
 		
 		private var _trashLayer:Sprite;
 		private var _zombiesLayer:Sprite;
@@ -88,6 +91,7 @@ package com.sevenbrains.trashingDead.display
 			_damageArea = DamageAreaManager.instance;
 			_userModel = UserModel.instance;
 			_gameTimer = GameTimer.instance;
+			_worldModel = WorldModel.instance;
 		}
 		
 		public function init():void {
@@ -104,9 +108,14 @@ package com.sevenbrains.trashingDead.display
 		
 			//add floor
 			var floor:MovieClip = _bg.getChildByName("mcFloor") as MovieClip;
-			var box:Box = BoxBuilder.build(new Rectangle(floor.x, floor.y, floor.width, floor.height), _physicWorld, GameProperties.WORLD_SCALE, false, new PhysicDefinition(0, 10, 0.1), { assetName:"wall", assetSprite:null, remove:false, type: PhysicObjectType.FLOOR, entity:new Floor("C", [])} );
+			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
+			var floorData:Object = new Object();
+			floorData.assetSprite = null;
+			floorData.entity = new Floor("C", [], PhysicObjectType.FLOOR);			
+			var box:Box = BoxBuilder.build(_worldModel.floorRect, _physicWorld, GameProperties.WORLD_SCALE, false, new PhysicDefinition(0, 10, 0.1), floorData);
 			box.SetActive(true);
 			_physicWorld.registerBox(box);
+			DisplayUtil.remove(floor);
 			
 			var playerClass:Class = _assetLoader.getAssetDefinition(AssetsEnum.PLAYER_01, "Asset") as Class;
 			_player = new playerClass();
@@ -155,7 +164,8 @@ package com.sevenbrains.trashingDead.display
 				}
 				
 				var zombieProps:ItemDefinition = ApplicationModel.instance.getZombieByCode(code);
-				var z:Zombie = _itemManager.createZombie(zombieProps, new Point(_stageInitialBounds.width/2, 350));
+				var pos:Point = new Point(_stageInitialBounds.width/2, _worldModel.floorRect.y - (_worldModel.floorRect.height/2));
+				var z:Zombie = _itemManager.createZombie(zombieProps, pos);
 				_zombiesLayer.addChild(z);
 			}
 		}
