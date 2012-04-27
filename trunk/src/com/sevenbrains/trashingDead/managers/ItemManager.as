@@ -10,20 +10,21 @@ package com.sevenbrains.trashingDead.managers
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import flash.geom.Point;
+	import com.sevenbrains.trashingDead.entities.Entity;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class ItemManager 
 	{
-		private var _itemList:Vector.<Trash>;
-		private var _trashList:Vector.<Trash>;		
-		private var _zombieList:Vector.<Zombie>;
+		private var _itemList:Vector.<Entity>;
+		private var _trashList:Vector.<Entity>;		
+		private var _zombieList:Vector.<Entity>;
 		
 		public function ItemManager() {
-			_itemList = new Vector.<Trash>();
-			_trashList = new Vector.<Trash>();
-			_zombieList = new Vector.<Zombie>();
+			_itemList = new Vector.<Entity>();
+			_trashList = new Vector.<Entity>();
+			_zombieList = new Vector.<Entity>();
 		}
 
 		public function createItem(itemName:String, initialPosition:Point):Item {
@@ -92,6 +93,18 @@ package com.sevenbrains.trashingDead.managers
 					i++;
 				}
 			}
+		}
+		
+		private function destroyList(list:Vector.<Entity>):void {
+			for each(var entity:Entity in list) {
+				entity.destroy();
+			}
+		}
+		
+		public function destroy():void {
+			destroyList(_itemList);
+			destroyList(_trashList);
+			destroyList(_zombieList);
 		}
 	}
 

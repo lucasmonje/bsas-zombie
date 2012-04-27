@@ -223,5 +223,18 @@ package com.sevenbrains.trashingDead.display
 		public function get physicWorld():b2World  {
 			return _physicWorld;
 		}
+		
+		public function destroy():void {
+			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
+				_physicWorld.DestroyBody(currentBody);
+			}
+			_currentTrash.destroy();
+			_damageArea.destroy();
+			_itemManager.destroy();
+			
+			while (numChildren > 0) {
+				removeChildAt(0);
+			}
+		}
 	}
 }
