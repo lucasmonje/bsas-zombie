@@ -174,7 +174,8 @@ package com.sevenbrains.trashingDead.display
 			var debug:b2DebugDraw = new b2DebugDraw();
 			var sprite:Sprite = new Sprite();
 			debug.SetSprite(sprite);
-			debug.SetDrawScale( 1 / GameProperties.WORLD_SCALE);
+			var scale:Number = 1 / GameProperties.WORLD_SCALE;
+			debug.SetDrawScale( 1 / scale);
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_physicWorld.SetDebugDraw(debug);
 			_debugLayer.addChild(sprite);
