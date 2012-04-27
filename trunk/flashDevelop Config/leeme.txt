@@ -1,0 +1,17 @@
+til para FlashDevelop 4.0.1
+
+Agregar los plug-ins descomprimidos en la carpeta de de plug-ins del flash develop:
+C:\Program Files\FlashDevelop\Plugins
+
+
+Luego descomprimir el archivo FlashDevelop.zip en:
+
+C:\Users\Administrador\AppData\Local
+
+Bebiendo quedar el contenido en:
+
+C:\Users\Administrador\AppData\Local\FlashDevelop
+
+eso es todo!
+
+Saludosss.
