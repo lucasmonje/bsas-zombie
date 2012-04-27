@@ -39,15 +39,17 @@ package com.sevenbrains.trashingDead.entities
 		private var _props:ItemDefinition;
 		
 		protected var _type:String;
+		protected var _groupIndex:int;
 		protected var _initialPosition:Point;
 		protected var _speed:Number;
 		protected var _hits:uint;
 		protected var _life:int;
 		
-		public function Entity(props:ItemDefinition, initialPosition:Point, type:String) 
+		public function Entity(props:ItemDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
 		{
 			_props = props;
 			_type = type;
+			_groupIndex = groupIndex;
 			_initialPosition = initialPosition;
 			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
 			_hits = _props.itemProps.hits;
@@ -89,7 +91,7 @@ package com.sevenbrains.trashingDead.entities
 							//trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
 						}
 						
-						var box:Box = BoxBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset));
+						var box:Box = BoxBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset), _groupIndex);
 						box.SetActive(false);
 						_physicWorld.registerBox(box);
 						_compositionMap[mc.name] = box;
@@ -103,7 +105,7 @@ package com.sevenbrains.trashingDead.entities
 							_assetsList.push(asset);
 						}
 						
-						var circle:Circle = CircleBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset));
+						var circle:Circle = CircleBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset), _groupIndex);
 						circle.SetActive(false);
 						_physicWorld.registerCircle(circle);
 						_compositionMap[mc.name] = circle;

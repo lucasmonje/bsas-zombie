@@ -10,7 +10,7 @@ package com.sevenbrains.trashingDead.entities
 	public class Zombie extends Entity {
 		
 		public function Zombie(props:ItemDefinition, initialPosition:Point) {
-			super(props, initialPosition, PhysicObjectType.ZOMBIE);
+			super(props, initialPosition, PhysicObjectType.ZOMBIE, -1);
 		}
 		
 	}
