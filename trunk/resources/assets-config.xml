@@ -8,6 +8,7 @@
 		<swf id="trashTv" path="trash/trashTv.swf" />
 		<swf id="itemMolotov" path="item/itemMolotov.swf" />
 		<swf id="gameTitle" path="screens/gameTitle.swf" />
+		<swf id="mapWorld" path="screens/mapWorld.swf" />
 	</swfs>
 	<audios>
 		

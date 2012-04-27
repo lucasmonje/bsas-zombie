@@ -21,6 +21,7 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.enum.PlayerStatesEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
+	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.AssetLoader;
 	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
@@ -29,19 +30,23 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.models.ApplicationModel;
+	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.utils.DisplayUtil;
+	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
+	import com.sevenbrains.trashingDead.utils.StageReference;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import com.sevenbrains.trashingDead.models.WorldModel;
-	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	/*
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class World extends Sprite {
+	public class World extends Sprite implements Screenable{
 		
 		private var _props:WorldDefinition;
 		
@@ -65,6 +70,9 @@ package com.sevenbrains.trashingDead.display
 		private var _stageInitialBounds:Rectangle;
 		
 		private var _itemManager:ItemManager;
+		
+		private var _state:String;
+		private var _data:String;
 		
 		public function World(props:WorldDefinition) {
 			
@@ -141,7 +149,17 @@ package com.sevenbrains.trashingDead.display
 				setDebugMode();
 			}
 			
+			_state = ClassStatesEnum.RUNNING;
+			
+			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
 			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function onKeyUp(e:KeyboardEvent):void {
+			if (e.keyCode == Keyboard.ESCAPE) {
+				_state = ClassStatesEnum.DESTROYING;
+			}
 		}
 		
 		private function makeZombie():void {
@@ -233,6 +251,16 @@ package com.sevenbrains.trashingDead.display
 		
 		public function get physicWorld():b2World  {
 			return _physicWorld;
+		}
+		
+		public function get state():String 
+		{
+			return _state;
+		}
+		
+		public function get data():String 
+		{
+			return _data;
 		}
 		
 		public function destroy():void {

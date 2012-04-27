@@ -1,6 +1,7 @@
 package com.sevenbrains.trashingDead.models 
 {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import flash.display.Stage;
 	import flash.utils.Dictionary;
@@ -45,6 +46,16 @@ package com.sevenbrains.trashingDead.models
 		
 		public function getWorlds():Array {
 			return _map[ConfigNodes.WORLDS];
+		}
+		
+		public function getWorldById(id:String):WorldDefinition {
+			for each (var worldDef:WorldDefinition in _map[ConfigNodes.WORLDS]) {
+				if (worldDef.id == id) {
+					return worldDef;
+				}
+			}
+			
+			return null;
 		}
 		
 		public function getWeapons():Array {

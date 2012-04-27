@@ -17,6 +17,7 @@ package com.sevenbrains.trashingDead.display
 		private var _content:Sprite;
 		private var _btnPlay:MovieClip;
 		private var _state:String;
+		private var _data:String;
 		
 		public function MainMenu() 
 		{
@@ -46,6 +47,11 @@ package com.sevenbrains.trashingDead.display
 		public function get state():String 
 		{
 			return _state;
+		}
+		
+		public function get data():String 
+		{
+			return _data;
 		}
 	}
 
