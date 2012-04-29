@@ -18,7 +18,7 @@ package
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	[SWF(width = "1000", height = "600", frameRate = "30", backgroundColor = "#234a00")]
+	[SWF(width = "900", height = "500", frameRate = "30", backgroundColor = "#234a00")]
 	[Frame(factoryClass="com.sevenbrains.trashingDead.display.Preloader")]
 	public class Main extends Sprite 
 	{

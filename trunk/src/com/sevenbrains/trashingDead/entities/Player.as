@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
+	import com.sevenbrains.trashingDead.utils.StageReference;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -16,7 +17,6 @@ package com.sevenbrains.trashingDead.entities
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
-	import com.sevenbrains.trashingDead.utils.StageReference;
 	
 	/**
 	 * ...
@@ -73,8 +73,8 @@ package com.sevenbrains.trashingDead.entities
 			_power = 0;
 			
 			_animation = new Animation(_mcPlayer);
-			_animation.addAnimation("battable", 1, 20);
-			_animation.addAnimation("handable", 34, 53);
+			_animation.addAnimation("battable", 1, 14);
+			_animation.addAnimation("handable", 41, 54);
 			_animation.setAnim("battable");
 			
 			_mcPlayer.addEventListener(Event.ENTER_FRAME, onUpdate);
