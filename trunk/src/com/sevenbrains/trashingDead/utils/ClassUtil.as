@@ -9,7 +9,7 @@ package com.sevenbrains.trashingDead.utils
 	 * @author Ariel
 	 */
 	
-	public final class ClassUtil
+	public final class ClassUtil 
 	{
 		/** returns the class name of an object with namespace */
 		public static function getFullName(obj:Object):String
