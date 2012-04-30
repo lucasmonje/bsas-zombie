@@ -13,11 +13,13 @@ package com.sevenbrains.trashingDead.definitions
 		
 		public static const ANGLE_TOP:Number = -0.85;
 		
-		public static const DEBUG_MODE:Boolean = false;
+		public static const DEBUG_MODE:Boolean = true;
 				
 		public static const TIMER_UPDATE:Number = 1000 / 30;
 		
 		public static const WORLD_SCALE:uint = 30;
+		
+		public static const ZOOM_VAR:Number = 0.01;
 
 	}
 

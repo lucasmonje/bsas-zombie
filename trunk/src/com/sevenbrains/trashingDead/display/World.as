@@ -62,11 +62,15 @@ package com.sevenbrains.trashingDead.display {
 		private var _player:MovieClip;
 		private var _physicWorld:b2World;
 		private var _currentTrash:Trash;
+		private var _currentTrashZooming:Trash;
 		private var _customContact:b2ContactListener;
 		private var _stageInitialBounds:Rectangle;
 		private var _itemManager:ItemManager;
 		private var _state:String;
 		private var _data:String;
+		
+		private var _worldWidth:Number;
+		private var _worldHeight:Number;
 		
 		public function World(props:WorldDefinition) {
 			_props = props;
@@ -113,10 +117,10 @@ package com.sevenbrains.trashingDead.display {
 			box.SetActive(true);
 			_physicWorld.registerBox(box);
 			DisplayUtil.remove(floor);
-			var playerClass:Class = _assetLoader.getAssetDefinition(AssetsEnum.PLAYER_01, "Asset") as Class;
-			_player = new playerClass();
-			_userModel.player.initPlayer(_player);
-			_playerLayer.addChild(_player);
+			
+			_userModel.player.initPlayer();
+			_playerLayer.addChild(_userModel.player);
+			
 			_damageArea.init();
 			addChild(_damageArea.content);
 			_currentTrash = _itemManager.createRandomTrash(_userModel.player.trashPosition);
@@ -130,6 +134,10 @@ package com.sevenbrains.trashingDead.display {
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
+			
+			_worldWidth = this.width;
+			_worldHeight = this.height;
+			
 			_state = ClassStatesEnum.RUNNING;
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			dispatchEvent(new Event(Event.COMPLETE));
@@ -138,6 +146,17 @@ package com.sevenbrains.trashingDead.display {
 		private function onKeyUp(e:KeyboardEvent):void {
 			if (e.keyCode == Keyboard.ESCAPE) {
 				_state = ClassStatesEnum.DESTROYING;
+			}
+		}
+		
+		private function zooming(out:Boolean):void {
+			var v:Number = GameProperties.ZOOM_VAR;
+			if (out && (this.width - v >= StageReference.stage.stageWidth)) {
+				this.scaleX -= v;
+				this.scaleY -= v;
+			}else if (!out && (this.width + v <= _worldWidth)){
+				this.scaleX += v;
+				this.scaleY += v;
 			}
 		}
 		
@@ -181,6 +200,7 @@ package com.sevenbrains.trashingDead.display {
 			var angle:Number = _userModel.player.angle;
 			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			_userModel.player.state = PlayerStatesEnum.READY;
+			_currentTrashZooming = _currentTrash;
 			_currentTrash = _itemManager.createRandomTrash(_userModel.player.trashPosition);
 			_trashLayer.addChild(_currentTrash);
 		}
@@ -195,6 +215,17 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function updateWorld():void {
+			if (_currentTrashZooming && !_currentTrashZooming.isDestroyed()) {
+				zooming(true);
+			}else {
+				zooming(false);
+			}
+			
+			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
+				_currentTrashZooming.destroy();
+				_currentTrashZooming = null;
+			}
+			
 			_physicWorld.Step(1 / GameProperties.WORLD_SCALE, 6, 2);
 			_itemManager.update();
 			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {

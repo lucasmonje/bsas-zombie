@@ -10,6 +10,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -22,7 +23,7 @@ package com.sevenbrains.trashingDead.entities
 	 * ...
 	 * @author lmonje
 	 */
-	public class Player extends EventDispatcher 
+	public class Player extends Sprite 
 	{
 		private var _stage:Stage;
 		
@@ -32,6 +33,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _mcPlayer:MovieClip;
 		private var _poweringArrow:MovieClip;
+		private var _throwingArea:Sprite;
 		
 		private var _isAnimatingShooting:Boolean;
 		private var _powering:Boolean;
@@ -54,17 +56,29 @@ package com.sevenbrains.trashingDead.entities
 		 * Inicializa el asset del player de acuerdo al mundo cargado
 		 * @param	content. Recibe el content del mundo cargado para obtener al player
 		 */
-		public function initPlayer(content:MovieClip):void {
-			_content = content;
+		public function initPlayer():void {
+			var playerClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
+			_content = new playerClass();
+			addChild(_content);
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
+			
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
 			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
 			DisplayUtil.remove(mcTrashPosition);
+			
 			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
 			_wagonPosition = new Point(mcWagonPosition.x, mcWagonPosition.y);
 			DisplayUtil.remove(mcWagonPosition);
+			
+			_throwingArea = new Sprite();
+			_throwingArea.graphics.beginFill(0xff0000, 0.3);
+			_throwingArea.graphics.drawCircle(0, 0, 300);
+			_throwingArea.graphics.endFill();
+			_throwingArea.x = _mcPlayer.x + (_mcPlayer.width >> 1);
+			_throwingArea.y = _mcPlayer.y + (_mcPlayer.height >> 1);
+			addChild(_throwingArea);
 			
 			_state = PlayerStatesEnum.WAITING;
 			
@@ -78,7 +92,7 @@ package com.sevenbrains.trashingDead.entities
 			_animation.setAnim("battable");
 			
 			_mcPlayer.addEventListener(Event.ENTER_FRAME, onUpdate);
-			_stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			//_throwingArea.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 		
 		public function get state():String {
@@ -132,9 +146,9 @@ package com.sevenbrains.trashingDead.entities
 			_power = 0;
 			_poweringArrow.gotoAndStop(0);
 			
-			_stage.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			_stage.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			_stage.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			_throwingArea.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			_throwingArea.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			_throwingArea.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 		}
 		
 		/**
@@ -143,9 +157,9 @@ package com.sevenbrains.trashingDead.entities
 		 * no esta listo para lanzar el siguiente
 		 */
 		private function shooting():void {
-			_stage.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-			_stage.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
-			_stage.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
+			_throwingArea.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			_throwingArea.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+			_throwingArea.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			
 			_powering = false;
 			_isAnimatingShooting = true;

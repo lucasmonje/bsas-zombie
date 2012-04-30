@@ -4,7 +4,9 @@
 		<swf id="common" path="common.swf" />
 		<swf id="background01" path="backgrounds/background01.swf" />
 		<swf id="zombie01" path="zombies/zombie01.swf" />
-		<swf id="player01" path="players/player01.swf" />
+		<swf id="bateador" path="players/bateador.swf" />
+		<swf id="gordo" path="players/gordo.swf" />
+		<swf id="chica" path="players/chica.swf" />
 		<swf id="trashTv" path="trash/trashTv.swf" />
 		<swf id="itemMolotov" path="item/itemMolotov.swf" />
 		<swf id="gameTitle" path="screens/gameTitle.swf" />
