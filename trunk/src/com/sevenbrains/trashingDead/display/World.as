@@ -139,7 +139,9 @@ package com.sevenbrains.trashingDead.display {
 			_worldHeight = this.height;
 			
 			_state = ClassStatesEnum.RUNNING;
+			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
@@ -154,7 +156,7 @@ package com.sevenbrains.trashingDead.display {
 			if (out && (this.width - v >= StageReference.stage.stageWidth)) {
 				this.scaleX -= v;
 				this.scaleY -= v;
-			}else if (!out && (this.width + v <= _worldWidth)){
+			}else if (!out && this.scaleX < 1){
 				this.scaleX += v;
 				this.scaleY += v;
 			}
