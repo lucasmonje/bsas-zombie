@@ -47,27 +47,34 @@ package com.sevenbrains.trashingDead.display {
 	* @author Fulvio Crescenzi
 	*/
 	public class World extends Sprite implements Screenable {
+		
 		private var _props:WorldDefinition;
+		
 		private var _assetLoader:AssetLoader;
-		private var _damageArea:DamageAreaManager;
-		private var _userModel:UserModel;
 		private var _gameTimer:GameTimer;
+		private var _userModel:UserModel;
 		private var _worldModel:WorldModel;
+		private var _damageArea:DamageAreaManager;
+		private var _itemManager:ItemManager;
+		
 		private var _trashLayer:Sprite;
 		private var _zombiesLayer:Sprite;
 		private var _debugLayer:Sprite;
 		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
+		private var _uiLayer:Sprite;
+		
 		private var _bg:MovieClip;
 		private var _player:MovieClip;
 		private var _physicWorld:b2World;
-		private var _currentTrash:Trash;
-		private var _currentTrashZooming:Trash;
 		private var _customContact:b2ContactListener;
 		private var _stageInitialBounds:Rectangle;
-		private var _itemManager:ItemManager;
+		
 		private var _state:String;
 		private var _data:String;
+		
+		private var _currentTrash:Trash;
+		private var _currentTrashZooming:Trash;
 		
 		private var _worldWidth:Number;
 		private var _worldHeight:Number;
@@ -79,6 +86,7 @@ package com.sevenbrains.trashingDead.display {
 			_debugLayer = createLayer();
 			_zombiesLayer = createLayer();
 			_trashLayer = createLayer();
+			_uiLayer = createLayer();
 			initModels();
 		}
 		
@@ -134,6 +142,8 @@ package com.sevenbrains.trashingDead.display {
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
+			
+			_uiLayer.addChild(UserModel.instance.player.throwingArea); 
 			
 			_worldWidth = this.width;
 			_worldHeight = this.height;

@@ -78,7 +78,6 @@ package com.sevenbrains.trashingDead.entities
 			_throwingArea.graphics.endFill();
 			_throwingArea.x = _mcPlayer.x + (_mcPlayer.width >> 1);
 			_throwingArea.y = _mcPlayer.y + (_mcPlayer.height >> 1);
-			addChild(_throwingArea);
 			
 			_state = PlayerStatesEnum.WAITING;
 			
@@ -286,6 +285,11 @@ package com.sevenbrains.trashingDead.entities
 		public function get trashPosition():Point 
 		{
 			return _trashPosition;
+		}
+		
+		public function get throwingArea():Sprite 
+		{
+			return _throwingArea;
 		}
 		
 	}

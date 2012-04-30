@@ -27,7 +27,6 @@ package com.sevenbrains.trashingDead.display
 		
 		private var _worldMap:MapWorld;
 		private var _world:World;
-		private var _hud:Hud;
 		
 		private var _currentLevel:int;
 		private var _data:String;
@@ -45,13 +44,11 @@ package com.sevenbrains.trashingDead.display
 			
 			UserModel.instance.init();
 			
-			_hud = new Hud();
 			_worldMap = new MapWorld();
 			_world = null;
 			
 			_worldMap.init();
 			addChild(_worldMap);
-			addChild(_hud);
 			
 			_map = new Dictionary();
 			_map['world'] = new Dictionary();
@@ -71,7 +68,6 @@ package com.sevenbrains.trashingDead.display
 		private function update(e:Event):void {
 			var screen:Screenable = _map[_actualScreen]['actual'];
 			if (screen.state == ClassStatesEnum.DESTROYING) {
-				removeChild(_hud);
 				_actualScreen = _map[_actualScreen][screen.state];
 				if (_actualScreen == 'world') {
 					_world = new World(ApplicationModel.instance.getWorldById(screen.data));
@@ -83,7 +79,6 @@ package com.sevenbrains.trashingDead.display
 				screen = _map[_actualScreen]['actual'];
 				screen.init();
 				addChild(Sprite(screen));
-				addChild(_hud);
 			}
 		}
 		
@@ -110,20 +105,17 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		private function onWorldLoaded(e:Event):void {
-			_hud.init();
-			
 			addChild(_worldMap);
 		}
 		
 		public function destroy():void {
 			StageReference.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_world.removeEventListener(Event.COMPLETE, onWorldLoaded);
+			
 			if (_world.parent != null){
 				removeChild(_world);
 			}
-			if (_hud.parent != null){
-				removeChild(_hud);
-			}
+			
 			if (_worldMap.parent != null) {
 				removeChild(_worldMap);
 			}
