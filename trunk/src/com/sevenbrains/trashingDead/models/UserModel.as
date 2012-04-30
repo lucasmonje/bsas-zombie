@@ -1,6 +1,7 @@
 package com.sevenbrains.trashingDead.models 
 {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.entities.FatGuy;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Player;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
@@ -27,6 +28,7 @@ package com.sevenbrains.trashingDead.models
 		}
 		
 		private var _player:Player;
+		private var _fatGuy:FatGuy;
 		
 		public function UserModel() 
 		{
@@ -43,11 +45,17 @@ package com.sevenbrains.trashingDead.models
 			}
 			
 			_player = new Player(weapons);
+			_fatGuy = new FatGuy();
 		}
 		
 		public function get player():Player 
 		{
 			return _player;
+		}
+		
+		public function get fatGuy():FatGuy 
+		{
+			return _fatGuy;
 		}
 	}
 

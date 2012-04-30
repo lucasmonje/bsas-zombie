@@ -17,7 +17,6 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
-	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.enum.PlayerStatesEnum;
@@ -33,6 +32,7 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.utils.StageReference;
+	import com.sevenbrains.trashingDead.events.FatGuyEvents;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -65,7 +65,6 @@ package com.sevenbrains.trashingDead.display {
 		private var _uiLayer:Sprite;
 		
 		private var _bg:MovieClip;
-		private var _player:MovieClip;
 		private var _physicWorld:b2World;
 		private var _customContact:b2ContactListener;
 		private var _stageInitialBounds:Rectangle;
@@ -126,19 +125,18 @@ package com.sevenbrains.trashingDead.display {
 			_physicWorld.registerBox(box);
 			DisplayUtil.remove(floor);
 			
+			_userModel.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
+			_userModel.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
 			_userModel.player.initPlayer();
 			_playerLayer.addChild(_userModel.player);
 			
+			_userModel.fatGuy.addEventListener(FatGuyEvents.THREW_TRASH, onFatGuyGiveTrash);
+			_userModel.fatGuy.init();
+			_playerLayer.addChild(_userModel.fatGuy);
+			
 			_damageArea.init();
 			addChild(_damageArea.content);
-			_currentTrash = _itemManager.createRandomTrash(_userModel.player.trashPosition);
-			_trashLayer.addChild(_currentTrash);
 			_userModel.player.state = PlayerStatesEnum.READY;
-			_userModel.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
-			_userModel.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
-			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
-			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
-			_gameTimer.start();
 			
 			_uiLayer.addChild(UserModel.instance.player.throwingArea);
 			
@@ -151,7 +149,11 @@ package com.sevenbrains.trashingDead.display {
 			
 			_state = ClassStatesEnum.RUNNING;
 			
+			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
+			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
+			_gameTimer.start();
 			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -210,14 +212,17 @@ package com.sevenbrains.trashingDead.display {
 			_userModel.player.throwingArea.alpha = 1;
 		}
 		
+		private function onFatGuyGiveTrash(e:FatGuyEvents):void {
+			_currentTrash = _itemManager.createTrash(ItemDefinition(e.newValue), _userModel.player.trashPosition);
+			_trashLayer.addChild(_currentTrash);	
+		}
+		
 		private function onShootTrash(e:PlayerEvents):void {
 			var power:Number = _userModel.player.power;
 			var angle:Number = _userModel.player.angle;
 			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 			_userModel.player.state = PlayerStatesEnum.READY;
 			_currentTrashZooming = _currentTrash;
-			_currentTrash = _itemManager.createRandomTrash(_userModel.player.trashPosition);
-			_trashLayer.addChild(_currentTrash);
 		}
 		
 		private function onThrewItem(e:PlayerEvents):void {
@@ -276,6 +281,11 @@ package com.sevenbrains.trashingDead.display {
 		
 		public function get data():String {
 			return _data;
+		}
+		
+		public function get itemManager():ItemManager 
+		{
+			return _itemManager;
 		}
 		
 		public function destroy():void {

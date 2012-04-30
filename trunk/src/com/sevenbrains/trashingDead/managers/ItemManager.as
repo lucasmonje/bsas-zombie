@@ -38,15 +38,14 @@ package com.sevenbrains.trashingDead.managers
 			return item;
 		}		
 		
-		public function createRandomTrash(initialPosition:Point):Trash {
-			var itemDef:ItemDefinition = getTrash();
+		public function createTrash(itemDef:ItemDefinition, initialPosition:Point):Trash {
 			var trash:Trash = new Trash(itemDef, initialPosition);
 			trash.init();
 			_trashList.push(trash);
 			return trash;
 		}
 		
-		private function getTrash():ItemDefinition {
+		public function getTrash():ItemDefinition {
 			var items:Array = ApplicationModel.instance.getTrashes().concat();
 			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
