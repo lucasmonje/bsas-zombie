@@ -70,7 +70,6 @@ package com.sevenbrains.trashingDead.entities
 			
 			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
 			_wagonPosition = new Point(mcWagonPosition.x, mcWagonPosition.y);
-			DisplayUtil.remove(mcWagonPosition);
 			
 			_throwingArea = new Sprite();
 			_throwingArea.graphics.beginFill(0xff0000, 0.3);
@@ -78,6 +77,7 @@ package com.sevenbrains.trashingDead.entities
 			_throwingArea.graphics.endFill();
 			_throwingArea.x = _mcPlayer.x + (_mcPlayer.width >> 1);
 			_throwingArea.y = _mcPlayer.y + (_mcPlayer.height >> 1);
+			_throwingArea.alpha = 0;
 			
 			_state = PlayerStatesEnum.WAITING;
 			

@@ -139,11 +139,12 @@ package com.sevenbrains.trashingDead.display {
 			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
 			_gameTimer.start();
+			
+			_uiLayer.addChild(UserModel.instance.player.throwingArea);
+			
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
-			
-			_uiLayer.addChild(UserModel.instance.player.throwingArea); 
 			
 			_worldWidth = this.width;
 			_worldHeight = this.height;
@@ -205,6 +206,8 @@ package com.sevenbrains.trashingDead.display {
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_physicWorld.SetDebugDraw(debug);
 			_debugLayer.addChild(sprite);
+			
+			_userModel.player.throwingArea.alpha = 1;
 		}
 		
 		private function onShootTrash(e:PlayerEvents):void {
