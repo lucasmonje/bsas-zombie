@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.utils
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Joints.b2Joint;
 	import Box2D.Dynamics.Joints.b2RevoluteJointDef;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import flash.geom.Rectangle;
@@ -16,7 +17,7 @@ package com.sevenbrains.trashingDead.utils
 	public class B2Utils 
 	{
 		
-		public static function setRevoluteJoint(body1:b2Body, body2:b2Body, anchor:b2Vec2, world:b2World, lowerAngle:Number = -0.15, upperAngle:Number = 0.15, enableLimit:Boolean  = true, maxMotorTorque:Number = 10, motorSpeed:Number = 0, enableMotor:Boolean = true):b2RevoluteJointDef {
+		public static function setRevoluteJoint(body1:b2Body, body2:b2Body, anchor:b2Vec2, world:b2World, lowerAngle:Number = -0.15, upperAngle:Number = 0.15, enableLimit:Boolean  = true, maxMotorTorque:Number = 10, motorSpeed:Number = 0, enableMotor:Boolean = true):b2Joint {
 			var revoluteJointDef:b2RevoluteJointDef = new b2RevoluteJointDef();
 			revoluteJointDef.Initialize(body1, body2, anchor);
 			revoluteJointDef.lowerAngle = lowerAngle; 
@@ -25,8 +26,7 @@ package com.sevenbrains.trashingDead.utils
 			revoluteJointDef.maxMotorTorque = maxMotorTorque;
 			revoluteJointDef.motorSpeed = motorSpeed;
 			revoluteJointDef.enableMotor = enableMotor;
-			world.CreateJoint(revoluteJointDef);
-			return revoluteJointDef;
+			return world.CreateJoint(revoluteJointDef);
 		}
 			
 		public static function createBox(worldBounds:Rectangle, world:b2World, body:b2Body = null, isDynamic:Boolean = false, physicProps:PhysicDefinition = null, userData:Object = null):b2Body {

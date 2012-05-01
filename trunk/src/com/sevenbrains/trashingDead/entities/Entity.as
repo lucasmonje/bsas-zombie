@@ -35,6 +35,7 @@ package com.sevenbrains.trashingDead.entities
 		protected var _compositionMap:Dictionary;
 		private var _assetsList:Vector.<MovieClip>;
 		private var _physicMapView:MovieClip;
+		private var _joints:Dictionary;
 		
 		private var _props:ItemDefinition;
 		
@@ -117,6 +118,7 @@ package com.sevenbrains.trashingDead.entities
 				}
 			}
 			
+			_joints = new Dictionary();
 			for each (var anchor:MovieClip in anchors) {
 				var bodies:Array = anchor.name.split("_");
 				if (!Boolean(_compositionMap[bodies[1]]) || !Boolean(_compositionMap[bodies[2]])) { 
@@ -126,12 +128,19 @@ package com.sevenbrains.trashingDead.entities
 				var body1:b2Body = _compositionMap[bodies[1]];
 				var body2:b2Body = _compositionMap[bodies[2]];
 				
-				B2Utils.setRevoluteJoint(body1, body2, new b2Vec2((anchor.x + _initialPosition.x)/_worldScale, (anchor.y + _initialPosition.y)/_worldScale), _physicWorld);	
+				_joints[anchor.name] = B2Utils.setRevoluteJoint(body1, body2, new b2Vec2((anchor.x + _initialPosition.x)/_worldScale, (anchor.y + _initialPosition.y)/_worldScale), _physicWorld);	
 			}
 
 			
 			for each (var physicObj:b2Body in _compositionMap.arrayMode) {
 				physicObj.SetActive(true);
+			}
+		}
+		
+		public function destroyJoint(name:String):void {
+			if (_joints[name]){
+				_physicWorld.DestroyJoint(_joints[name]);
+				delete _joints[name];
 			}
 		}
 		
