@@ -23,6 +23,7 @@ package com.sevenbrains.trashingDead.entities
 	import flash.utils.Dictionary;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -45,6 +46,7 @@ package com.sevenbrains.trashingDead.entities
 		protected var _speed:Number;
 		protected var _hits:uint;
 		protected var _life:int;
+		protected var _bounds:Rectangle;
 		
 		public function Entity(props:ItemDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
 		{
@@ -65,7 +67,7 @@ package com.sevenbrains.trashingDead.entities
 			_compositionMap.arrayMode = new Array();
 			_assetsList = new Vector.<MovieClip>();
 			
-			var PhysicMapViewClass:Class = AssetLoader.instance.getAssetDefinition(_props.name, "PhysicDefinition");
+			var PhysicMapViewClass:Class = ConfigModel.assets.getAssetDefinition(_props.name, "PhysicDefinition");
 			_physicMapView = new PhysicMapViewClass();
 			
 			var anchors:Vector.<MovieClip> = new Vector.<MovieClip>();
@@ -83,7 +85,7 @@ package com.sevenbrains.trashingDead.entities
 					bounds = new Rectangle(_initialPosition.x + dispObj.x, _initialPosition.y + dispObj.y, dispObj.width, dispObj.height);
 					
 					if (type.indexOf("box") > -1) {
-						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
+						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
 							addChild(asset);							
@@ -99,7 +101,7 @@ package com.sevenbrains.trashingDead.entities
 						_compositionMap.arrayMode.push(box);
 						
 					} else if (type.indexOf("circle") > -1) {
-						assetClass = AssetLoader.instance.getAssetDefinition(_props.name, mc.name);
+						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							asset = new assetClass();
 							addChild(asset);							
@@ -232,6 +234,18 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function isCollisioning(who:Collisionable):Boolean {
 			return getCollisionAccept().indexOf(who.getCollisionId()) > -1;
+		}
+		
+		public function updatePosition():void {
+			for each (var currentBody:b2Body in _compositionMap.arrayMode) {
+				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
+				var view:DisplayObject = bodyInfo.userData.assetSprite;
+				var pos:b2Vec2 = currentBody.GetPosition();
+				var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
+				view.rotation = rotation;
+				view.x = pos.x * GameProperties.WORLD_SCALE;
+				view.y = pos.y * GameProperties.WORLD_SCALE;
+			}
 		}
 	}
 

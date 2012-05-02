@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-	
+	<preloaderProccess>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlAssetsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.AssetsConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.AssetsConfig" /> 
+			<param name="model" value="assets" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlItemsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.EntityConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.EntitiesConfig" /> 
+			<param name="model" value="entities" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlWorldsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.WorldConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.WorldsConfig" /> 
+			<param name="model" value="worlds" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlSoundsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.SoundConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.SoundsConfig" /> 
+			<param name="model" value="sounds" /> 			
+		</config>
+	</preloaderProccess>
 </data>

@@ -7,16 +7,19 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.Clientb2ContactListener;
+	import com.sevenbrains.trashingDead.b2.GamePhysicWorld;
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
+	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.entities.Floor;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
+	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.enum.PlayerStatesEnum;
@@ -26,13 +29,12 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.managers.ItemManager;
-	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
+	import com.sevenbrains.trashingDead.events.FatGuyEvents;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	import com.sevenbrains.trashingDead.events.FatGuyEvents;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -41,40 +43,33 @@ package com.sevenbrains.trashingDead.display {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	
 	/*
 	* ...
 	* @author Fulvio Crescenzi
 	*/
 	public class World extends Sprite implements Screenable {
-		
 		private var _props:WorldDefinition;
-		
-		private var _assetLoader:AssetLoader;
-		private var _gameTimer:GameTimer;
-		private var _userModel:UserModel;
-		private var _worldModel:WorldModel;
 		private var _damageArea:DamageAreaManager;
-		private var _itemManager:ItemManager;
-		
+		private var _userModel:UserModel;
+		private var _gameTimer:GameTimer;
+		private var _worldModel:WorldModel;
 		private var _trashLayer:Sprite;
 		private var _zombiesLayer:Sprite;
 		private var _debugLayer:Sprite;
 		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
 		private var _uiLayer:Sprite;
-		
 		private var _bg:MovieClip;
-		private var _physicWorld:b2World;
-		private var _customContact:b2ContactListener;
-		private var _stageInitialBounds:Rectangle;
-		
-		private var _state:String;
-		private var _data:String;
-		
+		private var _physicWorld:GamePhysicWorld;
 		private var _currentTrash:Trash;
 		private var _currentTrashZooming:Trash;
-		
+		private var _customContact:b2ContactListener;
+		private var _stageInitialBounds:Rectangle;
+		private var _itemManager:ItemManager;
+		private var _state:String;
+		private var _data:String;
 		private var _worldWidth:Number;
 		private var _worldHeight:Number;
 		
@@ -97,7 +92,6 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function initModels():void {
-			_assetLoader = AssetLoader.instance;
 			_damageArea = DamageAreaManager.instance;
 			_userModel = UserModel.instance;
 			_gameTimer = GameTimer.instance;
@@ -105,12 +99,14 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		public function init():void {
-			_physicWorld = new b2World(new b2Vec2(0, 10), true);
+			var gravivy:b2Vec2 = new b2Vec2(0, 10)
+			_worldModel.gravity = gravivy;
+			_physicWorld = new GamePhysicWorld(gravivy, true);
 			_customContact = new Clientb2ContactListener();
 			_physicWorld.SetContactListener(_customContact);
 			_itemManager = new ItemManager();
 			// Carga el Stage
-			var stageClass:Class = _assetLoader.getAssetDefinition(_props.background, "Asset") as Class;
+			var stageClass:Class = ConfigModel.assets.getAssetDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);
@@ -137,6 +133,7 @@ package com.sevenbrains.trashingDead.display {
 			_damageArea.init();
 			addChild(_damageArea.content);
 			_userModel.player.state = PlayerStatesEnum.READY;
+
 			
 			_uiLayer.addChild(UserModel.instance.player.throwingArea);
 			
@@ -149,12 +146,10 @@ package com.sevenbrains.trashingDead.display {
 			
 			_state = ClassStatesEnum.RUNNING;
 			
-			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
-			_gameTimer.start();
-			
+			_gameTimer.start();			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
@@ -192,9 +187,15 @@ package com.sevenbrains.trashingDead.display {
 						break;
 					}
 				}
-				var zombieProps:ItemDefinition = ApplicationModel.instance.getZombieByCode(code);
-				var pos:Point = new Point(_stageInitialBounds.width / 2, _worldModel.floorRect.y - (_worldModel.floorRect.height / 2));
-				var z:Zombie = _itemManager.createZombie(zombieProps, pos);
+				var zombieProps:ItemDefinition = ConfigModel.entities.getZombieByCode(code);
+				var pos:Point;
+				var floorY:Number = _worldModel.floorRect.y - (_worldModel.floorRect.height / 2);
+				if (zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE) {
+					pos = new Point(1100, MathUtils.getRandom(50, floorY - 150));					
+				} else {
+					pos = new Point(1100, floorY);
+				}
+				var z:Entity = _itemManager.createZombie(zombieProps, pos);
 				_zombiesLayer.addChild(z);
 			}
 		}
@@ -208,7 +209,6 @@ package com.sevenbrains.trashingDead.display {
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_physicWorld.SetDebugDraw(debug);
 			_debugLayer.addChild(sprite);
-			
 			_userModel.player.throwingArea.alpha = 1;
 		}
 		
@@ -235,11 +235,7 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function updateWorld():void {
-			if (_currentTrashZooming && !_currentTrashZooming.isDestroyed()) {
-				zooming(true);
-			}else {
-				zooming(false);
-			}
+			zooming(_currentTrashZooming && !_currentTrashZooming.isDestroyed());
 			
 			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
 				_currentTrashZooming.destroy();
@@ -248,25 +244,6 @@ package com.sevenbrains.trashingDead.display {
 			
 			_physicWorld.Step(1 / GameProperties.WORLD_SCALE, 6, 2);
 			_itemManager.update();
-			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
-				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
-				if (bodyInfo && bodyInfo.userData) {
-					var view:DisplayObject = bodyInfo.userData.assetSprite;
-					if (view != null) {
-						var pos:b2Vec2 = currentBody.GetPosition();
-						var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
-						if (bodyInfo.type == PhysicObjectType.ZOMBIE) {
-							if ((pos.x * GameProperties.WORLD_SCALE) > _userModel.player.wagonPosition.x) {
-								pos.x = pos.x - bodyInfo.speed;
-								currentBody.SetPosition(pos);
-							}
-						}
-						view.rotation = rotation;
-						view.x = pos.x * GameProperties.WORLD_SCALE;
-						view.y = pos.y * GameProperties.WORLD_SCALE;
-					}
-				}
-			}
 			_physicWorld.ClearForces();
 			_physicWorld.DrawDebugData();
 		}
@@ -283,8 +260,7 @@ package com.sevenbrains.trashingDead.display {
 			return _data;
 		}
 		
-		public function get itemManager():ItemManager 
-		{
+		public function get itemManager():ItemManager {
 			return _itemManager;
 		}
 		

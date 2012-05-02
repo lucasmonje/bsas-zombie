@@ -7,6 +7,7 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import flash.events.MouseEvent;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	
 	/**
 	 * ...
@@ -25,7 +26,7 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		public function init():void {
-			var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.GAME_TITLE, 'gameTitle');
+			var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.GAME_TITLE, 'gameTitle');
 			_content = new clazz();
 			addChild(_content);
 			

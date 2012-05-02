@@ -1,11 +1,13 @@
 package com.sevenbrains.trashingDead.models 
 {
+	import Box2D.Common.Math.b2Vec2;
 	import com.sevenbrains.trashingDead.display.World;
 	import flash.geom.Rectangle;
 	
 	public class WorldModel {
 		
 		private var _currentWorld:World;
+		private var _gravity:b2Vec2;
 		
 		private var _floorRect:Rectangle;
 		
@@ -45,6 +47,16 @@ package com.sevenbrains.trashingDead.models
 		public function set floorRect(value:Rectangle):void 
 		{
 			_floorRect = value;
+		}
+		
+		public function get gravity():b2Vec2 
+		{
+			return _gravity.Copy();
+		}
+		
+		public function set gravity(value:b2Vec2):void 
+		{
+			_gravity = value;
 		}
 		
 	}

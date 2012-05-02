@@ -1,17 +1,18 @@
 package com.sevenbrains.trashingDead.display 
 {
+	import com.sevenbrains.trashingDead.display.MapWorld;
+	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
-	import com.sevenbrains.trashingDead.models.ApplicationModel;
-	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	import com.sevenbrains.trashingDead.display.MapWorld;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.managers.SoundManager;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -41,7 +42,8 @@ package com.sevenbrains.trashingDead.display
 		public function init():void {
 			_oldState = NONE;
 			_state = WORLD;
-			
+			SoundManager.instance.setup();
+			SoundManager.instance.play("intro");
 			UserModel.instance.init();
 			
 			_worldMap = new MapWorld();
@@ -70,7 +72,7 @@ package com.sevenbrains.trashingDead.display
 			if (screen.state == ClassStatesEnum.DESTROYING) {
 				_actualScreen = _map[_actualScreen][screen.state];
 				if (_actualScreen == 'world') {
-					_world = new World(ApplicationModel.instance.getWorldById(screen.data));
+					_world = new World(ConfigModel.worlds.getWorldById(screen.data));
 					WorldModel.instance.currentWorld = _world;
 					_map['world']['actual'] = _world;
 				}

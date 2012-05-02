@@ -1,17 +1,16 @@
 package com.sevenbrains.trashingDead.entities 
 {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
-	import com.sevenbrains.trashingDead.managers.AssetLoader;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
-	import com.sevenbrains.trashingDead.utils.Animation;
+	import com.sevenbrains.trashingDead.events.FatGuyEvents;
+	import com.sevenbrains.trashingDead.events.PlayerEvents;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
-	import com.sevenbrains.trashingDead.events.PlayerEvents;
-	import com.sevenbrains.trashingDead.events.FatGuyEvents;
+	import com.sevenbrains.trashingDead.utils.Animation;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -35,7 +34,7 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function init():void {
-			var fatGuyClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.GORDO, "Asset") as Class;
+			var fatGuyClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.GORDO, "Asset") as Class;
 			_content = new fatGuyClass();
 			addChild(_content);
 			
@@ -68,7 +67,7 @@ package com.sevenbrains.trashingDead.entities
 			}
 			
 			_trashDefinition = WorldModel.instance.currentWorld.itemManager.getTrash();
-			var assetClass:Class = AssetLoader.instance.getAssetDefinition(_trashDefinition.name, 'box1');
+			var assetClass:Class = ConfigModel.assets.getAssetDefinition(_trashDefinition.name, 'box1');
 			var assetTrash:MovieClip = new assetClass();
 			_throwingContainer.addChild(assetTrash);
 		}

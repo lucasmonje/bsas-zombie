@@ -5,12 +5,14 @@ package com.sevenbrains.trashingDead.managers
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
+	import com.sevenbrains.trashingDead.entities.FlyingZombie;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
-	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import flash.geom.Point;
 	import com.sevenbrains.trashingDead.entities.Entity;
+	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -28,7 +30,7 @@ package com.sevenbrains.trashingDead.managers
 		}
 
 		public function createItem(itemName:String, initialPosition:Point):Item {
-			var itemDef:ItemDefinition = ApplicationModel.instance.getWeaponByName(itemName);
+			var itemDef:ItemDefinition = ConfigModel.entities.getWeaponByName(itemName);
 			if (!itemDef) {
 				throw new Error("No existe el item a arrojar");
 			}
@@ -46,12 +48,13 @@ package com.sevenbrains.trashingDead.managers
 		}
 		
 		public function getTrash():ItemDefinition {
-			var items:Array = ApplicationModel.instance.getTrashes().concat();
+			var items:Array = ConfigModel.entities.getTrashes().concat();
 			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
-		public function createZombie(props:ItemDefinition, initialPosition:Point):Zombie {
-			var zombie:Zombie = new Zombie(props, initialPosition);
+		public function createZombie(props:ItemDefinition, initialPosition:Point):Entity {
+			var zombieClass:Class = props.type == PhysicObjectType.FLYING_ZOMBIE ? FlyingZombie : Zombie;
+			var zombie:Entity = new zombieClass(props, initialPosition);
 			zombie.init();
 			_zombieList.push(zombie);				
 			return zombie;
@@ -81,7 +84,7 @@ package com.sevenbrains.trashingDead.managers
 			
 		private function updateList(list:Object):void {
 			var i:int = 0;
-			var item:Destroyable;
+			var item:Entity;
 			while (i < list.length) {
 				item = list[i];
 				if (item.isDestroyed()) {
@@ -89,6 +92,7 @@ package com.sevenbrains.trashingDead.managers
 					item = null;
 					list.splice(i, 1);
 				}else {
+					item.updatePosition();
 					i++;
 				}
 			}

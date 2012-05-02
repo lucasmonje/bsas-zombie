@@ -5,7 +5,6 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.enum.PlayerStatesEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
 	import com.sevenbrains.trashingDead.managers.AssetLoader;
-	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.StageReference;
@@ -18,6 +17,7 @@ package com.sevenbrains.trashingDead.entities
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	
 	/**
 	 * ...
@@ -57,7 +57,7 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	content. Recibe el content del mundo cargado para obtener al player
 		 */
 		public function initPlayer():void {
-			var playerClass:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
+			var playerClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
 			_content = new playerClass();
 			addChild(_content);
 			
@@ -234,7 +234,7 @@ package com.sevenbrains.trashingDead.entities
 			}
 			
 			if (getActualWeapon().props.type == 'handable') {
-				var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.icon);
+				var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.icon);
 				var container:MovieClip = MovieClip(_mcPlayer.item);
 				while (container && container.numChildren > 0) {
 					container.removeChildAt(0);

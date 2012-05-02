@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.display
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import com.sevenbrains.trashingDead.managers.AssetLoader;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -36,7 +37,7 @@ package com.sevenbrains.trashingDead.display
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
+			var cAsset:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

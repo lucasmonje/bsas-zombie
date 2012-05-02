@@ -6,9 +6,9 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.managers.AssetLoader;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
-	import com.sevenbrains.trashingDead.models.ApplicationModel;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -54,12 +54,12 @@ package com.sevenbrains.trashingDead.display
 			_state = ClassStatesEnum.RUNNING;
 			_data = "";
 			
-			var clazz:Class = AssetLoader.instance.getAssetDefinition(AssetsEnum.MAP_WORLD, 'mapWorld');
+			var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.MAP_WORLD, 'mapWorld');
 			_content = new clazz();
 			addChild(_content);
 			
 			_levels = new Dictionary();
-			var levelsAmount:int = ApplicationModel.instance.getWorlds().length;
+			var levelsAmount:int = ConfigModel.worlds.getWorlds().length;
 			for (var i:int = 0; i < levelsAmount; i++) {
 				var mc:MovieClip = _content['stage0' + (i+1).toString()];
 				_levels[mc.name] = mc;

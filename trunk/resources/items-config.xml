@@ -43,5 +43,11 @@
 			<properties hits="1" life="1" collisionId="B" collisionAccept="A" speedMin="0.015" speedMax="0.075" />
 			<physicProps density="50" friction="0.3" restitution="0.0" />
 		</zombie>
+		<!--
+		<zombie name="zombie03" code="300003" type="flyingZombie">
+			<properties hits="1" life="1" collisionId="B" collisionAccept="A" speedMin="0.175" speedMax="0.300" />
+			<physicProps density="10" friction="0.3" restitution="0.0" />
+		</zombie>
+		-->
 	</zombies>
 </data>
