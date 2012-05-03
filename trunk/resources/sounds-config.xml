@@ -2,7 +2,8 @@
 <data>
 	<sounds folderPath="../assets/sounds/" >
 		<sound assetRef="intro" type="music" stream="true" loops="999" path="intro.mp3" preloaderId="10010" />
-		<sound assetRef="bonus_1x" type="fx" path="bonus_1x.mp3" preloaderId="10011" />
+		<sound assetRef="level01" type="music" stream="true" loops="999" path="level01.mp3" preloaderId="10011" />
+		<sound assetRef="bonus_1x" type="fx" path="bonus_1x.mp3" preloaderId="10012" />
 		<sound assetRef="bonus_2x" type="fx" path="bonus_2x.mp3" />
 		<sound assetRef="bonus_3x" type="fx" path="bonus_3x.mp3" />
 		<sound assetRef="bonus_4x" type="fx" path="bonus_4x.mp3" />

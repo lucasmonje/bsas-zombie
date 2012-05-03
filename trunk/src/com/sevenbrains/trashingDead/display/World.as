@@ -44,6 +44,7 @@ package com.sevenbrains.trashingDead.display {
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.managers.SoundManager;
 	
 	/*
 	* ...
@@ -150,6 +151,10 @@ package com.sevenbrains.trashingDead.display {
 			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
 			_gameTimer.start();			
+			
+			if (Boolean(_props.soundId)) {
+				SoundManager.instance.play(_props.soundId);
+			}
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		

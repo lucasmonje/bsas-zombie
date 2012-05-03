@@ -48,6 +48,9 @@ package com.sevenbrains.trashingDead.managers {
 		public function play(id:String):Sound {
 			for each (var player:ISoundPlayer in _players) {
 				if (player.has(id)) {
+					if (player == _musicPlayer) {
+						player.stopAll();
+					}
 					return player.play(id);
 				}
 			}
