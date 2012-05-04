@@ -64,18 +64,6 @@ package com.sevenbrains.trashingDead.managers
 			return _zombieList.length;
 		}
 		
-		public function destroyZombie(zombie:Zombie):void {
-			if (!zombie) {
-				return;
-			}
-			DisplayUtil.remove(zombie);
-			var i:int = _zombieList.indexOf(zombie);
-			if (i > -1) {
-				_zombieList.splice(i, 1);
-			}
-			zombie.destroy();
-		}
-		
 		public function update():void {
 			updateList(_itemList);
 			updateList(_trashList);

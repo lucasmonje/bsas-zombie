@@ -45,8 +45,8 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation("throwing", 1, 60);
 			_animation.setAnim("throwing");
 			
-			this.x = -100;
-			this.y = 80;
+			this.x = -20;
+			this.y = 20;
 			
 			prepareTrash();
 			onPlayerThrewItem(null);

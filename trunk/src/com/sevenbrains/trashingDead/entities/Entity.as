@@ -3,6 +3,7 @@ package com.sevenbrains.trashingDead.entities
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
+	import com.sevenbrains.trashingDead.definitions.ItemAnimationsDefinition;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
@@ -12,18 +13,21 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.CircleBuilder;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import com.sevenbrains.trashingDead.utils.Animation;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.Circle;
 	import com.sevenbrains.trashingDead.utils.B2Utils;
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -47,6 +51,11 @@ package com.sevenbrains.trashingDead.entities
 		protected var _hits:uint;
 		protected var _life:int;
 		protected var _bounds:Rectangle;
+		protected var _enabled:Boolean;
+		
+		protected var mc:MovieClip;
+		protected var animations:Animation;
+		private var _actualAnim:ItemAnimationsDefinition;
 		
 		public function Entity(props:ItemDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
 		{
@@ -60,6 +69,8 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function init():void {
+			_enabled = true;
+			
 			_physicWorld = WorldModel.instance.currentWorld.physicWorld;
 			_worldScale = GameProperties.WORLD_SCALE;
 			
@@ -73,49 +84,48 @@ package com.sevenbrains.trashingDead.entities
 			var anchors:Vector.<MovieClip> = new Vector.<MovieClip>();
 			var assetClass:Class;
 			var bounds:Rectangle;
-			var asset:MovieClip;
 			for (var i:uint = 0; i < _physicMapView.numChildren; i++) {
 					
 				var dispObj:DisplayObject = _physicMapView.getChildAt(i);
 				
 				if (dispObj is MovieClip) {
 					
-					var mc:MovieClip = dispObj as MovieClip;
-					var type:String = mc.name.split("_").shift().toString().toLowerCase();
+					var content:MovieClip = dispObj as MovieClip;
+					var type:String = content.name.split("_").shift().toString().toLowerCase();
 					bounds = new Rectangle(_initialPosition.x + dispObj.x, _initialPosition.y + dispObj.y, dispObj.width, dispObj.height);
 					
 					if (type.indexOf("box") > -1) {
-						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, mc.name);
+						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, content.name);
 						if (Boolean(assetClass)) {
-							asset = new assetClass();
-							addChild(asset);							
-							_assetsList.push(asset);
+							mc = new assetClass();
+							addChild(mc);
+							_assetsList.push(mc);
 						} else {
 							//trace("[WARM] DEFINITION NOT FOUND: '" + mc.name + "' IN " + _zombieName)
 						}
 						
-						var box:Box = BoxBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset), _groupIndex);
+						var box:Box = BoxBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(mc), _groupIndex);
 						box.SetActive(false);
 						_physicWorld.registerBox(box);
-						_compositionMap[mc.name] = box;
+						_compositionMap[content.name] = box;
 						_compositionMap.arrayMode.push(box);
 						
 					} else if (type.indexOf("circle") > -1) {
 						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
-							asset = new assetClass();
-							addChild(asset);							
-							_assetsList.push(asset);
+							mc = new assetClass();
+							addChild(mc);
+							_assetsList.push(mc);
 						}
 						
-						var circle:Circle = CircleBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(asset), _groupIndex);
+						var circle:Circle = CircleBuilder.build(bounds, _physicWorld, _worldScale, true, _props.physicProps, getUserData(mc), _groupIndex);
 						circle.SetActive(false);
 						_physicWorld.registerCircle(circle);
-						_compositionMap[mc.name] = circle;
+						_compositionMap[content.name] = circle;
 						_compositionMap.arrayMode.push(circle);
 						
 					} else if (type.indexOf("anchor") > -1) {
-						anchors.push(mc);
+						anchors.push(content);
 					}
 				}
 			}
@@ -137,6 +147,44 @@ package com.sevenbrains.trashingDead.entities
 			for each (var physicObj:b2Body in _compositionMap.arrayMode) {
 				physicObj.SetActive(true);
 			}
+			
+			animations = new Animation(mc);
+			if (props.animations.length > 0){
+				for each(var anim:ItemAnimationsDefinition in props.animations) {
+					animations.addAnimation(anim.name, anim.from, anim.to);
+					if (anim.defaultAnim) {
+						_actualAnim = anim;
+					}
+				}
+				animations.setAnim(_actualAnim.name);
+				animations.addEventListener(AnimationsEvent.ANIMATION_ENDED, updateAnimation);
+				animations.play(_actualAnim.name);
+			}
+		}
+		
+		protected function updateAnimation(e:Event):void {
+			if (_actualAnim.afterReproduce != null) {
+				if (_actualAnim.afterReproduce){
+					if (_actualAnim.afterReproduce != _actualAnim.name){
+						setActualAnim(_actualAnim.afterReproduce);
+					}
+					animations.play(_actualAnim.name);
+				}
+			}
+		}
+		
+		protected function playAnim(name:String):void {
+			animations.play(name);
+			setActualAnim(name);
+		}
+		
+		private function setActualAnim(name:String):void {
+			_actualAnim = null;
+			for each(var anim:ItemAnimationsDefinition in props.animations) {
+				if (anim.name == name) {
+					_actualAnim = anim;
+				}
+			}
 		}
 		
 		public function destroyJoint(name:String):void {
@@ -156,7 +204,7 @@ package com.sevenbrains.trashingDead.entities
 		 * Corresponde a los locks que tenga.
 		 */
 		public function isEnabled():Boolean {
-			return true;
+			return _enabled;
 		}
 		
 		private function getUserData(asset:MovieClip):Object {
@@ -208,10 +256,12 @@ package com.sevenbrains.trashingDead.entities
 			if (Boolean(this.parent)) {
 				this.parent.removeChild(this);
 			}
+			
+			animations.destroy();
 		}
 		
 		public function isDestroyed():Boolean {
-			return _life == 0;
+			return _life == 0 && !_enabled;
 		}
 		
 		public function getCollisionId():String {
@@ -229,6 +279,7 @@ package com.sevenbrains.trashingDead.entities
 				_life-=whoHits;
 			}else {
 				_life = 0;
+				_enabled = false;
 			}
 		}
 		

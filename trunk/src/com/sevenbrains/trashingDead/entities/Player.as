@@ -18,6 +18,7 @@ package com.sevenbrains.trashingDead.entities
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	
 	/**
 	 * ...
@@ -59,13 +60,15 @@ package com.sevenbrains.trashingDead.entities
 		public function initPlayer():void {
 			var playerClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
 			_content = new playerClass();
+			_content.x += 50;
+			_content.y -= 50;
 			addChild(_content);
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
 			
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
-			_trashPosition = new Point(mcTrashPosition.x, mcTrashPosition.y);
+			_trashPosition = new Point(mcTrashPosition.x + 50, mcTrashPosition.y - 50);
 			DisplayUtil.remove(mcTrashPosition);
 			
 			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
@@ -86,12 +89,13 @@ package com.sevenbrains.trashingDead.entities
 			_power = 0;
 			
 			_animation = new Animation(_mcPlayer);
-			_animation.addAnimation("battable", 1, 14);
-			_animation.addAnimation("handable", 41, 54);
+			_animation.addAnimation("battable", 1, 20);
+			_animation.addAnimation("preparing", 21, 54);
+			_animation.addAnimation("handable", 55, 95);
 			_animation.setAnim("battable");
+			_animation.addEventListener(AnimationsEvent.ANIMATION_ENDED, animEnded);
 			
 			_mcPlayer.addEventListener(Event.ENTER_FRAME, onUpdate);
-			//_throwingArea.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 		
 		public function get state():String {
@@ -117,6 +121,20 @@ package com.sevenbrains.trashingDead.entities
 			}
 		}
 		
+		private function animEnded(e:AnimationsEvent):void {
+			if (e.value == "battable"){
+				dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT));
+				state = PlayerStatesEnum.WAITING;
+				_animation.play("preparing");
+			}else if (e.value == "handable"){
+				dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, getActualWeapon().props.name));
+				_animation.play("preparing");
+				state = PlayerStatesEnum.WAITING;
+			}else {
+				state = PlayerStatesEnum.READY;
+			}
+		}
+		
 		/**
 		 * Funcion que se ejecuta frame a frame para actualizar el estado y comportamiento del player de acuerdo a su estado
 		 */
@@ -124,16 +142,6 @@ package com.sevenbrains.trashingDead.entities
 			if (_state == PlayerStatesEnum.READY) {
 				if (_powering) {
 					onChargingPower();
-				}
-			}else if (_state == PlayerStatesEnum.SHOOTING) {
-				if (_animation.isPlaying) {
-					if (_animation.currentFrame == (_animation.totalFrames >> 1)) {
-						if (getActualWeapon().props.type == "battable"){
-							dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT));
-						}else {
-							dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, getActualWeapon().props.name));
-						}
-					}
 				}
 			}
 		}

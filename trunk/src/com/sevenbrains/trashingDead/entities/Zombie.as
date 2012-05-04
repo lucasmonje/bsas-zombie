@@ -8,10 +8,12 @@ package com.sevenbrains.trashingDead.entities {
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import com.sevenbrains.trashingDead.models.UserModel;
-	import flash.display.DisplayObject;
+	import com.sevenbrains.trashingDead.utils.Animation;
 	import com.sevenbrains.trashingDead.models.UserModel;
-	import flash.display.DisplayObject;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
+	import com.sevenbrains.trashingDead.enum.EntitiesAnimsEnum;
+	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.geom.Point;
 	
 	/**
@@ -19,6 +21,7 @@ package com.sevenbrains.trashingDead.entities {
 	* @author Lucas Monje
 	*/
 	public class Zombie extends Entity {
+		
 		public function Zombie(props:ItemDefinition, initialPosition:Point) {
 			super(props, initialPosition, PhysicObjectType.ZOMBIE, -1);
 		}
@@ -46,9 +49,20 @@ package com.sevenbrains.trashingDead.entities {
 		override public function collide(who:Collisionable):void {
 			super.collide(who);
 			if (life > 0) {
-				destroyJoint("anchor4_box2_box3");
-				destroyJoint("anchor3_box2_box3");
+				playAnim(EntitiesAnimsEnum.HIT);
+			}else {
+				_enabled = true;
+				playAnim(EntitiesAnimsEnum.DEAD);
 			}
 		}
+		
+		override protected function updateAnimation(e:Event):void 
+		{
+			super.updateAnimation(e);
+			if (animations.currentAnimName == EntitiesAnimsEnum.DEAD) {
+				_enabled = false;
+			}
+		}
+		
 	}
 }

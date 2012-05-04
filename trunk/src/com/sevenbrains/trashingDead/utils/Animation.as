@@ -3,6 +3,7 @@ package com.sevenbrains.trashingDead.utils
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -25,6 +26,7 @@ package com.sevenbrains.trashingDead.utils
 			_content = content;
 			_animations = new Vector.<AnimationDefinition>();
 			_isPlaying = false;
+			_content.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		public function addAnimation(name:String, from:int, to:int):void {
@@ -32,10 +34,6 @@ package com.sevenbrains.trashingDead.utils
 		}
 		
 		public function setAnim(name:String):void {
-			if (_isPlaying) {
-				return;
-			}
-			
 			_actual = getAnim(name);
 			_actualFrame = _actual.from;
 			_content.gotoAndStop(_actualFrame);
@@ -52,24 +50,23 @@ package com.sevenbrains.trashingDead.utils
 		}
 		
 		public function play(name:String, times:int = 1):void {
-			if (_isPlaying) {
-				return;
-			}
-			
 			_times = times;
 			_actual = getAnim(name);
 			_actualFrame = _actual.from;
 			_isPlaying = true;
 			_actualTime = 0;
-			_content.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		private function update(e:Event):void {
+			if (!_isPlaying) {
+				return;
+			}
+			
 			_content.gotoAndStop(_actualFrame);
 			if (++_actualFrame == _actual.to) {
 				if (++_actualTime == _times){
 					_isPlaying = false;
-					_content.removeEventListener(Event.ENTER_FRAME, update);
+					dispatchEvent(new AnimationsEvent(AnimationsEvent.ANIMATION_ENDED, _actual.name));
 				}else {
 					_actualFrame == _actual.from;
 				}
@@ -88,6 +85,16 @@ package com.sevenbrains.trashingDead.utils
 		public function get totalFrames():int {
 			return _actual.to - _actual.from
 		}
+		
+		public function get currentAnimName():String {
+			return _actual.name;
+		}
+		
+		public function destroy():void {
+			_isPlaying = false;
+			_content.removeEventListener(Event.ENTER_FRAME, update);
+		}
+		
 	}
 
 }

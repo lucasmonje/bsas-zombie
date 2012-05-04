@@ -240,7 +240,9 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function updateWorld():void {
-			zooming(_currentTrashZooming && !_currentTrashZooming.isDestroyed());
+			zooming(_currentTrashZooming && 
+					!_currentTrashZooming.isDestroyed() && 
+					_currentTrashZooming.getItemPosition().x > (_worldWidth >> 1));
 			
 			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
 				_currentTrashZooming.destroy();
