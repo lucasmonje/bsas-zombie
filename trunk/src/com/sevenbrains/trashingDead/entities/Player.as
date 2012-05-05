@@ -69,7 +69,7 @@ package com.sevenbrains.trashingDead.entities
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
 			
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
-			_trashPosition = new Point(mcTrashPosition.x + 50, mcTrashPosition.y - 50);
+			_trashPosition = new Point(mcTrashPosition.x + 50, mcTrashPosition.y - 50 - (mcTrashPosition.height>> 1));
 			DisplayUtil.remove(mcTrashPosition);
 			
 			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
