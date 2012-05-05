@@ -46,8 +46,10 @@ package com.sevenbrains.trashingDead.entities {
 			}
 		}
 
-		override public function collide(who:Collisionable):void {
-			super.collide(who);
+		override public function hit(value:int):void 
+		{
+			super.hit(value);
+			
 			if (life > 0) {
 				playAnim(EntitiesAnimsEnum.HIT);
 			}else {

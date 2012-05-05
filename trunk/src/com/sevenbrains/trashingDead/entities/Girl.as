@@ -18,6 +18,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		private static const TIME_UPDATE:int = 200;
 		private static const TOLERANCE:Number = 500;
+		private static const HITS:int = 10;
 		
 		private var _mcPlayer:MovieClip;
 		private var _content:MovieClip;
@@ -81,7 +82,7 @@ package com.sevenbrains.trashingDead.entities
 				}
 			}else if (_state == STATE_SHOOTING) {
 				if (!_animation.isPlaying) {
-					_zombieTargeted.hit(10);
+					_zombieTargeted.hit(HITS);
 					_animation.play("repair");
 					_state = STATE_REPARING;
 				}
