@@ -62,6 +62,7 @@ package com.sevenbrains.trashingDead.display {
 		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
 		private var _uiLayer:Sprite;
+		private var _traceLayer:Sprite;
 		private var _bg:MovieClip;
 		private var _physicWorld:GamePhysicWorld;
 		private var _currentTrash:Trash;
@@ -83,6 +84,7 @@ package com.sevenbrains.trashingDead.display {
 			_debugLayer = createLayer();
 			_zombiesLayer = createLayer();
 			_trashLayer = createLayer();
+			_traceLayer = createLayer();
 			_uiLayer = createLayer();
 			initModels();
 		}
@@ -249,9 +251,18 @@ package com.sevenbrains.trashingDead.display {
 			_userModel.player.state = PlayerStatesEnum.READY;
 		}
 		
+		private function drawLastTrashTrace():void {
+			_traceLayer.graphics.clear();
+			for each(var p:Point in _lastTrashTrace) {
+				_traceLayer.graphics.beginFill(0xff0000);
+				_traceLayer.graphics.drawCircle(p.x, p.y, 5);
+				_traceLayer.graphics.endFill();
+			}
+		}
+		
 		private function updateWorld():void {
 			if (_currentTrashZooming) {
-				
+				_lastTrashTrace.push(new Point(_currentTrashZooming.getItemPosition().x, _currentTrashZooming.getItemPosition().y));
 			}
 			
 			zooming(_currentTrashZooming && 
@@ -261,6 +272,9 @@ package com.sevenbrains.trashingDead.display {
 			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
 				_currentTrashZooming.destroy();
 				_currentTrashZooming = null;
+				drawLastTrashTrace();
+			}else if (_currentTrashZooming && _currentTrashZooming.isDestroyed()) {
+				drawLastTrashTrace();
 			}
 			
 			_physicWorld.Step(1 / GameProperties.WORLD_SCALE, 6, 2);
