@@ -13,6 +13,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 		
 		public function LocaleConfigDeserealizer(source:String) {
 			super(source);
+			trace(source)
 		}
 		
 		override public function deserialize():void {

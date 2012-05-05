@@ -57,11 +57,6 @@ package com.sevenbrains.trashingDead.builders {
 			var r:RegExp = /\${(\S+?)\}/g;
 			_localePath = _localePath.replace(r, parse);
 			loadMessages();
-			/*
-			_deserializer = new _deserializerClass(xml);
-			_deserializer.addEventListener(Event.COMPLETE, deserializeCompleted);
-			_deserializer.init();
-			*/
 		}
 		
 		private function parse(all:String, name:String, ...args):String{
@@ -69,7 +64,7 @@ package com.sevenbrains.trashingDead.builders {
 		}
 		
 		private function loadMessages():void {
-			var loader:URLLoader = new URLLoader(_localePath, 1, true, URLLoaderDataFormat.VARIABLES);
+			var loader:URLLoader = new URLLoader(_localePath, 1, true, URLLoaderDataFormat.TEXT);
 			loader.addEventListener(Event.COMPLETE, loaderMessageComplete);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, loaderMessageError);
 			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderMessageError);
@@ -87,7 +82,9 @@ package com.sevenbrains.trashingDead.builders {
 			loader.removeEventListener(Event.COMPLETE, loaderMessageComplete);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderMessageError);
 			loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderMessageError);
-			loader.data;
+			_deserializer = new _deserializerClass(String(loader.data));
+			_deserializer.addEventListener(Event.COMPLETE, deserializeCompleted);
+			_deserializer.init();
 		}
 		
 		private function deserializeCompleted(e:Event):void {
