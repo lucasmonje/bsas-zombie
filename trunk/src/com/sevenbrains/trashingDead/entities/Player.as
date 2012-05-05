@@ -62,7 +62,7 @@ package com.sevenbrains.trashingDead.entities
 			var playerClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
 			_content = new playerClass();
 			this.x += 50;
-			this.y = - (WorldModel.instance.floorRect.height << 2);
+			this.y = - (WorldModel.instance.floorRect.height);
 			addChild(_content);
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;

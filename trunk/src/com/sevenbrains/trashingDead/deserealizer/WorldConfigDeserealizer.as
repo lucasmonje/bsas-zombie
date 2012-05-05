@@ -37,7 +37,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				for each (var childZ:XML in element.zombies.elements()) {
 					zombies.push(new WorldEntitiesDefinition(childZ.@code, childZ.@weight));
 				}
-				var worldDef:WorldDefinition = new WorldDefinition(element.@id, element.@background, element.@posY, element.@soundId, element.@zombieMaxInScreen, element.@zombieTimeCreation, trashes, zombies);
+				var worldDef:WorldDefinition = new WorldDefinition(element.@id, element.@background, element.@soundId, element.@zombieMaxInScreen, element.@zombieTimeCreation, trashes, zombies);
 				_idsMap[worldDef.id] = worldDef;
 				worlds.push(worldDef);
 			}

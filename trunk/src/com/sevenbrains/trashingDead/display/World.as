@@ -124,13 +124,15 @@ package com.sevenbrains.trashingDead.display {
 			// Carga el Stage
 			var stageClass:Class = ConfigModel.assets.getAssetDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
-			_bg.y = _props.posY;
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);
 			
+			this.scaleX = StageReference.stage.stageWidth / _stageInitialBounds.width;
+			this.scaleY = this.scaleX;
+			
 			//add floor
 			var floor:MovieClip = _bg.getChildByName("mcFloor") as MovieClip;
-			_worldModel.floorRect = new Rectangle(floor.x, floor.y + _props.posY, floor.width, floor.height);
+			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
 			var floorData:Object = new Object();
 			floorData.assetSprite = null;
 			floorData.entity = new Floor("C", [], PhysicObjectType.FLOOR);
@@ -185,15 +187,26 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function zooming(out:Boolean):void {
+			/*
 			var v:Number = GameProperties.ZOOM_VAR;
-			if (out && (this.width - v >= StageReference.stage.stageWidth)) {
+			if (out && (this.width - (this.width * v) >= StageReference.stage.stageWidth)) {
 				this.scaleX -= v;
 				this.scaleY -= v;
+				if (this.width < StageReference.stage.stageWidth) {
+					this.width = StageReference.stage.stageWidth;
+					this.scaleY = this.scaleX;
+				}
+				
 			}else if (!out && this.scaleX < 1){
 				this.scaleX += v;
 				this.scaleY += v;
+				if (this.scaleX > 1) {
+					this.scaleX = this.scaleY = 1;
+				}
 			}
-			this.y = _stageInitialBounds.height - (this.scaleY * _stageInitialBounds.height); 
+			var posY:Number = (_stageInitialBounds.height - ((this.scaleY * _stageInitialBounds.height))) /2; 
+			this.y =  posY;
+			*/
 		}
 		
 		private function makeZombie():void {

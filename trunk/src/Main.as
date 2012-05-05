@@ -17,7 +17,7 @@ package {
 	* ...
 	* @author Fulvio Crescenzi
 	*/
-	[SWF(width="900",height="500",frameRate="30",backgroundColor="#234a00")]
+	[SWF(width="900",height="550",frameRate="30",backgroundColor="#000000")]
 	[Frame(factoryClass="com.sevenbrains.trashingDead.display.Preloader")]
 	
 	public class Main extends Sprite {
