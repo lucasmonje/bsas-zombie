@@ -274,17 +274,20 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function collide(who:Collisionable):void {
 			var whoHits:int = who is Entity?Entity(who).hits:1;
-
-			if ((_life - whoHits) >= 0){
-				_life-=whoHits;
-			}else {
-				_life = 0;
-				_enabled = false;
-			}
+			hit(whoHits);
 		}
 		
 		public function isCollisioning(who:Collisionable):Boolean {
 			return getCollisionAccept().indexOf(who.getCollisionId()) > -1;
+		}
+		
+		public function hit(value:int):void {
+			if ((_life - value) >= 0){
+				_life-=value;
+			}else {
+				_life = 0;
+				_enabled = false;
+			}
 		}
 		
 		public function updatePosition():void {

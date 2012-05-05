@@ -13,6 +13,7 @@ package com.sevenbrains.trashingDead.managers
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.models.UserModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -56,7 +57,8 @@ package com.sevenbrains.trashingDead.managers
 			var zombieClass:Class = props.type == PhysicObjectType.FLYING_ZOMBIE ? FlyingZombie : Zombie;
 			var zombie:Entity = new zombieClass(props, initialPosition);
 			zombie.init();
-			_zombieList.push(zombie);				
+			_zombieList.push(zombie);
+			UserModel.instance.girl.registZombie(zombie);
 			return zombie;
 		}
 		
