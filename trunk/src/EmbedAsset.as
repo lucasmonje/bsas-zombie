@@ -18,7 +18,7 @@ package
 		[Embed(source='..\\bin\\resources\\sounds-config.xml',mimeType="application/octet-stream")]
 		public static var xmlSoundsConfigClass:Class;
 		
-		[Embed(source='..\\bin\\resources\\game-config.xml',mimeType="application/octet-stream")]
+		[Embed(source='..\\bin\\resources\\preloader-config.xml',mimeType="application/octet-stream")]
 		public static var xmlGameConfigClass:Class;
 		
 	}
