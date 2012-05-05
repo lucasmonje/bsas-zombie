@@ -42,7 +42,7 @@ package com.sevenbrains.trashingDead.entities
 			_throwingContainer = _mcPlayer.getChildByName("trash") as MovieClip;
 			
 			_animation = new Animation(_mcPlayer);
-			_animation.addAnimation("throwing", 1, 60);
+			_animation.addAnimation("throwing", 0.1);
 			_animation.setAnim("throwing");
 			
 			this.x = -20;
@@ -57,7 +57,7 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		private function onPlayerThrewItem(e:PlayerEvents):void {
-			_animation.play("throwing", 1);
+			_animation.play("throwing");
 			_threwTrash = true;
 		}
 		

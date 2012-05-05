@@ -7,16 +7,14 @@ package com.sevenbrains.trashingDead.definitions
 	public class ItemAnimationsDefinition 
 	{
 		private var _name:String;
-		private var _from:int;
-		private var _to:int;
+		private var _frameTime: Number;
 		private var _afterReproduce:String;
 		private var _defaultAnim:Boolean;
 		
-		public function ItemAnimationsDefinition(name:String, from:int, to:int, afterReproduce:String, defaultAnim:Boolean) 
+		public function ItemAnimationsDefinition(name:String, frameTime:Number, afterReproduce:String, defaultAnim:Boolean) 
 		{
 			_name = name;
-			_from = from;
-			_to = to;
+			_frameTime = frameTime;
 			_afterReproduce = afterReproduce;
 			_defaultAnim = defaultAnim;
 		}
@@ -24,16 +22,6 @@ package com.sevenbrains.trashingDead.definitions
 		public function get name():String 
 		{
 			return _name;
-		}
-		
-		public function get from():int 
-		{
-			return _from;
-		}
-		
-		public function get to():int 
-		{
-			return _to;
 		}
 		
 		public function get afterReproduce():String 
@@ -44,6 +32,11 @@ package com.sevenbrains.trashingDead.definitions
 		public function get defaultAnim():Boolean 
 		{
 			return _defaultAnim;
+		}
+		
+		public function get frameTime():Number 
+		{
+			return _frameTime;
 		}
 		
 	}

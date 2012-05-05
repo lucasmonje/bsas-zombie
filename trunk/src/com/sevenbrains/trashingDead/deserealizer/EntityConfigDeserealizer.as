@@ -32,7 +32,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				
 				var animations:Vector.<ItemAnimationsDefinition> = new Vector.<ItemAnimationsDefinition>();
 				for each (var child:XML in element.animations.elements()){
-					animations.push(new ItemAnimationsDefinition(child.@name, child.@from, child.@to, child.@afterReproduce, BooleanUtils.fromString(child.@defaultAnim)));
+					animations.push(new ItemAnimationsDefinition(child.@name, child.@frameTime, child.@afterReproduce, BooleanUtils.fromString(child.@defaultAnim)));
 				}
 				
 				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area, animations);

@@ -89,9 +89,9 @@ package com.sevenbrains.trashingDead.entities
 			_power = 0;
 			
 			_animation = new Animation(_mcPlayer);
-			_animation.addAnimation("battable", 1, 20);
-			_animation.addAnimation("preparing", 21, 54);
-			_animation.addAnimation("handable", 55, 95);
+			_animation.addAnimation("battable");
+			_animation.addAnimation("preparing");
+			_animation.addAnimation("handable");
 			_animation.setAnim("battable");
 			_animation.addEventListener(AnimationsEvent.ANIMATION_ENDED, animEnded);
 			

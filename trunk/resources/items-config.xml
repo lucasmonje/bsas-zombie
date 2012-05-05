@@ -36,21 +36,21 @@
 	
 	<zombies>
 		<zombie name="zombie01" code="300001" type="zombie">
-			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.015" speedMax="0.075" />
+			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.1" speedMax="0.2" />
 			<physicProps density="100" friction="0.3" restitution="0.0" />
 			<animations>
-				<animation name="walk" from="1" to="20" afterReproduce="walk" defaultAnim="true" />
-				<animation name="hit" from="21" to="40" afterReproduce="walk"/>
-				<animation name="dead" from="41" to="60" />
+				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true" />
+				<animation name="hit" frameTime="1" afterReproduce="walk"/>
+				<animation name="dead" frameTime="1" />
 			</animations>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
-			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.015" speedMax="0.075" />
+			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.03" speedMax="0.07" />
 			<physicProps density="100" friction="0.3" restitution="0.0" />
 			<animations>
-				<animation name="walk" from="1" to="35" afterReproduce="walk" defaultAnim="true"/>
-				<animation name="hit" from="36" to="70" afterReproduce="walk" />
-				<animation name="dead" from="71" to="90" />
+				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
+				<animation name="hit" frameTime="1" afterReproduce="walk" />
+				<animation name="dead" frameTime="1" />
 			</animations>
 		</zombie>
 		<!--

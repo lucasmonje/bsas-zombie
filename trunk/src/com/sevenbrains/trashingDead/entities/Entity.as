@@ -151,7 +151,7 @@ package com.sevenbrains.trashingDead.entities
 			animations = new Animation(mc);
 			if (props.animations.length > 0){
 				for each(var anim:ItemAnimationsDefinition in props.animations) {
-					animations.addAnimation(anim.name, anim.from, anim.to);
+					animations.addAnimation(anim.name);
 					if (anim.defaultAnim) {
 						_actualAnim = anim;
 					}
