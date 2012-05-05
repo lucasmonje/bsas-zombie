@@ -6,6 +6,8 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.models.UserModel;
 	
 	/**
 	 * ...
@@ -17,7 +19,7 @@ package com.sevenbrains.trashingDead.entities
 		private static const STATE_SHOOTING:String = "shooting";
 		
 		private static const TIME_UPDATE:int = 200;
-		private static const TOLERANCE:Number = 500;
+		private static const TOLERANCE:Number = 300;
 		private static const HITS:int = 10;
 		
 		private var _mcPlayer:MovieClip;
@@ -49,8 +51,8 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation("shoot");
 			_animation.play("repair", 0);
 			
-			this.x = 230;
-			this.y = 100;
+			this.x = 240;
+			this.y = UserModel.instance.player.y + 140;
 			
 			_state = STATE_REPARING;
 			

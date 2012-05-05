@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
+	import com.sevenbrains.trashingDead.models.UserModel;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -48,7 +49,7 @@ package com.sevenbrains.trashingDead.entities
 			_animation.setAnim(ANIM_THROUGH);
 			
 			this.x = -20;
-			this.y = 20;
+			this.y = UserModel.instance.player.y + 70;
 			
 			prepareTrash();
 			onPlayerThrewItem(null);

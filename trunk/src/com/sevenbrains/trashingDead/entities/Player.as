@@ -19,6 +19,7 @@ package com.sevenbrains.trashingDead.entities
 	import flash.ui.Keyboard;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.events.AnimationsEvent;
+	import com.sevenbrains.trashingDead.models.WorldModel;
 	
 	/**
 	 * ...
@@ -60,8 +61,8 @@ package com.sevenbrains.trashingDead.entities
 		public function initPlayer():void {
 			var playerClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
 			_content = new playerClass();
-			_content.x += 50;
-			_content.y -= 50;
+			this.x += 50;
+			this.y = - (WorldModel.instance.floorRect.height << 2);
 			addChild(_content);
 			
 			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
