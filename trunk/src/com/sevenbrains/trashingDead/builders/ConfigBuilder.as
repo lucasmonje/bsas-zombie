@@ -4,8 +4,8 @@ package com.sevenbrains.trashingDead.builders {
 	import com.sevenbrains.trashingDead.interfaces.Deserealizable;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
 	import com.sevenbrains.trashingDead.interfaces.IConfigBuilder;
-	import com.sevenbrains.trashingDead.managers.EmbedAsset;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import EmbedAsset;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;

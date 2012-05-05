@@ -1,11 +1,9 @@
 package com.sevenbrains.trashingDead.deserealizer.core {
 	import com.sevenbrains.trashingDead.exception.AbstractMethodException;
 	import com.sevenbrains.trashingDead.interfaces.Deserealizable;
-	import com.sevenbrains.trashingDead.managers.EmbedAsset;
 	import com.sevenbrains.trashingDead.utils.ClassUtil;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	/**
 	* Dispatched when data has loaded successfully.
