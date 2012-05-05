@@ -11,14 +11,16 @@ package com.sevenbrains.trashingDead.definitions
 		private var _soundId:String;
 		private var _zombieMaxInScreen:uint;
 		private var _zombieTimeCreation:Number;
+		private var _posY:Number;
 		
 		private var _trashes:Vector.<WorldEntitiesDefinition>;
 		private var _zombies:Vector.<WorldEntitiesDefinition>;
 		
-		public function WorldDefinition(id:String, background:String, soundId:String, zombieMaxInScreen:uint, zombieTimeCreation:Number, trashes:Vector.<WorldEntitiesDefinition>, zombies:Vector.<WorldEntitiesDefinition>) 
+		public function WorldDefinition(id:String, background:String, posY:Number, soundId:String, zombieMaxInScreen:uint, zombieTimeCreation:Number, trashes:Vector.<WorldEntitiesDefinition>, zombies:Vector.<WorldEntitiesDefinition>) 
 		{
 			_id = id;
 			_background = background;
+			_posY = posY;
 			_soundId = soundId;
 			_zombieMaxInScreen = zombieMaxInScreen;
 			_zombieTimeCreation = zombieTimeCreation;
@@ -59,6 +61,11 @@ package com.sevenbrains.trashingDead.definitions
 		public function get zombies():Vector.<WorldEntitiesDefinition> 
 		{
 			return _zombies.concat();
+		}
+		
+		public function get posY():Number 
+		{
+			return _posY;
 		}
 		
 	}

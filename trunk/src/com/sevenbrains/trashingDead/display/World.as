@@ -118,12 +118,13 @@ package com.sevenbrains.trashingDead.display {
 			// Carga el Stage
 			var stageClass:Class = ConfigModel.assets.getAssetDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
+			_bg.y = _props.posY;
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);
 			
 			//add floor
 			var floor:MovieClip = _bg.getChildByName("mcFloor") as MovieClip;
-			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
+			_worldModel.floorRect = new Rectangle(floor.x, floor.y + _props.posY, floor.width, floor.height);
 			var floorData:Object = new Object();
 			floorData.assetSprite = null;
 			floorData.entity = new Floor("C", [], PhysicObjectType.FLOOR);
