@@ -51,11 +51,15 @@ package com.sevenbrains.trashingDead.display {
 	* @author Fulvio Crescenzi
 	*/
 	public class World extends Sprite implements Screenable {
+		
 		private var _props:WorldDefinition;
+		
 		private var _damageArea:DamageAreaManager;
+		private var _itemManager:ItemManager;
 		private var _userModel:UserModel;
 		private var _gameTimer:GameTimer;
 		private var _worldModel:WorldModel;
+		
 		private var _trashLayer:Sprite;
 		private var _zombiesLayer:Sprite;
 		private var _debugLayer:Sprite;
@@ -63,13 +67,15 @@ package com.sevenbrains.trashingDead.display {
 		private var _backgroundLayer:Sprite;
 		private var _uiLayer:Sprite;
 		private var _traceLayer:Sprite;
+		
 		private var _bg:MovieClip;
+		
 		private var _physicWorld:GamePhysicWorld;
 		private var _currentTrash:Trash;
 		private var _currentTrashZooming:Trash;
 		private var _customContact:b2ContactListener;
 		private var _stageInitialBounds:Rectangle;
-		private var _itemManager:ItemManager;
+		
 		private var _state:String;
 		private var _data:String;
 		private var _worldWidth:Number;
@@ -142,6 +148,9 @@ package com.sevenbrains.trashingDead.display {
 			_userModel.fatGuy.init();
 			_playerLayer.addChild(_userModel.fatGuy);
 			
+			_userModel.girl.init();
+			_playerLayer.addChild(_userModel.girl);
+			
 			_damageArea.init();
 			addChild(_damageArea.content);
 			_userModel.player.state = PlayerStatesEnum.WAITING;
@@ -205,15 +214,17 @@ package com.sevenbrains.trashingDead.display {
 					}
 				}
 				var zombieProps:ItemDefinition = ConfigModel.entities.getZombieByCode(code);
-				var pos:Point;
-				var floorY:Number = _worldModel.floorRect.y - (_worldModel.floorRect.height / 2);
-				if (zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE) {
-					pos = new Point(1100, MathUtils.getRandom(50, floorY - 150));					
-				} else {
-					pos = new Point(1100, floorY);
+				if (zombieProps){
+					var pos:Point;
+					var floorY:Number = _worldModel.floorRect.y - (_worldModel.floorRect.height / 2);
+					if (zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE) {
+						pos = new Point(1100, MathUtils.getRandom(50, floorY - 150));					
+					} else {
+						pos = new Point(1100, floorY);
+					}
+					var z:Entity = _itemManager.createZombie(zombieProps, pos);
+					_zombiesLayer.addChild(z);
 				}
-				var z:Entity = _itemManager.createZombie(zombieProps, pos);
-				_zombiesLayer.addChild(z);
 			}
 		}
 		

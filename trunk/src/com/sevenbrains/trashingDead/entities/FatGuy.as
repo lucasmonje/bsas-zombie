@@ -17,6 +17,8 @@ package com.sevenbrains.trashingDead.entities
 	 */
 	public class FatGuy extends Sprite 
 	{
+		private static const ANIM_THROUGH:String = "through";
+		
 		private var _content:Sprite;
 		private var _mcPlayer:MovieClip;
 		private var _throwingContainer:MovieClip;
@@ -42,8 +44,8 @@ package com.sevenbrains.trashingDead.entities
 			_throwingContainer = _mcPlayer.getChildByName("trash") as MovieClip;
 			
 			_animation = new Animation(_mcPlayer);
-			_animation.addAnimation("throwing", 0.1);
-			_animation.setAnim("throwing");
+			_animation.addAnimation(ANIM_THROUGH);
+			_animation.setAnim(ANIM_THROUGH);
 			
 			this.x = -20;
 			this.y = 20;
@@ -57,7 +59,7 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		private function onPlayerThrewItem(e:PlayerEvents):void {
-			_animation.play("throwing");
+			_animation.play(ANIM_THROUGH);
 			_threwTrash = true;
 		}
 		
@@ -76,7 +78,7 @@ package com.sevenbrains.trashingDead.entities
 			if (_threwTrash) {
 				if (!_animation.isPlaying) {
 					_threwTrash = false;
-					_animation.setAnim("throwing");
+					_animation.setAnim(ANIM_THROUGH);
 					prepareTrash();
 					dispatchEvent(new FatGuyEvents(FatGuyEvents.THREW_TRASH, _trashDefinition));
 				}

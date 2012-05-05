@@ -72,8 +72,8 @@ package com.sevenbrains.trashingDead.utils
 			return null;
 		}
 		
-		public function play(name:String, times:int = 1):void {
-			_loops = times;
+		public function play(name:String, loops:int = 1):void {
+			_loops = loops;
 			_actual = getAnim(name);
 			_actualFrame = _actual.from;
 			_isPlaying = true;
@@ -88,12 +88,12 @@ package com.sevenbrains.trashingDead.utils
 			}
 			
 			if (++_actualFrame == _actual.to) {
-				if (++_actualLoop == _loops){
+				if (_loops > 0 && ++_actualLoop == _loops){
 					_isPlaying = false;
 					GameTimer.instance.cancelCall(_idCallTimer);
 					dispatchEvent(new AnimationsEvent(AnimationsEvent.ANIMATION_ENDED, _actual.name));
 				}else {
-					_actualFrame == _actual.from;
+					_actualFrame = _actual.from;
 				}
 			}
 			_content.gotoAndStop(_actualFrame);
