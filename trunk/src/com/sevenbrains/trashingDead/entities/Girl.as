@@ -81,9 +81,12 @@ package com.sevenbrains.trashingDead.entities
 					i++;
 				}
 			}else if (_state == STATE_SHOOTING) {
-				if (!_animation.isPlaying) {
+				if (_zombieTargeted && _animation.currentFrame >= (_animation.totalFrames >> 1)) {
 					_zombieTargeted.hit(HITS);
-					_animation.play("repair");
+					_zombieTargeted = null;
+				}
+				if (!_animation.isPlaying) {
+					_animation.play("repair", 0);
 					_state = STATE_REPARING;
 				}
 			}

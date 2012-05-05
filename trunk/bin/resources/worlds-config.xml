@@ -5,12 +5,10 @@
 			<trashes>
 				<trash code="100001" weight="1" />
 			</trashes>
-			<!--
 			<zombies>
 				<zombie code="300001" weight="1" />
 				<zombie code="300002" weight="1" />
 			</zombies>
-			-->
 		</world>
 	</worlds>
 </data>
