@@ -173,6 +173,7 @@ package com.sevenbrains.trashingDead.display {
 				this.scaleX += v;
 				this.scaleY += v;
 			}
+			this.y = _stageInitialBounds.height - (this.scaleY * _stageInitialBounds.height); 
 		}
 		
 		private function makeZombie():void {
