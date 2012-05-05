@@ -49,7 +49,7 @@ package com.sevenbrains.trashingDead.entities
 			_animation.setAnim(ANIM_THROUGH);
 			
 			this.x = -20;
-			this.y = UserModel.instance.player.y + 70;
+			this.y = UserModel.instance.player.y + 80;
 			
 			prepareTrash();
 			onPlayerThrewItem(null);
