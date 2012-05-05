@@ -11,15 +11,16 @@ package com.sevenbrains.trashingDead.deserealizer {
 		private var _autoLoadList:Array;
 		private var _idMap:Array;
 		
-		public function AssetsConfigDeserealizer(xml:XML) {
-			super(xml);
+		public function AssetsConfigDeserealizer(source:String) {
+			super(source);
 		}
 		
-		override public function deserialize(xml:XML):void {
+		override public function deserialize():void {
+			_xml = new XML(_source);
 			_autoLoadList = new Array();
 			_idMap = new Array();
 			_map = new Dictionary();
-			_map[ConfigNodes.SWFS] = decodeAssets(xml.swfs, ConfigNodes.SWFS);
+			_map[ConfigNodes.SWFS] = decodeAssets(_xml.swfs, ConfigNodes.SWFS);
 			_map[ConfigNodes.AUTO_LOAD] = _autoLoadList;
 			_map[ConfigNodes.IDS] = _idMap;
 		}

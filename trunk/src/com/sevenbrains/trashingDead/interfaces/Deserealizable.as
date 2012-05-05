@@ -7,7 +7,7 @@ package com.sevenbrains.trashingDead.interfaces {
 	*/
 	public interface Deserealizable {
 		function init():void;
-		function deserialize(source:XML):void;
+		function deserialize():void;
 		function get map():Dictionary;
 		function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void;
 		function hasEventListener(type:String):Boolean;

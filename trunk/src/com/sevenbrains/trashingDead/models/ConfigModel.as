@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.models {
 		public static var assets:AssetsConfig;
 		public static var sounds:SoundsConfig;
 		public static var worlds:WorldsConfig;
+		public static var messages:LocaleConfig;
 
 	}
 }

@@ -14,14 +14,15 @@ package com.sevenbrains.trashingDead.deserealizer {
 		
 		private var _idsMap:Dictionary;
 		
-		public function WorldConfigDeserealizer(xml:XML) {
-			super(xml);
+		public function WorldConfigDeserealizer(source:String) {
+			super(source);
 		}
 		
-		override public function deserialize(xml:XML):void {
+		override public function deserialize():void {
+			_xml = new XML(_source);
 			_idsMap = new Dictionary();
 			_map = new Dictionary();
-			_map[ConfigNodes.WORLDS] = decodeWorlds(xml.worlds);
+			_map[ConfigNodes.WORLDS] = decodeWorlds(_xml.worlds);
 			_map[ConfigNodes.IDS] = _idsMap;
 		}
 		

@@ -47,6 +47,17 @@ package com.sevenbrains.trashingDead.utils
 			return _stage.getChildAt(0) as DisplayObjectContainer;
 		}
 		
+		/**
+		 * DEMO
+		 * reemplazar por root.loaderInfo.parameters
+		 * cuando el locale venga por UI
+		 */
+		public static function get flashVars():Object {
+			var params:Object = new Object();
+			params.locale = "es";
+			return params;
+		}
+		
 		/** Returns the folder holding the SWF */
 		public static function get baseURL():String
 		{

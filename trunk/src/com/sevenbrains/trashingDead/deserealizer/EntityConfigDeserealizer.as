@@ -12,15 +12,16 @@ package com.sevenbrains.trashingDead.deserealizer {
 	
 	public class EntityConfigDeserealizer extends AbstractDeserealizer {
 		
-		public function EntityConfigDeserealizer(xml:XML) {
-			super(xml);
+		public function EntityConfigDeserealizer(source:String) {
+			super(source);
 		}
 		
-		override public function deserialize(xml:XML):void {
+		override public function deserialize():void {
+			_xml = new XML(_source);
 			_map = new Dictionary();
-			_map[ConfigNodes.TRASHES] = decodeItems(xml.trashes);
-			_map[ConfigNodes.WEAPONS] = decodeItems(xml.weapons);
-			_map[ConfigNodes.ZOMBIES] = decodeItems(xml.zombies);
+			_map[ConfigNodes.TRASHES] = decodeItems(_xml.trashes);
+			_map[ConfigNodes.WEAPONS] = decodeItems(_xml.weapons);
+			_map[ConfigNodes.ZOMBIES] = decodeItems(_xml.zombies);
 		}
 		
 		private function decodeItems(xml:XMLList):Array {

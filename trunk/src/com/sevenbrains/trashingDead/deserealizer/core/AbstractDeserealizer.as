@@ -22,21 +22,22 @@ package com.sevenbrains.trashingDead.deserealizer.core {
 	public class AbstractDeserealizer implements Deserealizable {
 		
 		protected var _map:Dictionary;
+		protected var _source:String;
 		protected var _xml:XML;
 		protected var _dispacher:EventDispatcher;
 		
-		public function AbstractDeserealizer(xml:XML) {
+		public function AbstractDeserealizer(source:String) {
 			_dispacher = new EventDispatcher();
-			_xml = xml;
+			_source = source;
 		}
 		
 		public function init():void {
 			notifyInit();
-			deserialize(_xml);
+			deserialize();
 			notifyEnd();
 		}
 		
-		public function deserialize(xml:XML):void {
+		public function deserialize():void {
 			throw new AbstractMethodException("deserialize(source:XML)");
 		}
 		

@@ -6,7 +6,7 @@ package {
 	*/
 	public class Manifest {
 		
-		import com.sevenbrains.trashingDead.builders.ConfigBuilder;
+		import com.sevenbrains.trashingDead.builders.*;
 		import com.sevenbrains.trashingDead.configuration.*;
 		import com.sevenbrains.trashingDead.deserealizer.*;
 		import com.sevenbrains.trashingDead.models.ConfigModel;
@@ -19,14 +19,17 @@ package {
 			EntitiesConfig;
 			SoundsConfig;
 			WorldsConfig;
+			LocaleConfig;
 			
 			AssetsConfigDeserealizer;
 			EntityConfigDeserealizer;
-			SoundConfigDeserializer;
+			SoundConfigDeserealizer;
 			WorldConfigDeserealizer;
+			LocaleConfigDeserealizer;
 			
 			ConfigModel;
 			ConfigBuilder;
+			LocaleBuilder;
 			
 		}
 	}

@@ -21,9 +21,15 @@
 		</config>
 		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
 			<param name="xmlClassName" value="xmlSoundsConfigClass" /> 
-			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.SoundConfigDeserializer" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.SoundConfigDeserealizer" /> 
 			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.SoundsConfig" /> 
 			<param name="model" value="sounds" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.LocaleBuilder">
+			<param name="localePath" value="resources/locale/messages_${locale}.properties" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.LocaleConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.LocaleConfig" /> 
+			<param name="model" value="messages" /> 			
 		</config>
 	</preloaderProccess>
 </data>
