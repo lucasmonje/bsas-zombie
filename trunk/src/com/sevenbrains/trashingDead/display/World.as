@@ -74,6 +74,8 @@ package com.sevenbrains.trashingDead.display {
 		private var _worldWidth:Number;
 		private var _worldHeight:Number;
 		
+		private var _lastTrashTrace:Vector.<Point>;
+		
 		public function World(props:WorldDefinition) {
 			_props = props;
 			_backgroundLayer = createLayer();
@@ -100,17 +102,23 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		public function init():void {
+			_lastTrashTrace = new Vector.<Point>();
+			
 			var gravivy:b2Vec2 = new b2Vec2(0, 10)
 			_worldModel.gravity = gravivy;
+			
 			_physicWorld = new GamePhysicWorld(gravivy, true);
 			_customContact = new Clientb2ContactListener();
-			_physicWorld.SetContactListener(_customContact);
 			_itemManager = new ItemManager();
+			
+			_physicWorld.SetContactListener(_customContact);
+			
 			// Carga el Stage
 			var stageClass:Class = ConfigModel.assets.getAssetDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);
+			
 			//add floor
 			var floor:MovieClip = _bg.getChildByName("mcFloor") as MovieClip;
 			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
@@ -133,7 +141,7 @@ package com.sevenbrains.trashingDead.display {
 			
 			_damageArea.init();
 			addChild(_damageArea.content);
-			_userModel.player.state = PlayerStatesEnum.READY;
+			_userModel.player.state = PlayerStatesEnum.WAITING;
 
 			
 			_uiLayer.addChild(UserModel.instance.player.throwingArea);
@@ -220,15 +228,16 @@ package com.sevenbrains.trashingDead.display {
 		
 		private function onFatGuyGiveTrash(e:FatGuyEvents):void {
 			_currentTrash = _itemManager.createTrash(ItemDefinition(e.newValue), _userModel.player.trashPosition);
-			_trashLayer.addChild(_currentTrash);	
+			_trashLayer.addChild(_currentTrash);
+			_userModel.player.state = PlayerStatesEnum.READY;
 		}
 		
 		private function onShootTrash(e:PlayerEvents):void {
-			var power:Number = _userModel.player.power;
-			var angle:Number = _userModel.player.angle;
+			var power:Number = Number(e.newValue);
+			var angle:Number = Number(e.oldValue);
 			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
-			_userModel.player.state = PlayerStatesEnum.READY;
 			_currentTrashZooming = _currentTrash;
+			_lastTrashTrace = new Vector.<Point>();
 		}
 		
 		private function onThrewItem(e:PlayerEvents):void {
@@ -241,6 +250,10 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function updateWorld():void {
+			if (_currentTrashZooming) {
+				
+			}
+			
 			zooming(_currentTrashZooming && 
 					!_currentTrashZooming.isDestroyed() && 
 					_currentTrashZooming.getItemPosition().x > (_worldWidth >> 1));

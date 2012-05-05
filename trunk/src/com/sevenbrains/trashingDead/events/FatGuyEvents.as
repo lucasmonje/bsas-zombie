@@ -14,7 +14,7 @@ package com.sevenbrains.trashingDead.events
 		private var _newValue:Object;
 		private var _oldValue:Object;
 		
-	public function FatGuyEvents(type:String, newValue:Object = null, oldValue:Object = null) 
+		public function FatGuyEvents(type:String, newValue:Object = null, oldValue:Object = null) 
 		{ 
 			super(type);
 			_newValue = newValue;

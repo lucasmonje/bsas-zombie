@@ -123,15 +123,13 @@ package com.sevenbrains.trashingDead.entities
 		
 		private function animEnded(e:AnimationsEvent):void {
 			if (e.value == "battable"){
-				dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT));
+				dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT, _power.toString(), _angle.toString()));
 				state = PlayerStatesEnum.WAITING;
 				_animation.play("preparing");
 			}else if (e.value == "handable"){
 				dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, getActualWeapon().props.name));
 				_animation.play("preparing");
 				state = PlayerStatesEnum.WAITING;
-			}else {
-				state = PlayerStatesEnum.READY;
 			}
 		}
 		
@@ -153,6 +151,7 @@ package com.sevenbrains.trashingDead.entities
 			_power = 0;
 			_poweringArrow.gotoAndStop(0);
 			
+			trace("Agrego los listeners");
 			_throwingArea.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 			_throwingArea.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 			_throwingArea.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
@@ -164,6 +163,7 @@ package com.sevenbrains.trashingDead.entities
 		 * no esta listo para lanzar el siguiente
 		 */
 		private function shooting():void {
+			trace("Elimino los listeners");
 			_throwingArea.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 			_throwingArea.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 			_throwingArea.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
@@ -217,8 +217,10 @@ package com.sevenbrains.trashingDead.entities
 		 * El player suelta el boton del mouse para disparar la basura
 		 */
 		private function trashMouseUp(e:MouseEvent):void {
-			setNewAngle();
-			state = PlayerStatesEnum.SHOOTING;
+			if (_powering){
+				setNewAngle();
+				state = PlayerStatesEnum.SHOOTING;
+			}
 		}
 		
 		/**
