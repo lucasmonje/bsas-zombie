@@ -161,7 +161,7 @@ package com.sevenbrains.trashingDead.display {
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
-			
+						
 			_worldWidth = this.width;
 			_worldHeight = this.height;
 			
