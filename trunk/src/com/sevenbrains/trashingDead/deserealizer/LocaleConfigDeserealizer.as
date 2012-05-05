@@ -19,13 +19,22 @@ package com.sevenbrains.trashingDead.deserealizer {
 		override public function deserialize():void {
 			_idsMap = new Dictionary();
 			_map = new Dictionary();
-			_map[ConfigNodes.LOCALE] = decodeLocale(_source);
+			decodeLocale(_source);
 			_map[ConfigNodes.IDS] = _idsMap;
 		}
 		
 		private function decodeLocale(source:String):void {
-			trace("");
-		}
-		
+			var pairs:Array = source.split("\n");
+			for each (var pairString:String in pairs) {
+				if (pairString.substr(0,1) != "#") {
+					var pair:Array = pairString.split("=");
+					if (pair.length > 0) {
+						var key:String = pair[0];
+						var value:String = pair[1] || new String();
+						_idsMap[key] = value;
+					}					
+				}
+			}
+		}		
 	}
 }
