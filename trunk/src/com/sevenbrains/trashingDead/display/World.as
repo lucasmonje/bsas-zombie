@@ -295,8 +295,9 @@ package com.sevenbrains.trashingDead.display {
 					_currentTrashZooming.getItemPosition().x > (_worldWidth >> 1));
 			
 			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
-				_currentTrashZooming.destroy();
-				_currentTrashZooming = null;
+				//trace(_currentTrashZooming.getItemPosition().x, _currentTrashZooming.getItemPosition().y);
+				//_currentTrashZooming.destroy();
+				//_currentTrashZooming = null;
 				drawLastTrashTrace();
 			}else if (_currentTrashZooming && _currentTrashZooming.isDestroyed()) {
 				drawLastTrashTrace();
