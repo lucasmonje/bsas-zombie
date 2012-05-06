@@ -50,6 +50,8 @@ package com.sevenbrains.trashingDead.entities
 			_zombieTargeted = null;
 			
 			_callId = GameTimer.instance.callMeEvery(200, update);
+			
+			this.x = UserModel.instance.player.x + (UserModel.instance.player.width >> 1);
 		}
 		
 		public function registZombie(entity:Entity):void {

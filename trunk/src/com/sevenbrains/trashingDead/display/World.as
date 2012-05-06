@@ -233,7 +233,7 @@ package com.sevenbrains.trashingDead.display {
 					if (zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE) {
 						pos = new Point(1100, MathUtils.getRandom(50, floorY - 150));					
 					} else {
-						pos = new Point(1100, floorY);
+						pos = new Point(1100, floorY - 50);
 					}
 					var z:Entity = _itemManager.createZombie(zombieProps, pos);
 					_zombiesLayer.addChild(z);
