@@ -6,8 +6,10 @@ package com.sevenbrains.trashingDead.models
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Player;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	
 	/**
 	 * ...
@@ -41,15 +43,17 @@ package com.sevenbrains.trashingDead.models
 		}
 		
 		public function init():void {
+			var playersClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.PLAYERS, "Asset") as Class;
+			var content:MovieClip = new playersClass();
 			
 			var weapons:Vector.<Item> = new Vector.<Item>();
 			for each (var weaponDef:ItemDefinition in ConfigModel.entities.getWeapons()) {
 				weapons.push(new Item(weaponDef, new Point()));
 			}
 			
-			_player = new Player(weapons);
-			_fatGuy = new FatGuy();
-			_girl = new Girl();
+			_player = new Player(content, weapons);
+			_fatGuy = new FatGuy(content);
+			_girl = new Girl(content);
 		}
 		
 		public function get player():Player 

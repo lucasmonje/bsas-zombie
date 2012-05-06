@@ -12,5 +12,6 @@
 		<swf id="itemMolotov" path="item/itemMolotov.swf" preloaderId="10009" />
 		<swf id="gameTitle" path="screens/gameTitle.swf" preloaderId="10010" />
 		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10011" />
+		<swf id="players" path="players/players.swf" preloaderId="10012" />
 	</swfs>
 </data>

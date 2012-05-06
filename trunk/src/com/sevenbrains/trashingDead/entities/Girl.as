@@ -23,7 +23,6 @@ package com.sevenbrains.trashingDead.entities
 		private static const HITS:int = 10;
 		
 		private var _mcPlayer:MovieClip;
-		private var _content:MovieClip;
 		
 		private var _animation:Animation;
 		
@@ -34,25 +33,16 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _state:String;
 		
-		public function Girl() 
+		public function Girl(mc:MovieClip) 
 		{
-			
+			_mcPlayer = mc.getChildByName("mcPlayer_3") as MovieClip;
 		}
 		
 		public function init():void {
-			var girlClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.CHICA, "Asset") as Class;
-			_content = new girlClass();
-			addChild(_content);
-			
-			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
-			
 			_animation = new Animation(_mcPlayer);
 			_animation.addAnimation("repair");
 			_animation.addAnimation("shoot");
 			_animation.play("repair", 0);
-			
-			this.x = 240;
-			this.y = UserModel.instance.player.y + 140;
 			
 			_state = STATE_REPARING;
 			

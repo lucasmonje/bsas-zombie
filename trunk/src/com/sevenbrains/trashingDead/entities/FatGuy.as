@@ -20,7 +20,6 @@ package com.sevenbrains.trashingDead.entities
 	{
 		private static const ANIM_THROUGH:String = "through";
 		
-		private var _content:Sprite;
 		private var _mcPlayer:MovieClip;
 		private var _throwingContainer:MovieClip;
 		
@@ -30,18 +29,13 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _trashDefinition:ItemDefinition;
 		
-		public function FatGuy() 
+		public function FatGuy(mc:MovieClip) 
 		{
-			super();
-			
+			_mcPlayer = mc.getChildByName("mcPlayer_2") as MovieClip;
 		}
 		
 		public function init():void {
-			var fatGuyClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.GORDO, "Asset") as Class;
-			_content = new fatGuyClass();
-			addChild(_content);
 			
-			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
 			_throwingContainer = _mcPlayer.getChildByName("trash") as MovieClip;
 			
 			_animation = new Animation(_mcPlayer);

@@ -43,15 +43,17 @@ package com.sevenbrains.trashingDead.entities
 		private var _angle:Number;
 		private var _trashPosition:Point;
 		private var _wagonPosition:Point;
-		private var _content:MovieClip;
 		
 		private var _weapons:Vector.<Item>;
 		
+		private var _content:MovieClip;
 		private var _animation:Animation;
 		
-		public function Player(weapons:Vector.<Item>) {
+		public function Player(mc:MovieClip, weapons:Vector.<Item>) {
 			_stage = StageReference.stage;
 			_weapons = weapons;
+			_content = mc;
+			_mcPlayer = mc.getChildByName("mcPlayer_1") as MovieClip;
 		}
 		
 		/**
@@ -59,17 +61,15 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	content. Recibe el content del mundo cargado para obtener al player
 		 */
 		public function initPlayer():void {
-			var playerClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.BATEADOR, "Asset") as Class;
-			_content = new playerClass();
-			this.x += 50;
-			this.y = - (WorldModel.instance.floorRect.height);
 			addChild(_content);
 			
-			_mcPlayer = _content.getChildByName("mcPlayer") as MovieClip;
+			this.x = 0;
+			this.y = this.height - 100;
+			
 			_poweringArrow = _content.getChildByName("mcPoweringContainer") as MovieClip;
 			
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
-			_trashPosition = new Point(mcTrashPosition.x + 50, mcTrashPosition.y - 50 - (mcTrashPosition.height>> 1));
+			_trashPosition = new Point(mcTrashPosition.x + this.x, mcTrashPosition.y + this.y);
 			DisplayUtil.remove(mcTrashPosition);
 			
 			var mcWagonPosition:MovieClip = _content.getChildByName("mcWagonPosition") as MovieClip;
@@ -79,8 +79,8 @@ package com.sevenbrains.trashingDead.entities
 			_throwingArea.graphics.beginFill(0xff0000, 0.3);
 			_throwingArea.graphics.drawCircle(0, 0, 300);
 			_throwingArea.graphics.endFill();
-			_throwingArea.x = _mcPlayer.x + (_mcPlayer.width >> 1);
-			_throwingArea.y = _mcPlayer.y + (_mcPlayer.height >> 1);
+			_throwingArea.x = this.x + (this.width >> 1);
+			_throwingArea.y = this.y + (this.height);
 			_throwingArea.alpha = 0;
 			
 			_state = PlayerStatesEnum.WAITING;

@@ -13,6 +13,7 @@ package com.sevenbrains.trashingDead.enum
 		public static const ZOMBIE01:String = 'zombie01';
 		public static const GAME_TITLE:String = 'gameTitle';
 		public static const MAP_WORLD:String = 'mapWorld';
+		public static const PLAYERS:String = 'players';
 	}
 
 }
