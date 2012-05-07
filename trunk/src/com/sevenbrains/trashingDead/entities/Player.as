@@ -245,7 +245,7 @@ package com.sevenbrains.trashingDead.entities
 			}
 			
 			if (getActualWeapon().props.type == 'handable') {
-				var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.COMMONS, getActualWeapon().props.icon);
+				var clazz:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, getActualWeapon().props.icon);
 				var container:MovieClip = MovieClip(_mcPlayer.item);
 				while (container && container.numChildren > 0) {
 					container.removeChildAt(0);

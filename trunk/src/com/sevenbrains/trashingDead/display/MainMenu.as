@@ -26,7 +26,7 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		public function init():void {
-			var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.GAME_TITLE, 'gameTitle');
+			var clazz:Class = ConfigModel.assets.getDefinition(AssetsEnum.GAME_TITLE, 'gameTitle');
 			_content = new clazz();
 			addChild(_content);
 			

@@ -20,12 +20,14 @@ package {
 			SoundsConfig;
 			WorldsConfig;
 			LocaleConfig;
+			PopupsConfig
 			
 			AssetsConfigDeserealizer;
 			EntityConfigDeserealizer;
 			SoundConfigDeserealizer;
 			WorldConfigDeserealizer;
 			LocaleConfigDeserealizer;
+			PopupsConfigDeserealizer;
 			
 			ConfigModel;
 			ConfigBuilder;

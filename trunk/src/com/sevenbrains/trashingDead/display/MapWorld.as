@@ -54,7 +54,7 @@ package com.sevenbrains.trashingDead.display
 			_state = ClassStatesEnum.RUNNING;
 			_data = "";
 			
-			var clazz:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.MAP_WORLD, 'mapWorld');
+			var clazz:Class = ConfigModel.assets.getDefinition(AssetsEnum.MAP_WORLD, 'mapWorld');
 			_content = new clazz();
 			addChild(_content);
 			

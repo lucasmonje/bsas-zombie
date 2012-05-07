@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<aliases>
+		<title><text path="txtTitle" key="title" /></title>
+		<body><text path="txtBody" key="body" /></body>
+		<subtitle><text path="txtSubtitle" key="subtitle" /></subtitle>
+		<btnClose><button path="btnClose" handler="close" /></btnClose>
+		<btnCancel><button path="btnCancel" handler="close" /></btnCancel>
+		<btnCancelText><text path="btnCancel.txtLabel" key="button.cancel" /></btnCancelText>
+		<btnAccept><button path="btnAccept" handler="close" /></btnAccept>
+		<btnAcceptText><text path="btnAccept.txtLabel" key="button.ok" /></btnAcceptText>
+		<btnOk><button path="btnOk" handler="close" /></btnOk>
+		<btnOkText><text path="btnOk.txtLabel" key="button.ok" /></btnOkText>
+		<btnNo><button path="btnNo" handler="close" /></btnNo>
+		<btnNoText><text path="btnNo.txtLabel" key="button.no" /></btnNoText>
+		<btnYesText><text path="btnYes.txtLabel" key="button.yes" /></btnYesText>
+		<btnShareText><text path="btnShare.txtLabel" key="button.share" /></btnShareText>
+		<btnAskText><text path="btnAsk.txtLabel" key="button.ask" /></btnAskText>
+		<escClose><keyboard key="escape" handler="close" /></escClose>
+		<enterClose><keyboard key="enter" handler="close" /></enterClose>
+		<playMovie><state path="" name="1" play="true" /></playMovie>
+	</aliases>
+
+	<popups>
+		
+		<!--  FULL Example
+		<popup id="achievements" assetId="popUpAchievements" i18n="popup.achievements" center="false" template="other_popup">
+			<text path="bodyTxt" key="body" args="{a},{b}" /> // args is optional can be an array or a single value
+			<title /> // This one is taken from the aliases
+			
+			<image path="userPhoto" url="images/{userName}.jpg" fit="true" />
+			
+			<text path="btnOk.txt" key="button.ok" />
+			<button path="btnOk" handler="okHandler" args="popup" /> // You get the popup object as argument
+			<button path="btnNo" handler="noHandler" args="event" /> // You get the event object as argument
+			
+			<button path="btnClose" handler="close" /> // You get no argument
+			
+			<property key="someAttr" value="someValue" />
+			
+			<keyboard code="65" handler="close" />
+			<keyboard key="escape" handler="close" />
+						
+			<hide path="btnCancel" /> // Useful when reusing assets
+			
+			/* TODO 
+			<asset path="btns" url="swf/commons_ui.swf" class-name="imgArgs" /> 
+			<asset path="bgContainer" id="someAssetId" />
+			*/
+		</popup>
+		 -->
+		
+		<!-- Popups -->
+		
+		<popup id="popupAlert" assetId="popupAlert">
+			<title/>
+			<body/>
+			<playMovie />
+			<enterClose />
+			<btnClose />
+			<escClose />
+		</popup>
+		<!--
+		<popup id="confirmation" assetId="popUpAlert" i18n="popup.confirmation" >
+			<text path="txtTitle" key="{className}.title" args="{className}" />
+			<text path="txtBody" key="{className}.body" args="{bodyParam1},{bodyParam2}" />
+			<button path="btnYes" handler="btnYesOnClick" />
+			<button path="btnClose" handler="btnCloseClick" />
+			<escClose />
+		</popup>
+		-->
+		
+	</popups>
+</config>
+

@@ -25,6 +25,12 @@
 			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.SoundsConfig" /> 
 			<param name="model" value="sounds" /> 			
 		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="popupsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.PopupsConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.PopupsConfig" /> 
+			<param name="model" value="popups" /> 			
+		</config>
 		<config builder="com.sevenbrains.trashingDead.builders.LocaleBuilder">
 			<param name="localePath" value="resources/locale/messages_${locale}.properties" /> 
 			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.LocaleConfigDeserealizer" /> 

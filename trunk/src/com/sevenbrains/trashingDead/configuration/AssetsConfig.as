@@ -35,21 +35,25 @@ package com.sevenbrains.trashingDead.configuration {
 			_autoLoadCounter = 0;
 			_autoLoadTotal = list.length;
 			for each (var assetDef:AssetDefinition in list) {
-				makeAsset(assetDef);
+				var loader:AbstractLoader = makeAsset(assetDef);
+				loadAsset(loader);
 			}
 		}
 		
 		private function makeAsset(assetDef:AssetDefinition):AbstractLoader {
 			var asset:AbstractLoader = (assetDef.type == ConfigNodes.SWFS) ? new DefaultAssetLoader(assetDef.path) : new URLLoader(assetDef.path, 1, true, URLLoaderDataFormat.BINARY);
 			_assetMap[assetDef.id] = asset;
+			return asset;
+		}		
+		
+		private function loadAsset(asset:AbstractLoader):void {
 			asset.addEventListener(Event.COMPLETE, loaderComplete);
 			asset.addEventListener(IOErrorEvent.IO_ERROR, loaderError);
 			asset.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loaderError);
 			asset.load();
-			return asset;
 		}
 		
-		public function getAssetById(assetId:String):AbstractLoader {
+		public function get(assetId:String):AbstractLoader {
 			return _assetMap[assetId] || makeAsset(getDefById(assetId));
 		}
 		
@@ -57,8 +61,8 @@ package com.sevenbrains.trashingDead.configuration {
 			return _configMap[ConfigNodes.IDS][assetId];
 		}
 		
-		public function getAssetDefinition(assetId:String, definitionName:String):Class {
-			var asset:AbstractLoader = getAssetById(assetId);
+		public function getDefinition(assetId:String, definitionName:String):Class {
+			var asset:AbstractLoader = get(assetId);
 			if (asset && asset is DefaultAssetLoader && asset.isLoaded() && (asset as DefaultAssetLoader).contentLoaderInfo.applicationDomain.hasDefinition(definitionName)) {
 				var classAsset:Class = (asset as DefaultAssetLoader).contentLoaderInfo.applicationDomain.getDefinition(definitionName) as Class;
 				return classAsset;

@@ -43,7 +43,7 @@ package com.sevenbrains.trashingDead.models
 		}
 		
 		public function init():void {
-			var playersClass:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.PLAYERS, "Asset") as Class;
+			var playersClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.PLAYERS, "Asset") as Class;
 			var content:MovieClip = new playersClass();
 			
 			var weapons:Vector.<Item> = new Vector.<Item>();

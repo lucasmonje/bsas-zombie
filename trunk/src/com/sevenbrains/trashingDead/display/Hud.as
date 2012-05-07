@@ -37,7 +37,7 @@ package com.sevenbrains.trashingDead.display
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = ConfigModel.assets.getAssetDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
+			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

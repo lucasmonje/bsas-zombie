@@ -1,4 +1,4 @@
-package commons.utils
+package com.sevenbrains.trashingDead.utils
 {
     /**
      * Utility functions for objects

@@ -11,6 +11,7 @@ package com.sevenbrains.trashingDead.managers {
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.utils.Dictionary;
+	import com.sevenbrains.trashingDead.managers.FullscreenManager;
 	
 	/**
 	*
@@ -30,24 +31,28 @@ package com.sevenbrains.trashingDead.managers {
 		public var modalColor:uint = 0x000000;
 		protected var _blockRender:Boolean;
 		
+		private static var _instance:PopupManager;
+		
 		public function set blockRender(value:Boolean):void {
 			_blockRender = value;
 		}
 		
-		/**
-		* The PopupManager creates a modal window using the Layer or Container passed as parameter
-		* and the fullscreenManager, place and remove popups window from the layer.
-		* Is able to queue severals popup and display them in the order they were pushed
-		*
-		* @param container
-		* @param fullscreenManagerParam
-		*
-		*/
-		public function PopupManager(container:DisplayObjectContainer, fullscreenManagerParam:FullscreenManager) {
+		public static function get instance():PopupManager	{
+			return _instance || (_instance = new PopupManager());
+		}
+		
+		public function PopupManager() {
+			init();
+		}
+		
+		private function init():void {
 			currentPopups = new Dictionary();
-			_fullscreenManager = fullscreenManagerParam;
-			this.container = container;
-			setupChannels();
+			_fullscreenManager = FullscreenManager.instance;
+			setupChannels();			
+		}
+		
+		public function setLayer(container:DisplayObjectContainer):void {
+			this.container = container;			
 		}
 		
 		public function getPopup(channel:PopupChannel):PopupData {
@@ -169,8 +174,9 @@ package com.sevenbrains.trashingDead.managers {
 			window.addEventListener(IOErrorEvent.IO_ERROR, onAssetError);
 			setCurrentPopup(channel, currentPopup);
 			container.addChild(currentPopup.window as DisplayObject);
-			if (currentPopup.center)
+			if (currentPopup.center) {
 				centerPopup(window);
+			}
 			window.open();
 		}
 		

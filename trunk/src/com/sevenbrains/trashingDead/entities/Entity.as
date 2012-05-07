@@ -78,7 +78,7 @@ package com.sevenbrains.trashingDead.entities
 			_compositionMap.arrayMode = new Array();
 			_assetsList = new Vector.<MovieClip>();
 			
-			var PhysicMapViewClass:Class = ConfigModel.assets.getAssetDefinition(_props.name, "PhysicDefinition");
+			var PhysicMapViewClass:Class = ConfigModel.assets.getDefinition(_props.name, "PhysicDefinition");
 			_physicMapView = new PhysicMapViewClass();
 			
 			var anchors:Vector.<MovieClip> = new Vector.<MovieClip>();
@@ -95,7 +95,7 @@ package com.sevenbrains.trashingDead.entities
 					bounds = new Rectangle(_initialPosition.x + dispObj.x, _initialPosition.y + dispObj.y, dispObj.width, dispObj.height);
 					
 					if (type.indexOf("box") > -1) {
-						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, content.name);
+						assetClass = ConfigModel.assets.getDefinition(_props.name, content.name);
 						if (Boolean(assetClass)) {
 							mc = new assetClass();
 							addChild(mc);
@@ -111,7 +111,7 @@ package com.sevenbrains.trashingDead.entities
 						_compositionMap.arrayMode.push(box);
 						
 					} else if (type.indexOf("circle") > -1) {
-						assetClass = ConfigModel.assets.getAssetDefinition(_props.name, mc.name);
+						assetClass = ConfigModel.assets.getDefinition(_props.name, mc.name);
 						if (Boolean(assetClass)) {
 							mc = new assetClass();
 							addChild(mc);

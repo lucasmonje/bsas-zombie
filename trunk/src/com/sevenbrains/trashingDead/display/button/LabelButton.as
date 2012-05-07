@@ -1,4 +1,4 @@
-package commons.display.button
+package com.sevenbrains.trashingDead.display.button
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;

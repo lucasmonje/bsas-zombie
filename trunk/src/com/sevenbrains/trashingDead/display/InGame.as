@@ -1,8 +1,12 @@
 package com.sevenbrains.trashingDead.display 
 {
 	import com.sevenbrains.trashingDead.display.MapWorld;
+	import com.sevenbrains.trashingDead.display.popup.Popup;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
+	import com.sevenbrains.trashingDead.managers.PopupManager;
+	import com.sevenbrains.trashingDead.managers.SoundManager;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.StageReference;
@@ -11,8 +15,7 @@ package com.sevenbrains.trashingDead.display
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
-	import com.sevenbrains.trashingDead.models.ConfigModel;
-	import com.sevenbrains.trashingDead.managers.SoundManager;
+	import com.sevenbrains.trashingDead.enum.PopupType;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -28,6 +31,7 @@ package com.sevenbrains.trashingDead.display
 		
 		private var _worldMap:MapWorld;
 		private var _world:World;
+		private var _popupLayer:Sprite;
 		
 		private var _currentLevel:int;
 		private var _data:String;
@@ -50,7 +54,13 @@ package com.sevenbrains.trashingDead.display
 			_world = null;
 			
 			_worldMap.init();
-			addChild(_worldMap);
+			addChildAt(_worldMap, 0);
+			
+			_popupLayer = new Sprite();
+			_popupLayer.mouseEnabled = false;
+			addChildAt(_popupLayer, 1);
+			PopupManager.instance.setLayer(_popupLayer);
+			PopupManager.instance.addPopup(new Popup(PopupType.ALERT));
 			
 			_map = new Dictionary();
 			_map['world'] = new Dictionary();
@@ -66,7 +76,7 @@ package com.sevenbrains.trashingDead.display
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			addEventListener(Event.ENTER_FRAME, update);
 		}
-		
+
 		private function update(e:Event):void {
 			var screen:Screenable = _map[_actualScreen]['actual'];
 			if (screen.state == ClassStatesEnum.DESTROYING) {
@@ -80,7 +90,7 @@ package com.sevenbrains.trashingDead.display
 				screen.destroy();
 				screen = _map[_actualScreen]['actual'];
 				screen.init();
-				addChild(Sprite(screen));
+				addChildAt(Sprite(screen), 0);
 			}
 		}
 		
@@ -107,7 +117,7 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		private function onWorldLoaded(e:Event):void {
-			addChild(_worldMap);
+			addChildAt(_worldMap, 0);
 		}
 		
 		public function destroy():void {

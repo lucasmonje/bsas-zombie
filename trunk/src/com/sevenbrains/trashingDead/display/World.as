@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
+	import com.sevenbrains.trashingDead.display.popup.Popup;
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.entities.Floor;
 	import com.sevenbrains.trashingDead.entities.Item;
@@ -45,6 +46,9 @@ package com.sevenbrains.trashingDead.display {
 	import flash.ui.Keyboard;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.managers.SoundManager;
+	import com.sevenbrains.trashingDead.managers.PopupManager;
+	import com.sevenbrains.trashingDead.enum.PopupType;
+	import com.sevenbrains.trashingDead.display.popup.PopupChannel;
 	
 	/*
 	* ...
@@ -66,6 +70,7 @@ package com.sevenbrains.trashingDead.display {
 		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
 		private var _uiLayer:Sprite;
+		private var _popupLayer:Sprite;
 		private var _traceLayer:Sprite;
 		
 		private var _bg:MovieClip;
@@ -92,7 +97,9 @@ package com.sevenbrains.trashingDead.display {
 			_trashLayer = createLayer();
 			_traceLayer = createLayer();
 			_uiLayer = createLayer();
+			_popupLayer = createLayer();
 			initModels();
+
 		}
 		
 		private function createLayer():Sprite {
@@ -122,7 +129,7 @@ package com.sevenbrains.trashingDead.display {
 			_physicWorld.SetContactListener(_customContact);
 			
 			// Carga el Stage
-			var stageClass:Class = ConfigModel.assets.getAssetDefinition(_props.background, "Asset") as Class;
+			var stageClass:Class = ConfigModel.assets.getDefinition(_props.background, "Asset") as Class;
 			_bg = new stageClass();
 			_backgroundLayer.addChild(_bg);
 			_stageInitialBounds = _bg.getBounds(null);

@@ -20,6 +20,9 @@ package
 		
 		[Embed(source='..\\bin\\resources\\preloader-config.xml',mimeType="application/octet-stream")]
 		public static var xmlGameConfigClass:Class;
+				
+		[Embed(source='..\\bin\\resources\\popups-config.xml',mimeType="application/octet-stream")]
+		public static var popupsConfigClass:Class;
 		
 	}
 

@@ -20,6 +20,9 @@ package com.sevenbrains.trashingDead.utils
 		 */
 		public static function getChildByPath(context:DisplayObjectContainer, path:String):DisplayObject {
 			
+			if (!Boolean(path)) {
+				return context;
+			}
 			var obj:DisplayObject = context;
 			for each (var name:String in path.split('.')) {
 				if (obj is DisplayObjectContainer === false) return null;
