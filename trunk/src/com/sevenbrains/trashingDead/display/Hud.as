@@ -29,7 +29,7 @@ package com.sevenbrains.trashingDead.display
 			
 			changeWeapon(null);
 			
-			UserModel.instance.player.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
+			UserModel.instance.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
 		}
 		
 		private function changeWeapon(e:PlayerEvents):void {
@@ -37,7 +37,7 @@ package com.sevenbrains.trashingDead.display
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.player.getActualWeapon().props.icon);
+			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.batter.getActualWeapon().props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

@@ -8,35 +8,28 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.Clientb2ContactListener;
 	import com.sevenbrains.trashingDead.b2.GamePhysicWorld;
-	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
-	import com.sevenbrains.trashingDead.display.popup.Popup;
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.entities.Floor;
-	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Trash;
-	import com.sevenbrains.trashingDead.entities.Zombie;
-	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
-	import com.sevenbrains.trashingDead.enum.PlayerStatesEnum;
-	import com.sevenbrains.trashingDead.events.PlayerEvents;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
-	import com.sevenbrains.trashingDead.managers.AssetLoader;
 	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
+	import com.sevenbrains.trashingDead.managers.EntityPathManager;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.managers.ItemManager;
+	import com.sevenbrains.trashingDead.managers.SoundManager;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
-	import com.sevenbrains.trashingDead.events.FatGuyEvents;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -44,11 +37,6 @@ package com.sevenbrains.trashingDead.display {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
-	import com.sevenbrains.trashingDead.models.ConfigModel;
-	import com.sevenbrains.trashingDead.managers.SoundManager;
-	import com.sevenbrains.trashingDead.managers.PopupManager;
-	import com.sevenbrains.trashingDead.enum.PopupType;
-	import com.sevenbrains.trashingDead.display.popup.PopupChannel;
 	
 	/*
 	* ...
@@ -58,48 +46,43 @@ package com.sevenbrains.trashingDead.display {
 		
 		private var _props:WorldDefinition;
 		
+		private var _gameTimer:GameTimer;
+		
 		private var _damageArea:DamageAreaManager;
 		private var _itemManager:ItemManager;
+		private var _entityPathManager:EntityPathManager;
+		
 		private var _userModel:UserModel;
-		private var _gameTimer:GameTimer;
 		private var _worldModel:WorldModel;
 		
-		private var _trashLayer:Sprite;
-		private var _zombiesLayer:Sprite;
+		private var _zombiesLayer:Sprite;		
+		private var _damageLayer:Sprite;
 		private var _debugLayer:Sprite;
 		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
-		private var _uiLayer:Sprite;
 		private var _popupLayer:Sprite;
 		private var _traceLayer:Sprite;
 		
-		private var _bg:MovieClip;
-		
 		private var _physicWorld:GamePhysicWorld;
-		private var _currentTrash:Trash;
-		private var _currentTrashZooming:Trash;
-		private var _customContact:b2ContactListener;
+		
 		private var _stageInitialBounds:Rectangle;
 		
 		private var _state:String;
-		private var _data:String;
-		private var _worldWidth:Number;
-		private var _worldHeight:Number;
 		
-		private var _lastTrashTrace:Vector.<Point>;
+		private var _callId:int;
 		
 		public function World(props:WorldDefinition) {
 			_props = props;
+			
 			_backgroundLayer = createLayer();
 			_playerLayer = createLayer();
 			_debugLayer = createLayer();
 			_zombiesLayer = createLayer();
-			_trashLayer = createLayer();
+			_damageLayer = createLayer();
 			_traceLayer = createLayer();
-			_uiLayer = createLayer();
 			_popupLayer = createLayer();
+			
 			initModels();
-
 		}
 		
 		private function createLayer():Sprite {
@@ -117,28 +100,22 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		public function init():void {
-			_lastTrashTrace = new Vector.<Point>();
-			
 			var gravivy:b2Vec2 = new b2Vec2(0, 10)
 			_worldModel.gravity = gravivy;
 			
 			_physicWorld = new GamePhysicWorld(gravivy, true);
-			_customContact = new Clientb2ContactListener();
-			_itemManager = new ItemManager();
-			
-			_physicWorld.SetContactListener(_customContact);
 			
 			// Carga el Stage
 			var stageClass:Class = ConfigModel.assets.getDefinition(_props.background, "Asset") as Class;
-			_bg = new stageClass();
-			_backgroundLayer.addChild(_bg);
-			_stageInitialBounds = _bg.getBounds(null);
+			var bg:MovieClip = new stageClass();
+			_backgroundLayer.addChild(bg);
+			_stageInitialBounds = bg.getBounds(null);
 			
 			this.scaleX = StageReference.stage.stageWidth / _stageInitialBounds.width;
 			this.scaleY = this.scaleX;
 			
 			//add floor
-			var floor:MovieClip = _bg.getChildByName("mcFloor") as MovieClip;
+			var floor:MovieClip = bg.getChildByName("mcFloor") as MovieClip;
 			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
 			var floorData:Object = new Object();
 			floorData.assetSprite = null;
@@ -148,42 +125,35 @@ package com.sevenbrains.trashingDead.display {
 			_physicWorld.registerBox(box);
 			DisplayUtil.remove(floor);
 			
-			_userModel.player.addEventListener(PlayerEvents.TRASH_HIT, onShootTrash);
-			_userModel.player.addEventListener(PlayerEvents.THREW_ITEM, onThrewItem);
-			_userModel.player.initPlayer();
-			_playerLayer.addChild(_userModel.player);
+			// Inicializa los players
+			_userModel.players.init();
+			_playerLayer.addChild(_userModel.players);
 			
-			_userModel.fatGuy.addEventListener(FatGuyEvents.THREW_TRASH, onFatGuyGiveTrash);
-			_userModel.fatGuy.init();
-			_playerLayer.addChild(_userModel.fatGuy);
+			// Inicializa los managers
+			_itemManager = new ItemManager();
 			
-			_userModel.girl.init();
-			_playerLayer.addChild(_userModel.girl);
+			_entityPathManager = new EntityPathManager();
+			_entityPathManager.init();
+			_traceLayer.addChild(_entityPathManager.content);
 			
 			_damageArea.init();
-			addChild(_damageArea.content);
-			_userModel.player.state = PlayerStatesEnum.WAITING;
-
-			
-			_uiLayer.addChild(UserModel.instance.player.throwingArea);
+			_damageLayer.addChild(_damageArea.content);
 			
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
-						
-			_worldWidth = this.width;
-			_worldHeight = this.height;
 			
 			_state = ClassStatesEnum.RUNNING;
 			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			_gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
+			_callId = _gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
-			_gameTimer.start();			
+			_gameTimer.start();
 			
 			if (Boolean(_props.soundId)) {
 				SoundManager.instance.play(_props.soundId);
 			}
+			
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
@@ -191,29 +161,6 @@ package com.sevenbrains.trashingDead.display {
 			if (e.keyCode == Keyboard.ESCAPE) {
 				_state = ClassStatesEnum.DESTROYING;
 			}
-		}
-		
-		private function zooming(out:Boolean):void {
-			/*
-			var v:Number = GameProperties.ZOOM_VAR;
-			if (out && (this.width - (this.width * v) >= StageReference.stage.stageWidth)) {
-				this.scaleX -= v;
-				this.scaleY -= v;
-				if (this.width < StageReference.stage.stageWidth) {
-					this.width = StageReference.stage.stageWidth;
-					this.scaleY = this.scaleX;
-				}
-				
-			}else if (!out && this.scaleX < 1){
-				this.scaleX += v;
-				this.scaleY += v;
-				if (this.scaleX > 1) {
-					this.scaleX = this.scaleY = 1;
-				}
-			}
-			var posY:Number = (_stageInitialBounds.height - ((this.scaleY * _stageInitialBounds.height))) /2; 
-			this.y =  posY;
-			*/
 		}
 		
 		private function makeZombie():void {
@@ -257,61 +204,10 @@ package com.sevenbrains.trashingDead.display {
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_physicWorld.SetDebugDraw(debug);
 			_debugLayer.addChild(sprite);
-			_userModel.player.throwingArea.alpha = 1;
-		}
-		
-		private function onFatGuyGiveTrash(e:FatGuyEvents):void {
-			_currentTrash = _itemManager.createTrash(ItemDefinition(e.newValue), _userModel.player.trashPosition);
-			_trashLayer.addChild(_currentTrash);
-			_userModel.player.state = PlayerStatesEnum.READY;
-		}
-		
-		private function onShootTrash(e:PlayerEvents):void {
-			var power:Number = Number(e.newValue);
-			var angle:Number = Number(e.oldValue);
-			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
-			_currentTrashZooming = _currentTrash;
-			_lastTrashTrace = new Vector.<Point>();
-		}
-		
-		private function onThrewItem(e:PlayerEvents):void {
-			var power:Number = UserModel.instance.player.power;
-			var angle:Number = UserModel.instance.player.angle;
-			var item:Item = _itemManager.createItem(e.newValue, _userModel.player.trashPosition);
-			item.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
-			addChild(item);
-			_userModel.player.state = PlayerStatesEnum.READY;
-		}
-		
-		private function drawLastTrashTrace():void {
-			_traceLayer.graphics.clear();
-			for each(var p:Point in _lastTrashTrace) {
-				_traceLayer.graphics.beginFill(0xff0000);
-				_traceLayer.graphics.drawCircle(p.x, p.y, 5);
-				_traceLayer.graphics.endFill();
-			}
 		}
 		
 		private function updateWorld():void {
-			if (_currentTrashZooming) {
-				_lastTrashTrace.push(new Point(_currentTrashZooming.getItemPosition().x, _currentTrashZooming.getItemPosition().y));
-			}
-			
-			zooming(_currentTrashZooming && 
-					!_currentTrashZooming.isDestroyed() && 
-					_currentTrashZooming.getItemPosition().x > (_worldWidth >> 1));
-			
-			if (_currentTrashZooming && (_currentTrashZooming.getItemPosition().x > _worldWidth || _currentTrashZooming.getItemPosition().y > _worldHeight)) {
-				//trace(_currentTrashZooming.getItemPosition().x, _currentTrashZooming.getItemPosition().y);
-				//_currentTrashZooming.destroy();
-				//_currentTrashZooming = null;
-				drawLastTrashTrace();
-			}else if (_currentTrashZooming && _currentTrashZooming.isDestroyed()) {
-				drawLastTrashTrace();
-			}
-			
 			_physicWorld.Step(1 / GameProperties.WORLD_SCALE, 6, 2);
-			_itemManager.update();
 			_physicWorld.ClearForces();
 			_physicWorld.DrawDebugData();
 		}
@@ -324,24 +220,36 @@ package com.sevenbrains.trashingDead.display {
 			return _state;
 		}
 		
-		public function get data():String {
-			return _data;
-		}
-		
 		public function get itemManager():ItemManager {
 			return _itemManager;
+		}
+		
+		public function get entityPathManager():EntityPathManager 
+		{
+			return _entityPathManager;
+		}
+		
+		// Por interfaz screenable
+		public function get data():String 
+		{
+			return null;
 		}
 		
 		public function destroy():void {
 			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				_physicWorld.DestroyBody(currentBody);
 			}
-			_currentTrash.destroy();
+			
 			_damageArea.destroy();
 			_itemManager.destroy();
+			_entityPathManager.destroy();
+			
 			while (numChildren > 0) {
 				removeChildAt(0);
 			}
+			
+			StageReference.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			_gameTimer.cancelCall(_callId);
 		}
 	}
 }

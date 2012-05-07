@@ -300,6 +300,12 @@ package com.sevenbrains.trashingDead.entities
 				view.x = pos.x * GameProperties.WORLD_SCALE;
 				view.y = pos.y * GameProperties.WORLD_SCALE;
 			}
+			
+			// Si se va de pantalla se autodestruye
+			if (getItemPosition().x > WorldModel.instance.currentWorld.width ||
+				getItemPosition().y > WorldModel.instance.currentWorld.height) {
+					hit(_life);
+			}
 		}
 	}
 

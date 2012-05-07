@@ -1,10 +1,11 @@
 package com.sevenbrains.trashingDead.models 
 {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.entities.Batter;
 	import com.sevenbrains.trashingDead.entities.FatGuy;
 	import com.sevenbrains.trashingDead.entities.Girl;
 	import com.sevenbrains.trashingDead.entities.Item;
-	import com.sevenbrains.trashingDead.entities.Player;
+	import com.sevenbrains.trashingDead.entities.Players;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -31,9 +32,12 @@ package com.sevenbrains.trashingDead.models
 			return _instance;
 		}
 		
-		private var _player:Player;
-		private var _fatGuy:FatGuy;
-		private var _girl:Girl;
+		public function get players():Players 
+		{
+			return _players;
+		}
+		
+		private var _players:Players;
 		
 		public function UserModel() 
 		{
@@ -43,33 +47,17 @@ package com.sevenbrains.trashingDead.models
 		}
 		
 		public function init():void {
-			var playersClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.PLAYERS, "Asset") as Class;
-			var content:MovieClip = new playersClass();
+			
 			
 			var weapons:Vector.<Item> = new Vector.<Item>();
 			for each (var weaponDef:ItemDefinition in ConfigModel.entities.getWeapons()) {
 				weapons.push(new Item(weaponDef, new Point()));
 			}
 			
-			_player = new Player(content, weapons);
-			_fatGuy = new FatGuy(content);
-			_girl = new Girl(content);
+			_players = new Players();
+			_players.init();
 		}
 		
-		public function get player():Player 
-		{
-			return _player;
-		}
-		
-		public function get fatGuy():FatGuy 
-		{
-			return _fatGuy;
-		}
-		
-		public function get girl():Girl 
-		{
-			return _girl;
-		}
 	}
 
 }

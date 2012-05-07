@@ -22,7 +22,7 @@ package com.sevenbrains.trashingDead.entities
 		private static const TOLERANCE:Number = 300;
 		private static const HITS:int = 10;
 		
-		private var _mcPlayer:MovieClip;
+		private var _content:MovieClip;
 		
 		private var _animation:Animation;
 		
@@ -33,13 +33,14 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _state:String;
 		
-		public function Girl(mc:MovieClip) 
+		public function Girl() 
 		{
-			_mcPlayer = mc.getChildByName("mcPlayer_3") as MovieClip;
 		}
 		
-		public function init():void {
-			_animation = new Animation(_mcPlayer);
+		public function init(content:MovieClip):void {
+			_content = content;
+			
+			_animation = new Animation(_content);
 			_animation.addAnimation("repair");
 			_animation.addAnimation("shoot");
 			_animation.play("repair", 0);
@@ -50,8 +51,6 @@ package com.sevenbrains.trashingDead.entities
 			_zombieTargeted = null;
 			
 			_callId = GameTimer.instance.callMeEvery(200, update);
-			
-			this.x = UserModel.instance.player.x + (UserModel.instance.player.width >> 1);
 		}
 		
 		public function registZombie(entity:Entity):void {
@@ -87,6 +86,8 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function destroy():void {
+			_zombiesWatcher = null;
+			
 			GameTimer.instance.cancelCall(_callId);
 		}
 	}

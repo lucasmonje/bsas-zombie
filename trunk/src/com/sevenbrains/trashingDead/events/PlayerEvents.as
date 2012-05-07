@@ -13,25 +13,26 @@ package com.sevenbrains.trashingDead.events
 		public static const TRASH_HIT:String = "trash_hit";
 		public static const STATE_CHANGED:String = "state_changed";
 		public static const THREW_ITEM:String = "threw_item";
+		public static const THREW_TRASH:String = "threw_trash";
 		
-		private var _newValue:String;
-		private var _oldValue:String;
+		private var _value1:*;
+		private var _value2:*;
 		
-		public function PlayerEvents(type:String, newValue:String = '', oldValue:String = '') 
+		public function PlayerEvents(type:String, value1:* = null, value2:* = null) 
 		{ 
 			super(type);
-			_newValue = newValue;
-			_oldValue = oldValue;
+			_value1 = value1;
+			_value2 = value2;
 		} 
 		
-		public function get newValue():String 
+		public function get value1():* 
 		{
-			return _newValue;
+			return _value1;
 		}
 		
-		public function get oldValue():String 
+		public function get value2():*
 		{
-			return _oldValue;
+			return _value2;
 		}
 		
 	}

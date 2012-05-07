@@ -33,7 +33,7 @@ package com.sevenbrains.trashingDead.entities {
 				var pos:b2Vec2 = currentBody.GetPosition();
 				var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
 
-				if ((pos.x * GameProperties.WORLD_SCALE) > UserModel.instance.player.wagonPosition.x) {
+				if ((pos.x * GameProperties.WORLD_SCALE) > UserModel.instance.players.wagonPosition.x) {
 					pos.x = pos.x - bodyInfo.speed;
 					currentBody.SetPosition(pos);
 				}

@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.managers
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -24,10 +25,14 @@ package com.sevenbrains.trashingDead.managers
 		private var _trashList:Vector.<Entity>;		
 		private var _zombieList:Vector.<Entity>;
 		
+		private var _callId:int;
+		
 		public function ItemManager() {
 			_itemList = new Vector.<Entity>();
 			_trashList = new Vector.<Entity>();
 			_zombieList = new Vector.<Entity>();
+			
+			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 
 		public function createItem(itemName:String, initialPosition:Point):Item {
@@ -58,7 +63,7 @@ package com.sevenbrains.trashingDead.managers
 			var zombie:Entity = new zombieClass(props, initialPosition);
 			zombie.init();
 			_zombieList.push(zombie);
-			UserModel.instance.girl.registZombie(zombie);
+			UserModel.instance.players.registZombie(zombie);
 			return zombie;
 		}
 		
@@ -98,6 +103,8 @@ package com.sevenbrains.trashingDead.managers
 			destroyList(_itemList);
 			destroyList(_trashList);
 			destroyList(_zombieList);
+		
+			GameTimer.instance.cancelCall(_callId);
 		}
 	}
 
