@@ -58,7 +58,7 @@ package com.sevenbrains.trashingDead.entities
 				_throwingContainer.removeChildAt(0);
 			}
 			
-			_trashDefinition = WorldModel.instance.currentWorld.itemManager.getTrash();
+			_trash = WorldModel.instance.currentWorld.itemManager.getTrash();
 			var assetClass:Class = ConfigModel.assets.getDefinition(_trashDefinition.name, 'box1');
 			var assetTrash:MovieClip = new assetClass();
 			_throwingContainer.addChild(assetTrash);

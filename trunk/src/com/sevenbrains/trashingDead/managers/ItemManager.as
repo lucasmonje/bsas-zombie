@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.managers
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
 	import com.sevenbrains.trashingDead.entities.FlyingZombie;
+	import com.sevenbrains.trashingDead.factories.TrashFactory;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
@@ -42,20 +43,14 @@ package com.sevenbrains.trashingDead.managers
 			}
 			var item:Item = new Item(itemDef, initialPosition);
 			item.init();
-			_trashList.push(item);
+			_itemList.push(item);
 			return item;
 		}		
 		
-		public function createTrash(itemDef:ItemDefinition, initialPosition:Point):Trash {
-			var trash:Trash = new Trash(itemDef, initialPosition);
-			trash.init();
+		public function getTrashDefinition():ItemDefinition {
+			var trashDef:ItemDefinition = TrashFactory.getTrashDefinition();
 			_trashList.push(trash);
 			return trash;
-		}
-		
-		public function getTrash():ItemDefinition {
-			var items:Array = ConfigModel.entities.getTrashes().concat();
-			return items[MathUtils.getRandomInt(1, items.length) - 1];
 		}
 		
 		public function createZombie(props:ItemDefinition, initialPosition:Point):Entity {
