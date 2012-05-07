@@ -52,7 +52,7 @@
 		
 		<!-- Popups -->
 		
-		<popup id="popupAlert" assetId="popupAlert">
+		<popup id="popupAlert">
 			<title/>
 			<body/>
 			<playMovie />
