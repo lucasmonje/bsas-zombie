@@ -42,9 +42,10 @@ package com.sevenbrains.trashingDead.deserealizer {
 			var popups:Array = [];
 			for each (var popupConfig:XML in xml.elements()) {
 				var id:String = popupConfig.@id;
+				var anim:String = popupConfig.@anim;
 				var i18n:String = popupConfig.@i18n.toString() != "" ? popupConfig.@i18n : id;
 				var channel:String = popupConfig.@channel.toString() != "" ? popupConfig.@channel : "default";
-				var popup:PopupProperties = new PopupProperties(id, i18n, channel);
+				var popup:PopupProperties = new PopupProperties(id, i18n, channel, anim);
 				if (popupConfig.@template.toString() != "") {
 					var template:PopupProperties = map[popupConfig.@template.toString()];
 					ASSERT(template, 'template must be defined before popup');

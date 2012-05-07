@@ -18,6 +18,7 @@ package com.sevenbrains.trashingDead.display.popup {
 		protected var _destroyed:Boolean;
 		protected var _client:Object;
 		protected var _data:Object;
+		protected var _showing:Boolean;
 		
 		public function AbstractPopup() {
 			_destroyed = false;
@@ -111,6 +112,10 @@ package com.sevenbrains.trashingDead.display.popup {
 		
 		public function get destroyed():Boolean {
 			return _destroyed;
+		}
+		
+		public function set showing(value:Boolean):void  {
+			_showing = value;
 		}
 		
 		// ----------------------------

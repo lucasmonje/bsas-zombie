@@ -167,8 +167,12 @@ package com.sevenbrains.trashingDead.managers {
 				setCurrentPopup(channel, null);
 				return;
 			}
+			if (currentPopup) {
+				currentPopup.window.showing = false;
+			}
 			currentPopup = queue.shift();
 			var window:IPopup = currentPopup.window;
+			window.showing = true;
 			window.addEventListener(PopupEvent.END_CLOSE, onClosePopup);
 			window.addEventListener(PopupEvent.INIT_OPEN, onInitOpen);
 			window.addEventListener(IOErrorEvent.IO_ERROR, onAssetError);

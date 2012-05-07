@@ -1,6 +1,7 @@
 package com.sevenbrains.trashingDead.display.popup {
 	import com.sevenbrains.trashingDead.display.loaders.DefaultAssetLoader;
 	import com.sevenbrains.trashingDead.display.popup.nodes.IPopupNode;
+	import com.sevenbrains.trashingDead.display.popup.nodes.PopupI18nNode;
 	import com.sevenbrains.trashingDead.events.PopupEvent;
 	import com.sevenbrains.trashingDead.exception.ASSERT;
 	import com.sevenbrains.trashingDead.interfaces.ILoader;
@@ -12,15 +13,16 @@ package com.sevenbrains.trashingDead.display.popup {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
+	import com.sevenbrains.trashingDead.enum.AnimationType;
+	import com.sevenbrains.trashingDead.tween.Tweener;
 	
 	public class Popup extends AbstractPopup {
 		
-		private var _nodes:Array;
-		private var _content:MovieClip;
 		protected var _i18n:String;
-		private var _localization:Locable;
-		protected var _waitForAllAssets:Boolean = false;
-		private var _waitingNodesList:Array = [];
+		protected var _initialized:Boolean;
+		protected var _nodes:Array;
+		protected var _content:MovieClip;
+		protected var _localization:Locable;
 		
 		public function Popup(popupId:String = null):void {
 			super();
@@ -72,58 +74,68 @@ package com.sevenbrains.trashingDead.display.popup {
 			}
 		}
 		
-		protected function setWaitingNodes():void {
-			for each (var node:IPopupNode in _nodes) {
-				waitNode(node);
-			}
-		}
-		
-		public function waitNode(node:IPopupNode):void {
-			if (_waitForAllAssets) {
-				node.setCallback(onCompleteNode);
-				_waitingNodesList.push(node);
-			}
-		}
-		
 		protected function applyNode(node:IPopupNode):void {
 			node.applyTo(this);
 		}
 		
-		private function onCompleteNode(success:Boolean, node:IPopupNode, url:String=""):void {
-			if (success) {
-				removeFromWaiting(node);
-				if (_waitingNodesList.length == 0) {
-					dispatchEvent(new PopupEvent(PopupEvent.END_OPEN, this));
-				}
-			} else {
-				if (_waitForAllAssets) {
-					throw new Error("asset: " + url + " could not be loaded");
-				}
-			}
-		}
-		
-		private function removeFromWaiting(node:IPopupNode):Boolean {
-			var index:int = _waitingNodesList.indexOf(node);
-			if (index >= 0) {
-				_waitingNodesList.splice(index, 1);
-				return true;
-			} else {
-				throw new Error("Popup::removeFromWaiting node is not in _waitingNodeList");
-			}
-			return false;
-		}
-		
 		override protected function onComplete(e:Event = null):void {
-		
 			_content = this.loader.getMCByDef("Popup");
-			this.addChild(_content);
-			_content.scaleX = 1;
-			_content.scaleY = 1;
-			setWaitingNodes();
+			preCreation();
+			creationComplete();
+			postCreation();
+		}
+		
+		public function refreshTexts():void {
+			for each (var node:IPopupNode in _nodes) {
+				if (node is PopupI18nNode) {
+					node.applyTo(this);
+				}
+			}
+		}
+		
+		public function reapplyNodes():void {
+			removeNodes();
+			applyNodes();
+		}
+		
+		protected function preCreation():void {
+			applyNodes();
+		}
+		
+		protected function creationComplete():void {
+			addChild(_content);
+		}
+		
+		protected function postCreation():void {
+			checkReady();
+		}
+		
+		private function applyNodes():void {
 			loadNodes();
-			//IM-1814 avoids putting the modal if the asset is not ready
-			if (!_waitForAllAssets) {
+			_initialized = true;
+		}
+		
+		private function removeNodes():void {
+			for each (var node:IPopupNode in _nodes) {
+				node.removeFrom(this);
+			}
+		}
+		
+		private function checkReady():void {
+			if (_initialized && _showing) {
+				animationReady();
 				dispatchEvent(new PopupEvent(PopupEvent.END_OPEN, this));
+			}
+		}
+		
+		protected function animationReady():void {
+			switch(_props.animation) {
+				case AnimationType.ALPHA:
+					Tweener.from(this, 0.25, { ease:Tweener.EASE_IN_EXPO, alpha:0 } );
+					break;
+				case AnimationType.SCALE:
+					Tweener.from(this, 0.25, { ease:Tweener.EASE_OUT_BACK, scaleY:0, scaleX:0 } );
+					break;
 			}
 		}
 		

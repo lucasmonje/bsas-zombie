@@ -17,5 +17,6 @@ package com.sevenbrains.trashingDead.display.popup
 		function set client(v:Object):void; 
 		function get data():Object;	
 		function set data(d:Object):void; 
+		function set showing(value:Boolean):void; 
 	}
 }

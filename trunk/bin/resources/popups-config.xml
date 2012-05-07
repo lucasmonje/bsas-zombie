@@ -52,7 +52,7 @@
 		
 		<!-- Popups -->
 		
-		<popup id="popupAlert">
+		<popup id="popupAlert" anim="scale">
 			<title/>
 			<body/>
 			<playMovie />
