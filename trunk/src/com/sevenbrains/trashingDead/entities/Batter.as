@@ -73,7 +73,6 @@ package com.sevenbrains.trashingDead.entities
 				case STATE_WAITING_TRASH:
 					break;
 				case STATE_READY_TO_BAT:
-					_throwingArea.activate(true);
 					break;
 				case STATE_BATTING:
 					_throwingArea.activate(false);
@@ -92,6 +91,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function readyToBat():void {
 			_state = STATE_READY_TO_BAT;
+			_throwingArea.activate(true);
 		}
 		
 		private function hitSetted(e:ThrowingAreaEvent):void {

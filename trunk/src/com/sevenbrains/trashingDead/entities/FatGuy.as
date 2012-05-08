@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
+	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import flash.display.MovieClip;
 	import flash.events.EventDispatcher;
 	/**
@@ -17,6 +18,7 @@ package com.sevenbrains.trashingDead.entities
 		private static const STATE_THREW:String = "threw";
 		private static const STATE_WAITING_THREW:String = "waiting_threw";
 		private static const STATE_PREPARE:String = "prepare";
+		private static const STATE_WAITING:String = "waiting";
 		
 		private static const ANIM_THROUGH:String = "through";
 		
@@ -41,9 +43,14 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation(ANIM_THROUGH);
 			_animation.setAnim(ANIM_THROUGH);
 			
-			_state = STATE_PREPARE;
+			getTrash();
+			_state = STATE_THREW;
 			
 			GameTimer.instance.callMeEvery(1, update);
+		}
+		
+		public function giveTrash():void {
+			_state = STATE_THREW;
 		}
 		
 		public function prepareTrash():void {
@@ -58,17 +65,25 @@ package com.sevenbrains.trashingDead.entities
 				_throwingContainer.removeChildAt(0);
 			}
 			
-			_trash = WorldModel.instance.currentWorld.itemManager.getTrash();
+			_trashDefinition = getTrashDefinition();
 			var assetClass:Class = ConfigModel.assets.getDefinition(_trashDefinition.name, 'box1');
 			var assetTrash:MovieClip = new assetClass();
 			_throwingContainer.addChild(assetTrash);
+		}
+		
+		/**
+		 * Devuelve un trash definision random
+		 */
+		public function getTrashDefinition():ItemDefinition {
+			var entities:Array = ConfigModel.entities.getTrashes().concat();
+			return entities[MathUtils.getRandomInt(1, entities.length) - 1];
 		}
 		
 		private function update():void {
 			switch(_state) {
 				case STATE_PREPARE:
 					getTrash();
-					_state = STATE_THREW;
+					_state = STATE_WAITING;
 				break;
 				case STATE_THREW:
 					_animation.play(ANIM_THROUGH);
@@ -77,7 +92,11 @@ package com.sevenbrains.trashingDead.entities
 				case STATE_WAITING_THREW:
 					if (!_animation.isPlaying) {
 						dispatchEvent(new PlayerEvents(PlayerEvents.THREW_TRASH, _trashDefinition));
+						_animation.setAnim(ANIM_THROUGH);
+						_state = STATE_PREPARE;
 					}
+				break;
+				case STATE_WAITING:
 				break;
 			}
 		}

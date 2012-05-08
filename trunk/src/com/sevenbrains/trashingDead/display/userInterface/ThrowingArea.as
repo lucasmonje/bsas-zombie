@@ -36,9 +36,9 @@ package com.sevenbrains.trashingDead.display.userInterface
 			
 			_content = new Sprite();
 			_content.graphics.beginFill(0xff0000, 0.3);
-			_content.graphics.drawCircle(0, 0, 300);
+			_content.graphics.drawCircle(50, 50, 300);
 			_content.graphics.endFill();
-			_content.alpha = 0;
+			_content.alpha = GameProperties.DEBUG_MODE?0.5:0;
 			
 			addChild(_content);
 			
@@ -51,7 +51,11 @@ package com.sevenbrains.trashingDead.display.userInterface
 			if (value == true) {
 				_state = STATE_ON;
 				
+				_power = 0;
+				_angle = 0;
+				
 				this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+				this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
 				this.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 				this.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}else {
@@ -87,7 +91,7 @@ package com.sevenbrains.trashingDead.display.userInterface
 		}
 		
 		private function calcNewAngle():void {
-			var destPoint:Point = new Point(StageReference.stage.mouseX, StageReference.stage.mouseY);
+			var destPoint:Point = new Point(this.mouseX, this.mouseY);
 			var distanceX:Number = destPoint.x - this.x;
 			var distanceY:Number = destPoint.y - this.y;
 			var newAngle:Number = Math.atan2(distanceY, distanceX);	
@@ -105,7 +109,7 @@ package com.sevenbrains.trashingDead.display.userInterface
 				
 				if (_isTargeting) {
 					calcNewAngle();
-					_arrow.rotation = _angle;
+					_arrow.rotation = _angle * 180 / Math.PI;
 				}
 				
 				if (_isPressing) {

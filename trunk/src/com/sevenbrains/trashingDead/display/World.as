@@ -235,6 +235,11 @@ package com.sevenbrains.trashingDead.display {
 			return null;
 		}
 		
+		public function get playerLayer():Sprite 
+		{
+			return _playerLayer;
+		}
+		
 		public function destroy():void {
 			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				_physicWorld.DestroyBody(currentBody);

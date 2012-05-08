@@ -14,7 +14,7 @@ package com.sevenbrains.trashingDead.managers
 		private var _content:Sprite;
 		
 		private var _entities:Vector.<Entity>;
-		private var _pointsPath:Vector.<PointsPath>;
+		private var _pointsPaths:Vector.<PointsPath>;
 		
 		private var _callId:int;
 		
@@ -26,14 +26,15 @@ package com.sevenbrains.trashingDead.managers
 		public function init():void {
 			_entities = new Vector.<Entity>();
 			_content = new Sprite();
+			_pointsPaths = new Vector.<PointsPath>();
 			
 			_callId = GameTimer.instance.callMeEvery(200, update);
 		}
 		
 		public function regist(entity:Entity):void {
 			_entities.push(entity);
-			_pointsPath.push(new PointsPath());
-			_content.addChild(_pointsPath[_pointsPath.length - 1]);
+			_pointsPaths.push(new PointsPath());
+			_content.addChild(_pointsPaths[_pointsPaths.length - 1]);
 		}
 		
 		private function update():void {
@@ -42,10 +43,11 @@ package com.sevenbrains.trashingDead.managers
 			var pointsPath:PointsPath;
 			while (i < _entities.length) {
 				entity = _entities[i];
+				pointsPath = _pointsPaths[i];
 				if (entity.isDestroyed()) {
 					_entities.splice(i, 1);
-					_content.removeChild(_pointsPath[i]);
-					_pointsPath.splice(i, 1);
+					_content.removeChild(_pointsPaths[i]);
+					_pointsPaths.splice(i, 1);
 				}else {
 					pointsPath.addPoint(entity.getItemPosition());
 					i++;
@@ -58,11 +60,11 @@ package com.sevenbrains.trashingDead.managers
 				_content.removeChildAt(0);
 			}
 			
-			for each(var pointsPath:PointsPath in _pointsPath) {
+			for each(var pointsPath:PointsPath in _pointsPaths) {
 				pointsPath.destroy();
 			}
 			
-			_pointsPath = null;
+			_pointsPaths = null;
 			_entities = null;
 			
 			GameTimer.instance.cancelCall(_callId);

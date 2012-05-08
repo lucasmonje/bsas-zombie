@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.factories.TrashFactory;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -40,9 +41,12 @@ package com.sevenbrains.trashingDead.entities
 			var _content:MovieClip = new playersClass();
 			addChild(_content);
 			
+			var _worldModel:WorldModel = WorldModel.instance;
+			_content.y = (_worldModel.floorRect.y * _worldModel.currentWorld.scaleY) - (_content.height * _worldModel.currentWorld.scaleY) - (_worldModel.floorRect.height * 3);
+			
 			// La posicion donde tiene q crearse la basura para el bateador
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;
-			_trashPosition = new Point(mcTrashPosition.x + this.x, mcTrashPosition.y + this.y);
+			_trashPosition = new Point(mcTrashPosition.x + _content.x, mcTrashPosition.y + _content.y);
 			DisplayUtil.remove(mcTrashPosition);
 			
 			// Posicion de la camioneta
@@ -56,7 +60,7 @@ package com.sevenbrains.trashingDead.entities
 			
 			// Inicializacion de los players
 			_batter = new Batter(null);
-			_batter.init(batterContent, _content.getChildByName("mcPoweringArrow") as MovieClip);
+			_batter.init(batterContent, _content.getChildByName("mcPoweringContainer") as MovieClip);
 			
 			_fatGuy = new FatGuy();
 			_fatGuy.init(fatGuyContent);
@@ -69,11 +73,6 @@ package com.sevenbrains.trashingDead.entities
 			_fatGuy.addEventListener(PlayerEvents.THREW_TRASH, fatGuyThrewTrash);
 			
 			_callId = GameTimer.instance.callMeEvery(1, update);
-		}
-		
-		public function get trashPosition():Point 
-		{
-			return _trashPosition;
 		}
 		
 		public function get wagonPosition():Point 
@@ -97,7 +96,7 @@ package com.sevenbrains.trashingDead.entities
 		 */
 		private function batterThrewTrash(e:PlayerEvents):void {
 			trashHit(Number(e.value1), Number(e.value2));
-			_fatGuy.prepareTrash();
+			_fatGuy.giveTrash();
 		}
 		
 		/**
@@ -105,14 +104,17 @@ package com.sevenbrains.trashingDead.entities
 		 */
 		private function fatGuyThrewTrash(e:PlayerEvents):void {
 			_batter.readyToBat();
-			getNewTrash(ItemDefinition(e.value1));
+			createTrash(ItemDefinition(e.value1));
+			_fatGuy.prepareTrash();
 		}
 		
 		/**
-		 * El gordo agarra una nueva basura
+		 * Crea la basura en base a la definicion que le paso el gordo
 		 */
-		private function getNewTrash(entityDef:ItemDefinition):void {
-			_currentTrash = WorldModel.instance.currentWorld.itemManager.createTrash(entityDef, _trashPosition);
+		private function createTrash(entityDef:ItemDefinition):void {
+			_currentTrash = TrashFactory.instance.createTrash(entityDef, _trashPosition);
+			trace("create", _currentTrash);
+			WorldModel.instance.currentWorld.playerLayer.addChild(_currentTrash);
 		}
 		
 		/**
@@ -121,7 +123,8 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	angle
 		 */
 		private function trashHit(power:Number, angle:Number):void {
-			if (_currentTrash){
+			if (_currentTrash) {
+				trace("shot", _currentTrash);
 				_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 				WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
 				_currentTrash = null;

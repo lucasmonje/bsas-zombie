@@ -47,15 +47,12 @@ package com.sevenbrains.trashingDead.models
 		}
 		
 		public function init():void {
-			
-			
 			var weapons:Vector.<Item> = new Vector.<Item>();
 			for each (var weaponDef:ItemDefinition in ConfigModel.entities.getWeapons()) {
 				weapons.push(new Item(weaponDef, new Point()));
 			}
 			
 			_players = new Players();
-			_players.init();
 		}
 		
 	}

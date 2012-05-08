@@ -47,12 +47,6 @@ package com.sevenbrains.trashingDead.managers
 			return item;
 		}		
 		
-		public function getTrashDefinition():ItemDefinition {
-			var trashDef:ItemDefinition = TrashFactory.getTrashDefinition();
-			_trashList.push(trash);
-			return trash;
-		}
-		
 		public function createZombie(props:ItemDefinition, initialPosition:Point):Entity {
 			var zombieClass:Class = props.type == PhysicObjectType.FLYING_ZOMBIE ? FlyingZombie : Zombie;
 			var zombie:Entity = new zombieClass(props, initialPosition);

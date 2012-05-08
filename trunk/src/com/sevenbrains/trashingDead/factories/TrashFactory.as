@@ -4,14 +4,15 @@ package com.sevenbrains.trashingDead.factories
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
+	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Fulvio
 	 */
 	public class TrashFactory 
 	{
-		private static var _instance:TrashFactory;
-		private static var _instanciable:Boolean;
+		private static var _instance:TrashFactory=null;
+		private static var _instanciable:Boolean=false;
 		
 		public static function get instance():TrashFactory {
 			if (!_instance) {
@@ -29,21 +30,8 @@ package com.sevenbrains.trashingDead.factories
 			}
 		}
 		
-		public function getTrashDefinition():ItemDefinition {
-			var entities:Array = ConfigModel.entities.getTrashes().concat();
-			return entities[MathUtils.getRandomInt(1, entities.length) - 1];
-		}
-		
-		public function createTrash():Trash {
-			var trashDef:ItemDefinition = getTrashDefinition();
-			
-			var trash:Trash = new Trash(trashDef);
-			trash.init();
-			return trash;
-		}
-		
-		public function createTrashFromDefinition(def:ItemDefinition):Trash {
-			var trash:Trash = new Trash(trashDef);
+		public function createTrash(def:ItemDefinition, pos:Point):Trash {
+			var trash:Trash = new Trash(def, pos);
 			trash.init();
 			return trash;
 		}
