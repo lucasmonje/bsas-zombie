@@ -148,7 +148,6 @@ package com.sevenbrains.trashingDead.display {
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_callId = _gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
-			_gameTimer.start();
 			
 			if (Boolean(_props.soundId)) {
 				SoundManager.instance.play(_props.soundId);
