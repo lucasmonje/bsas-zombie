@@ -28,6 +28,7 @@ package com.sevenbrains.trashingDead.entities
 	import flash.display.Sprite;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.events.AnimationsEvent;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -56,6 +57,8 @@ package com.sevenbrains.trashingDead.entities
 		protected var mc:MovieClip;
 		protected var animations:Animation;
 		private var _actualAnim:ItemAnimationsDefinition;
+		
+		private var _callId:int;
 		
 		public function Entity(props:ItemDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
 		{
@@ -160,6 +163,9 @@ package com.sevenbrains.trashingDead.entities
 				animations.addEventListener(AnimationsEvent.ANIMATION_ENDED, updateAnimation);
 				animations.play(_actualAnim.name);
 			}
+			
+			updatePosition();
+			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
 		protected function updateAnimation(e:Event):void {
@@ -258,6 +264,8 @@ package com.sevenbrains.trashingDead.entities
 			}
 			
 			animations.destroy();
+			
+			GameTimer.instance.cancelCall(_callId);
 		}
 		
 		public function isDestroyed():Boolean {
@@ -288,6 +296,10 @@ package com.sevenbrains.trashingDead.entities
 				_life = 0;
 				_enabled = false;
 			}
+		}
+		
+		private function update():void {
+			updatePosition();
 		}
 		
 		public function updatePosition():void {
