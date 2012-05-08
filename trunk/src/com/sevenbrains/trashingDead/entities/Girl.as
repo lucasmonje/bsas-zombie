@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
+	import com.sevenbrains.trashingDead.managers.ItemManager;
 	
 	/**
 	 * ...
@@ -26,7 +27,6 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _animation:Animation;
 		
-		private var _zombiesWatcher:Vector.<Entity>;
 		private var _zombieTargeted:Entity;
 		
 		private var _callId:int;
@@ -47,26 +47,21 @@ package com.sevenbrains.trashingDead.entities
 			
 			_state = STATE_REPARING;
 			
-			_zombiesWatcher = new Vector.<Entity>();
 			_zombieTargeted = null;
 			
 			_callId = GameTimer.instance.callMeEvery(200, update);
-		}
-		
-		public function registZombie(entity:Entity):void {
-			_zombiesWatcher.push(entity);
 		}
 		
 		public function update():void {
 			if (_state == STATE_REPARING){
 				var i:int = 0;
 				var entity:Entity;
-				while (i < _zombiesWatcher.length) {
-					entity = _zombiesWatcher[i];
+				var zombiesWatcher:Array = ItemManager.instance.getZombies();
+				while (i < zombiesWatcher.length) {
+					entity = zombiesWatcher[i];
 					var zombiePosX:Number = entity.getItemPosition().x;
 					if (Math.abs(zombiePosX - this.x) <= TOLERANCE) {
 						_zombieTargeted = entity;
-						_zombiesWatcher.splice(i, 1);
 						_animation.play("shoot");
 						_state = STATE_SHOOTING;
 						return;
@@ -86,8 +81,6 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function destroy():void {
-			_zombiesWatcher = null;
-			
 			GameTimer.instance.cancelCall(_callId);
 		}
 	}

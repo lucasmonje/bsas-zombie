@@ -10,114 +10,120 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.StageReference;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 	import com.sevenbrains.trashingDead.enum.PopupType;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class InGame extends Sprite implements Screenable
 	{	
-		private static const NONE:String = "none";
-		private static const MAP:String = "map";
-		private static const WORLD:String = "world";
+		private static const STATE_LOADING:String = "loading";
+		private static const STATE_MAP:String = "map";
+		private static const STATE_WORLD:String = "world";
 		
-		private var _oldState:String;
 		private var _state:String;
 		
 		private var _worldMap:MapWorld;
 		private var _world:World;
+		
+		private var _gameLayer:Sprite;
+		private var _loadingLayer:Sprite;
 		private var _popupLayer:Sprite;
 		
-		private var _currentLevel:int;
+		private var _actualScreen:Screenable;
 		private var _data:String;
-		private var _actualScreen:String;
 		
 		private var _map:Dictionary;
+		
+		private var _callId:int;
 		
 		public function InGame() 
 		{
 		}
 		
 		public function init():void {
-			_oldState = NONE;
-			_state = WORLD;
 			SoundManager.instance.setup();
 			SoundManager.instance.play("intro");
 			UserModel.instance.init();
 			
-			_worldMap = new MapWorld();
+			_gameLayer = new Sprite();
+			_popupLayer = new Sprite();
+			_loadingLayer = new Sprite();
+			
+			addChild(_gameLayer);
+			addChild(_popupLayer);
+			addChild(_loadingLayer);
+			
 			_world = null;
 			
+			_worldMap = new MapWorld();
 			_worldMap.init();
-			addChildAt(_worldMap, 0);
+			
+			_actualScreen = _worldMap;
+			_gameLayer.addChild(_actualScreen as DisplayObject);
+			
+			_state = STATE_MAP;
 			
 			_popupLayer = new Sprite();
 			_popupLayer.mouseEnabled = false;
-			addChildAt(_popupLayer, 1);
+			
 			PopupManager.instance.setLayer(_popupLayer);
 			PopupManager.instance.addPopup(new Popup(PopupType.POPUP_MINUTES));
 			
-			_map = new Dictionary();
-			_map['world'] = new Dictionary();
-			_map['world']['actual'] = null;
-			_map['world'][ClassStatesEnum.DESTROYING] = 'worldMap';
-			
-			_map['worldMap'] = new Dictionary();
-			_map['worldMap']['actual'] = _worldMap;
-			_map['worldMap'][ClassStatesEnum.DESTROYING] = 'world';
-			
-			_actualScreen = 'worldMap';
-			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			addEventListener(Event.ENTER_FRAME, update);
+			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 
-		private function update(e:Event):void {
-			var screen:Screenable = _map[_actualScreen]['actual'];
-			if (screen.state == ClassStatesEnum.DESTROYING) {
-				_actualScreen = _map[_actualScreen][screen.state];
-				if (_actualScreen == 'world') {
-					_world = new World(ConfigModel.worlds.getWorldById(screen.data));
-					WorldModel.instance.currentWorld = _world;
-					_map['world']['actual'] = _world;
-				}
-				removeChild(Sprite(screen));
-				screen.destroy();
-				screen = _map[_actualScreen]['actual'];
-				screen.init();
-				addChildAt(Sprite(screen), 0);
+		private function update():void {
+			switch(_state) {
+				case STATE_MAP:
+					if (_actualScreen.state == ClassStatesEnum.DESTROYING) {
+						_loadingLayer.visible = true;
+						
+						_world = new World(ConfigModel.worlds.getWorldById(_actualScreen.data));
+						WorldModel.instance.currentWorld = _world;
+						_world.addEventListener(Event.COMPLETE, onWorldLoaded);
+						
+						changeScreen(_world);
+						
+						_state = STATE_LOADING;
+					}
+					break;
+				case STATE_WORLD:
+					if (_actualScreen.state == ClassStatesEnum.DESTROYING) {
+						_worldMap = new MapWorld();
+						
+						changeScreen(_worldMap);
+						
+						_state = STATE_MAP;
+					}
+					break;
 			}
+		}
+		
+		private function changeScreen(newScreen:Screenable):void {
+			_gameLayer.removeChild(_actualScreen as DisplayObject);
+			_actualScreen.destroy();
+			_actualScreen = newScreen;
+			_actualScreen.init();
+			_gameLayer.addChild(_actualScreen as DisplayObject);
 		}
 		
 		private function onKeyUp(e:KeyboardEvent):void {
 			if (e.keyCode == Keyboard.ESCAPE) {
-				if (_actualScreen == 'worldMap'){
-					_state = ClassStatesEnum.DESTROYING;
-				}
 			}
-		}
-		
-		private function changeState():void {
-			switch(_state) {
-				case WORLD:
-					initWorld();
-				break;
-			}
-		}
-		
-		private function initWorld():void {
-			_world.addEventListener(Event.COMPLETE, onWorldLoaded);
-			WorldModel.instance.currentWorld = _world;
-			_world.init();
 		}
 		
 		private function onWorldLoaded(e:Event):void {
-			addChildAt(_worldMap, 0);
+			_loadingLayer.visible = false;
+			_state = STATE_WORLD;
 		}
 		
 		public function destroy():void {
@@ -133,6 +139,8 @@ package com.sevenbrains.trashingDead.display
 			}
 			
 			_worldMap.destroy();
+			
+			GameTimer.instance.cancelCall(_callId);
 		}
 		
 		public function get state():String 

@@ -9,6 +9,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.factories.TrashFactory;
+	import com.sevenbrains.trashingDead.managers.ItemManager;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -113,7 +114,7 @@ package com.sevenbrains.trashingDead.entities
 		 */
 		private function createTrash(entityDef:ItemDefinition):void {
 			_currentTrash = TrashFactory.instance.createTrash(entityDef, _trashPosition);
-			trace("create", _currentTrash);
+			ItemManager.instance.regist(_currentTrash);
 			WorldModel.instance.currentWorld.playerLayer.addChild(_currentTrash);
 		}
 		
@@ -124,20 +125,12 @@ package com.sevenbrains.trashingDead.entities
 		 */
 		private function trashHit(power:Number, angle:Number):void {
 			if (_currentTrash) {
-				trace("shot", _currentTrash);
 				_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
 				WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
 				_currentTrash = null;
 			}
 		}
 		
-		/**
-		 * Registra el zombie para la entidad watcher
-		 * @param	entity
-		 */
-		public function registZombie(entity:Entity):void {
-			_girl.registZombie(entity);
-		}
 	}
 
 }

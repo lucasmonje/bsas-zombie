@@ -6,11 +6,6 @@ package com.sevenbrains.trashingDead.models
 	
 	public class WorldModel {
 		
-		private var _currentWorld:World;
-		private var _gravity:b2Vec2;
-		
-		private var _floorRect:Rectangle;
-		
 		private static var _instanciable:Boolean;
 		private static var _instance:WorldModel;
 		
@@ -28,6 +23,11 @@ package com.sevenbrains.trashingDead.models
 			}			
 			return _instance;
 		}
+		
+		private var _currentWorld:World;
+		private var _gravity:b2Vec2;
+		private var _floorRect:Rectangle;
+		
 		
 		public function get currentWorld():World 
 		{

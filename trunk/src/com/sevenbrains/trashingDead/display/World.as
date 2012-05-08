@@ -1,23 +1,18 @@
 package com.sevenbrains.trashingDead.display {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
-	import Box2D.Dynamics.b2ContactListener;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
-	import com.sevenbrains.trashingDead.b2.Clientb2ContactListener;
 	import com.sevenbrains.trashingDead.b2.GamePhysicWorld;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
-	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
-	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.entities.Floor;
-	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import com.sevenbrains.trashingDead.genetators.ZombieGenerator;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
 	import com.sevenbrains.trashingDead.managers.EntityPathManager;
@@ -28,13 +23,11 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
-	import com.sevenbrains.trashingDead.utils.MathUtils;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	
@@ -49,8 +42,8 @@ package com.sevenbrains.trashingDead.display {
 		private var _gameTimer:GameTimer;
 		
 		private var _damageArea:DamageAreaManager;
-		private var _itemManager:ItemManager;
 		private var _entityPathManager:EntityPathManager;
+		private var _zombieGenerator:ZombieGenerator;
 		
 		private var _userModel:UserModel;
 		private var _worldModel:WorldModel;
@@ -129,15 +122,16 @@ package com.sevenbrains.trashingDead.display {
 			_userModel.players.init();
 			_playerLayer.addChild(_userModel.players);
 			
-			// Inicializa los managers
-			_itemManager = new ItemManager();
-			
 			_entityPathManager = new EntityPathManager();
 			_entityPathManager.init();
 			_traceLayer.addChild(_entityPathManager.content);
 			
 			_damageArea.init();
 			_damageLayer.addChild(_damageArea.content);
+			
+			_zombieGenerator = new ZombieGenerator();
+			_zombieGenerator.init(_props.zombieTimeCreation, _props.zombieMaxInScreen, _props.zombies);
+			_zombieGenerator.activate(true);
 			
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
@@ -147,7 +141,6 @@ package com.sevenbrains.trashingDead.display {
 			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_callId = _gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
-			_gameTimer.callMeEvery(_props.zombieTimeCreation, makeZombie);
 			
 			if (Boolean(_props.soundId)) {
 				SoundManager.instance.play(_props.soundId);
@@ -159,38 +152,6 @@ package com.sevenbrains.trashingDead.display {
 		private function onKeyUp(e:KeyboardEvent):void {
 			if (e.keyCode == Keyboard.ESCAPE) {
 				_state = ClassStatesEnum.DESTROYING;
-			}
-		}
-		
-		private function makeZombie():void {
-			if (_itemManager.getZombieAmount() < _props.zombieMaxInScreen) {
-				var wzd:WorldEntitiesDefinition;
-				var code:uint;
-				var weight:uint = 1;
-				for each (wzd in _props.zombies) {
-					weight += wzd.weight;
-				}
-				var rnd:Number = MathUtils.getRandom(1, weight);
-				weight = 1;
-				for each (wzd in _props.zombies) {
-					weight += wzd.weight;
-					if (rnd <= weight) {
-						code = wzd.code;
-						break;
-					}
-				}
-				var zombieProps:ItemDefinition = ConfigModel.entities.getZombieByCode(code);
-				if (zombieProps){
-					var pos:Point;
-					var floorY:Number = _worldModel.floorRect.y - (_worldModel.floorRect.height / 2);
-					if (zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE) {
-						pos = new Point(1100, MathUtils.getRandom(50, floorY - 150));					
-					} else {
-						pos = new Point(1100, floorY - 50);
-					}
-					var z:Entity = _itemManager.createZombie(zombieProps, pos);
-					_zombiesLayer.addChild(z);
-				}
 			}
 		}
 		
@@ -219,10 +180,6 @@ package com.sevenbrains.trashingDead.display {
 			return _state;
 		}
 		
-		public function get itemManager():ItemManager {
-			return _itemManager;
-		}
-		
 		public function get entityPathManager():EntityPathManager 
 		{
 			return _entityPathManager;
@@ -239,13 +196,17 @@ package com.sevenbrains.trashingDead.display {
 			return _playerLayer;
 		}
 		
+		public function get zombiesLayer():Sprite 
+		{
+			return _zombiesLayer;
+		}
+		
 		public function destroy():void {
 			for (var currentBody:b2Body = _physicWorld.GetBodyList(); currentBody; currentBody = currentBody.GetNext()) {
 				_physicWorld.DestroyBody(currentBody);
 			}
 			
 			_damageArea.destroy();
-			_itemManager.destroy();
 			_entityPathManager.destroy();
 			
 			while (numChildren > 0) {
