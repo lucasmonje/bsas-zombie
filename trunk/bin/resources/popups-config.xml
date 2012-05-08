@@ -52,13 +52,20 @@
 		
 		<!-- Popups -->
 		
-		<popup id="popupAlert" anim="scale">
+		<popup id="popupAlert" anim="0.5,scale,alpha,rotation">
 			<title/>
 			<body/>
 			<playMovie />
+			<autoClose time="1500" />
 			<enterClose />
 			<btnClose />
 			<escClose />
+		</popup>
+		
+		<popup id="popupMinutes" anim="0.5,scale,alpha,rotation">
+			<title/>
+			<playMovie />
+			<autoClose time="1500" />
 		</popup>
 		<!--
 		<popup id="confirmation" assetId="popUpAlert" i18n="popup.confirmation" >

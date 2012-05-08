@@ -60,7 +60,7 @@ package com.sevenbrains.trashingDead.display
 			_popupLayer.mouseEnabled = false;
 			addChildAt(_popupLayer, 1);
 			PopupManager.instance.setLayer(_popupLayer);
-			PopupManager.instance.addPopup(new Popup(PopupType.ALERT));
+			PopupManager.instance.addPopup(new Popup(PopupType.POPUP_MINUTES));
 			
 			_map = new Dictionary();
 			_map['world'] = new Dictionary();

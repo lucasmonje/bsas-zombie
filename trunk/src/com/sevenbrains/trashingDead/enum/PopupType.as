@@ -6,5 +6,6 @@ package com.sevenbrains.trashingDead.enum {
 	*/
 	public class PopupType {
 		public static const ALERT:String = "popupAlert";
+		public static const POPUP_MINUTES:String = "popupMinutes";
 	}
 }

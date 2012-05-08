@@ -11,5 +11,6 @@
 		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10008" />
 		<swf id="players" path="players/players.swf" preloaderId="10009" />
 		<swf id="popupAlert" path="popups/popupAlert.swf" />
+		<swf id="popupMinutes" path="popups/popupMinutes.swf" />
 	</swfs>
 </data>

@@ -13,6 +13,8 @@ package {
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
+	
 	/**
 	* ...
 	* @author Fulvio Crescenzi
@@ -40,6 +42,7 @@ package {
 		private function init(e:Event=null):void {
 			Manifest;
 			StageReference.initReference(stage);
+			GameTimer.instance.start();
 			FullscreenManager.instance.root = this;
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			loadConfig();

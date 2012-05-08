@@ -42,8 +42,9 @@ package com.sevenbrains.trashingDead.display.popup.nodes {
 			} else {
 				movie.gotoAndStop(name);
 			}
-			if (_callback != null)
+			if (_callback != null) {
 				_callback(true, this);
+			}
 		}
 		
 		public function removeFrom(popup:Popup):void {

@@ -42,10 +42,10 @@ package com.sevenbrains.trashingDead.deserealizer {
 			var popups:Array = [];
 			for each (var popupConfig:XML in xml.elements()) {
 				var id:String = popupConfig.@id;
-				var anim:String = popupConfig.@anim;
+				var anims:Array = (popupConfig.@anim.toString()).toUpperCase().split(",");
 				var i18n:String = popupConfig.@i18n.toString() != "" ? popupConfig.@i18n : id;
 				var channel:String = popupConfig.@channel.toString() != "" ? popupConfig.@channel : "default";
-				var popup:PopupProperties = new PopupProperties(id, i18n, channel, anim);
+				var popup:PopupProperties = new PopupProperties(id, i18n, channel, anims);
 				if (popupConfig.@template.toString() != "") {
 					var template:PopupProperties = map[popupConfig.@template.toString()];
 					ASSERT(template, 'template must be defined before popup');
@@ -99,7 +99,11 @@ package com.sevenbrains.trashingDead.deserealizer {
 					var name:String = node.@name;
 					ASSERT(name);
 					var play:Boolean = BooleanUtils.fromString(node.@play, false);
-					return new PopupStateNode(path, name, play);
+					return new PopupStateNode(path, name, play);				case 'state': 
+				case 'autoClose':
+					var time:uint = node.@time;
+					ASSERT(time);
+					return new PopupAutoCloseNode(time);
 				case 'property': 
 					ASSERT(key);
 					var value:Object = node.@value;

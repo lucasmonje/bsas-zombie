@@ -15,6 +15,7 @@ package com.sevenbrains.trashingDead.display.popup {
 	import flash.text.TextField;
 	import com.sevenbrains.trashingDead.enum.AnimationType;
 	import com.sevenbrains.trashingDead.tween.Tweener;
+	import com.sevenbrains.trashingDead.utils.ObjectUtil;
 	
 	public class Popup extends AbstractPopup {
 		
@@ -129,14 +130,25 @@ package com.sevenbrains.trashingDead.display.popup {
 		}
 		
 		protected function animationReady():void {
-			switch(_props.animation) {
-				case AnimationType.ALPHA:
-					Tweener.from(this, 0.25, { ease:Tweener.EASE_IN_EXPO, alpha:0 } );
-					break;
-				case AnimationType.SCALE:
-					Tweener.from(this, 0.25, { ease:Tweener.EASE_OUT_BACK, scaleY:0, scaleX:0 } );
-					break;
+			var time:Number = 0.25;
+			var animParams:Object = new Object();
+			animParams.ease = Tweener.EASE_IN_EXPO;
+			
+			for each (var animName:String in _props.animation) {
+				var animObj:Object = AnimationType[animName];
+				if (animObj) {
+					mergeObjs(animObj, animParams);
+				} else if (!isNaN(parseFloat(animName))) {
+					time = parseFloat(animName);
+				}
 			}
+			Tweener.from(this, time, animParams);
+		}
+		
+		private function mergeObjs(obj1:Object, obj2:Object):void {
+			 for (var key:String in obj1) {
+				 obj2[key] = obj1[key];
+			 }
 		}
 		
 		// Localization
