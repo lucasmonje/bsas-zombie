@@ -26,12 +26,16 @@ package com.sevenbrains.trashingDead.display
 	{	
 		private static const STATE_LOADING:String = "loading";
 		private static const STATE_MAP:String = "map";
+		private static const STATE_LOAD_WORLD:String = "load_world";
 		private static const STATE_WORLD:String = "world";
+		
+		private static const MINIMUM_LOADING_TIME:int = 100;
 		
 		private var _state:String;
 		
 		private var _worldMap:MapWorld;
 		private var _world:World;
+		private var _loading:Loading;
 		
 		private var _gameLayer:Sprite;
 		private var _loadingLayer:Sprite;
@@ -43,6 +47,9 @@ package com.sevenbrains.trashingDead.display
 		private var _map:Dictionary;
 		
 		private var _callId:int;
+		
+		private var _timeLoading:int;
+		private var _worldIsLoaded:Boolean;
 		
 		public function InGame() 
 		{
@@ -66,6 +73,11 @@ package com.sevenbrains.trashingDead.display
 			_worldMap = new MapWorld();
 			_worldMap.init();
 			
+			_loading = new Loading();
+			_loading.init();
+			_loadingLayer.addChild(_loading);
+			_loadingLayer.visible = false;
+			
 			_actualScreen = _worldMap;
 			_gameLayer.addChild(_actualScreen as DisplayObject);
 			
@@ -86,23 +98,36 @@ package com.sevenbrains.trashingDead.display
 				case STATE_MAP:
 					if (_actualScreen.state == ClassStatesEnum.DESTROYING) {
 						_loadingLayer.visible = true;
+						_loading.activate(true);
+						_timeLoading = 0;
+						_worldIsLoaded = false;
 						
+						_state = STATE_LOAD_WORLD;
+					}
+					break;
+				case STATE_LOAD_WORLD:
 						_world = new World(ConfigModel.worlds.getWorldById(_actualScreen.data));
 						WorldModel.instance.currentWorld = _world;
 						_world.addEventListener(Event.COMPLETE, onWorldLoaded);
-						
-						changeScreen(_world);
+						_world.init();
 						
 						_state = STATE_LOADING;
-					}
 					break;
 				case STATE_WORLD:
 					if (_actualScreen.state == ClassStatesEnum.DESTROYING) {
 						_worldMap = new MapWorld();
-						
+						_worldMap.init();
 						changeScreen(_worldMap);
 						
 						_state = STATE_MAP;
+					}
+					break;
+				case STATE_LOADING:
+					_timeLoading++;
+					if (_timeLoading >= MINIMUM_LOADING_TIME && _worldIsLoaded) {
+						_loadingLayer.visible = false;
+						_loading.activate(false);
+						_state = STATE_WORLD;
 					}
 					break;
 			}
@@ -112,7 +137,6 @@ package com.sevenbrains.trashingDead.display
 			_gameLayer.removeChild(_actualScreen as DisplayObject);
 			_actualScreen.destroy();
 			_actualScreen = newScreen;
-			_actualScreen.init();
 			_gameLayer.addChild(_actualScreen as DisplayObject);
 		}
 		
@@ -122,8 +146,9 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		private function onWorldLoaded(e:Event):void {
-			_loadingLayer.visible = false;
-			_state = STATE_WORLD;
+			changeScreen(_world);
+			
+			_worldIsLoaded = true;
 		}
 		
 		public function destroy():void {
