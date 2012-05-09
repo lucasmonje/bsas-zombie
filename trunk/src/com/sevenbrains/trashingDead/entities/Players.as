@@ -102,8 +102,10 @@ package com.sevenbrains.trashingDead.entities
 		 * Avisa al gordo que le de una nueva al bateador.
 		 */
 		private function batterThrewTrash(e:PlayerEvents):void {
-			trashHit(Number(e.value1), Number(e.value2));
-			_fatGuy.giveTrash();
+			if (_currentTrash) {
+				trashHit(Number(e.value1), Number(e.value2));
+				_fatGuy.giveTrash();
+			}
 		}
 		
 		/**
@@ -136,11 +138,9 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	angle
 		 */
 		private function trashHit(power:Number, angle:Number):void {
-			if (_currentTrash) {
-				_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
-				WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
-				_currentTrash = null;
-			}
+			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
+			WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
+			_currentTrash = null;
 		}
 		
 	}
