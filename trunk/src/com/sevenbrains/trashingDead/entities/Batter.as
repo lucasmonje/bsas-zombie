@@ -1,8 +1,11 @@
 package com.sevenbrains.trashingDead.entities 
 {
+	import com.sevenbrains.trashingDead.display.userInterface.ThrowingArea;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaFaster;
+	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaRect;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
+	import com.sevenbrains.trashingDead.interfaces.ThrowableArea;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
@@ -11,7 +14,8 @@ package com.sevenbrains.trashingDead.entities
 	import flash.events.EventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
-	
+	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	/**
 	 * ...
 	 * @author lmonje
@@ -30,7 +34,7 @@ package com.sevenbrains.trashingDead.entities
 		private var _state:String;
 		
 		private var _content:MovieClip;
-		private var _throwingArea:ThrowingAreaFaster;
+		private var _throwingArea:ThrowingArea;
 		
 		private var _weapons:Vector.<Item>;
 		private var _actualWeapon:int;
@@ -56,11 +60,9 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation(ANIM_HANDABLE);
 			_animation.setAnim(ANIM_BATTABLE);
 			
-			_throwingArea = new ThrowingAreaFaster(poweringArrow);
+			_throwingArea = new ThrowingAreaRect(poweringArrow);
 			_throwingArea.addEventListener(ThrowingAreaEvent.MOUSE_UP, hitSetted);
-			_throwingArea.x = _content.x;
-			_throwingArea.y = _content.y;
-			_content.parent.addChild(_throwingArea);
+			GameCanvas.instance.hud.addChild(_throwingArea);
 			
 			_state = STATE_WAITING_TRASH;
 			
@@ -87,6 +89,7 @@ package com.sevenbrains.trashingDead.entities
 				case STATE_WAITING_BATTING:
 					if (!_animation.isPlaying) {
 						dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT, _throwingArea.hitPower, _throwingArea.hitAngle));
+						_throwingArea.resetValues();
 						_animation.play(ANIM_PREPARING);
 						_state = STATE_WAITING_TRASH;
 					}

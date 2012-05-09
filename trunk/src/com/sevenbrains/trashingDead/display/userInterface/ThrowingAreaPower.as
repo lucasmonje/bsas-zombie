@@ -11,7 +11,7 @@ package com.sevenbrains.trashingDead.display.userInterface
 	 * ...
 	 * @author Fulvio
 	 */
-	public class ThrowingAreaFaster extends ThrowingArea
+	public class ThrowingAreaPower extends ThrowingArea
 	{
 		private static const STATE_ON:String = "on";
 		private static const STATE_OFF:String = "off";
@@ -22,10 +22,11 @@ package com.sevenbrains.trashingDead.display.userInterface
 		private var _state:String;
 		
 		private var _isTargeting:Boolean;
+		private var _isPressing:Boolean;
 		
 		private var _callId:int;
 		
-		public function ThrowingAreaFaster(arrow:MovieClip) 
+		public function ThrowingAreaPower(arrow:MovieClip) 
 		{
 			_arrow = arrow;
 			
@@ -42,25 +43,26 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
-		public function activate(value:Boolean):void {
+		override public function activate(value:Boolean):void {
 			if (value == true) {
 				_state = STATE_ON;
 				
-				_power = 100;
+				_power = 0;
 				_angle = 0;
 				
 				_arrow.gotoAndStop(_power);
-				rotateArrow();
 				
 				this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 				this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
-				this.addEventListener(MouseEvent.CLICK, trashMouseClic);
+				this.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+				this.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}else {
 				_state = STATE_OFF;
 				
 				this.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 				this.removeEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
-				this.removeEventListener(MouseEvent.CLICK, trashMouseClic);
+				this.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+				this.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}
 		}
 		
@@ -72,14 +74,24 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_isTargeting = false;
 		}
 		
-		private function trashMouseClic(e:MouseEvent):void {
+		private function trashMouseDown(e:MouseEvent):void {
+			_isPressing = true;
+		}
+		
+		private function trashMouseUp(e:MouseEvent):void {
+			_isPressing = false;
+			
 			dispatchEvent(new ThrowingAreaEvent(ThrowingAreaEvent.MOUSE_UP));
+		}
+		
+		private function isPressing():Boolean {
+			return _isPressing;
 		}
 		
 		private function calcNewAngle():void {
 			var destPoint:Point = new Point(this.mouseX, this.mouseY);
-			var distanceX:Number = destPoint.x;
-			var distanceY:Number = destPoint.y;
+			var distanceX:Number = destPoint.x - this.x;
+			var distanceY:Number = destPoint.y - this.y;
 			var newAngle:Number = Math.atan2(distanceY, distanceX);	
 			if (newAngle <= GameProperties.ANGLE_TOP)  {
 				_angle = GameProperties.ANGLE_TOP;
@@ -95,16 +107,20 @@ package com.sevenbrains.trashingDead.display.userInterface
 				
 				if (_isTargeting) {
 					calcNewAngle();
-					rotateArrow();
+					_arrow.rotation = _angle * 180 / Math.PI;
+				}
+				
+				if (_isPressing) {
+					_power += GameProperties.POWER_INCREMENT;
+					if (_power > GameProperties.POWER_LIMIT) {
+						_power = GameProperties.POWER_LIMIT;
+					}
+					_arrow.gotoAndStop(_power);
 				}
 			}
 		}
 		
-		private function rotateArrow():void {
-			_arrow.rotation = _angle * 180 / Math.PI;
-		}
-		
-		public function destroy():void {
+		override public function destroy():void {
 			activate(false);
 			GameTimer.instance.cancelCall(_callId);
 		}

@@ -3,15 +3,17 @@ package com.sevenbrains.trashingDead.display.userInterface
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.events.ThrowingAreaEvent;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.utils.StageReference;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	/**
 	 * ...
 	 * @author Fulvio
 	 */
-	public class ThrowingAreaFaster extends ThrowingArea
+	public class ThrowingAreaRect extends ThrowingArea
 	{
 		private static const STATE_ON:String = "on";
 		private static const STATE_OFF:String = "off";
@@ -22,16 +24,21 @@ package com.sevenbrains.trashingDead.display.userInterface
 		private var _state:String;
 		
 		private var _isTargeting:Boolean;
+		private var _isPressing:Boolean;
 		
 		private var _callId:int;
 		
-		public function ThrowingAreaFaster(arrow:MovieClip) 
+		public function ThrowingAreaRect(arrow:MovieClip) 
 		{
 			_arrow = arrow;
 			
+			var _stage:Stage = StageReference.stage;
+			var stageWidth:Number = StageReference.stage.width;
+			var stageHeight:Number = StageReference.stage.height;
+			
 			_content = new Sprite();
 			_content.graphics.beginFill(0xff0000, 0.3);
-			_content.graphics.drawCircle(50, 50, 300);
+			_content.graphics.drawRect(0,0,stageWidth,stageHeight);
 			_content.graphics.endFill();
 			_content.alpha = GameProperties.DEBUG_MODE?0.5:0;
 			
@@ -42,25 +49,23 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
-		public function activate(value:Boolean):void {
+		override public function activate(value:Boolean):void {
 			if (value == true) {
 				_state = STATE_ON;
 				
-				_power = 100;
-				_angle = 0;
-				
-				_arrow.gotoAndStop(_power);
-				rotateArrow();
+				resetValues();
 				
 				this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 				this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
-				this.addEventListener(MouseEvent.CLICK, trashMouseClic);
+				this.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+				this.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}else {
 				_state = STATE_OFF;
 				
 				this.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
 				this.removeEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
-				this.removeEventListener(MouseEvent.CLICK, trashMouseClic);
+				this.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
+				this.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}
 		}
 		
@@ -72,14 +77,24 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_isTargeting = false;
 		}
 		
-		private function trashMouseClic(e:MouseEvent):void {
+		private function trashMouseDown(e:MouseEvent):void {
+			_isPressing = true;
+		}
+		
+		private function trashMouseUp(e:MouseEvent):void {
+			_isPressing = false;
+			
 			dispatchEvent(new ThrowingAreaEvent(ThrowingAreaEvent.MOUSE_UP));
+		}
+		
+		private function isPressing():Boolean {
+			return _isPressing;
 		}
 		
 		private function calcNewAngle():void {
 			var destPoint:Point = new Point(this.mouseX, this.mouseY);
 			var distanceX:Number = destPoint.x;
-			var distanceY:Number = destPoint.y;
+			var distanceY:Number = destPoint.y - (_content.height >> 1);
 			var newAngle:Number = Math.atan2(distanceY, distanceX);	
 			if (newAngle <= GameProperties.ANGLE_TOP)  {
 				_angle = GameProperties.ANGLE_TOP;
@@ -95,16 +110,36 @@ package com.sevenbrains.trashingDead.display.userInterface
 				
 				if (_isTargeting) {
 					calcNewAngle();
-					rotateArrow();
+					setArrowAngle();
+				}
+				
+				if (_isPressing) {
+					_power += GameProperties.POWER_INCREMENT;
+					if (_power > GameProperties.POWER_LIMIT) {
+						_power = GameProperties.POWER_LIMIT;
+					}
+					setArrowPower();
 				}
 			}
 		}
 		
-		private function rotateArrow():void {
+		override public function resetValues():void {
+			_power = 0;
+			_angle = 0;
+			
+			setArrowAngle();
+			setArrowPower();
+		}
+		
+		private function setArrowAngle():void {
 			_arrow.rotation = _angle * 180 / Math.PI;
 		}
 		
-		public function destroy():void {
+		private function setArrowPower():void {
+			_arrow.gotoAndStop(_power);
+		}
+		
+		override public function destroy():void {
 			activate(false);
 			GameTimer.instance.cancelCall(_callId);
 		}

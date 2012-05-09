@@ -48,13 +48,12 @@ package com.sevenbrains.trashingDead.display {
 		private var _userModel:UserModel;
 		private var _worldModel:WorldModel;
 		
-		private var _zombiesLayer:Sprite;		
-		private var _damageLayer:Sprite;
-		private var _debugLayer:Sprite;
-		private var _playerLayer:Sprite;
 		private var _backgroundLayer:Sprite;
-		private var _popupLayer:Sprite;
+		private var _zombiesLayer:Sprite;		
+		private var _playerLayer:Sprite;
+		private var _damageLayer:Sprite;
 		private var _traceLayer:Sprite;
+		private var _debugLayer:Sprite;
 		
 		private var _physicWorld:GamePhysicWorld;
 		
@@ -68,12 +67,11 @@ package com.sevenbrains.trashingDead.display {
 			_props = props;
 			
 			_backgroundLayer = createLayer();
-			_playerLayer = createLayer();
-			_debugLayer = createLayer();
 			_zombiesLayer = createLayer();
+			_playerLayer = createLayer();
 			_damageLayer = createLayer();
 			_traceLayer = createLayer();
-			_popupLayer = createLayer();
+			_debugLayer = createLayer();
 			
 			initModels();
 		}
@@ -199,6 +197,11 @@ package com.sevenbrains.trashingDead.display {
 		public function get zombiesLayer():Sprite 
 		{
 			return _zombiesLayer;
+		}
+		
+		public function get traceLayer():Sprite 
+		{
+			return _traceLayer;
 		}
 		
 		public function destroy():void {

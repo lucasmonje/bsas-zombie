@@ -12,7 +12,7 @@
 		</trash>
 		<trash name="trashRim" code="100002" type="battable">
 			<physicProps density="3" friction="0.3" restitution="0.1" />
-			<properties hits="2" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />
@@ -49,7 +49,7 @@
 	
 	<zombies>
 		<zombie name="zombie01" code="300001" type="zombie">
-			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.1" speedMax="0.2" />
+			<properties hits="1" life="3" collisionId="B" collisionAccept="A" speedMin="0.1" speedMax="0.2" />
 			<physicProps density="100" friction="0.3" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true" />
@@ -58,7 +58,7 @@
 			</animations>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
-			<properties hits="1" life="5" collisionId="B" collisionAccept="A" speedMin="0.03" speedMax="0.07" />
+			<properties hits="1" life="1" collisionId="B" collisionAccept="A" speedMin="0.03" speedMax="0.07" />
 			<physicProps density="100" friction="0.3" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
