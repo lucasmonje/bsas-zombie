@@ -1,13 +1,13 @@
 package com.sevenbrains.trashingDead.display 
 {
-	import com.sevenbrains.trashingDead.interfaces.Screenable;
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import com.sevenbrains.trashingDead.managers.AssetLoader;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
-	import flash.events.MouseEvent;
+	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * ...

@@ -37,6 +37,10 @@ package com.sevenbrains.trashingDead.entities
 			
 		}
 		
+		public function get batter():Batter {
+			return _batter;
+		}
+
 		public function init():void {
 			var playersClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.PLAYERS, "Asset") as Class;
 			var _content:MovieClip = new playersClass();

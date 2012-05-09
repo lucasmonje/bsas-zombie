@@ -2,11 +2,11 @@ package com.sevenbrains.trashingDead.display
 {
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import com.sevenbrains.trashingDead.managers.AssetLoader;
-	import com.sevenbrains.trashingDead.models.ConfigModel;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -29,7 +29,7 @@ package com.sevenbrains.trashingDead.display
 			
 			changeWeapon(null);
 			
-			UserModel.instance.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
+			UserModel.instance.players.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
 		}
 		
 		private function changeWeapon(e:PlayerEvents):void {
@@ -37,7 +37,7 @@ package com.sevenbrains.trashingDead.display
 				_weaponContainer.removeChildAt(0);
 			}
 			
-			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.batter.getActualWeapon().props.icon);
+			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.players.batter.getActualWeapon().props.icon);
 			var mc:MovieClip = new cAsset();
 			
 			_weaponContainer.addChild(mc);			

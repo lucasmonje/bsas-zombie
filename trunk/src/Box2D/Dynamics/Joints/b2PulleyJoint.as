@@ -27,16 +27,6 @@ import Box2D.Dynamics.*;
 import Box2D.Common.b2internal;
 use namespace b2internal;
 
-	
-/**
-* The pulley joint is connected to two bodies and two fixed ground points.
-* The pulley supports a ratio such that:
-* length1 + ratio * length2 <= constant
-* Yes, the force transmitted is scaled by the ratio.
-* The pulley also enforces a maximum length limit on both sides. This is
-* useful to prevent one side of the pulley hitting the top.
-* @see b2PulleyJointDef
-*/
 public class b2PulleyJoint extends b2Joint
 {
 	/** @inheritDoc */

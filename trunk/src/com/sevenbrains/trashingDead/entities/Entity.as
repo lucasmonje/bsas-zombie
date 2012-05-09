@@ -3,32 +3,32 @@ package com.sevenbrains.trashingDead.entities
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
+	
+	import com.sevenbrains.trashingDead.b2.Box;
+	import com.sevenbrains.trashingDead.b2.BoxBuilder;
+	import com.sevenbrains.trashingDead.b2.Circle;
+	import com.sevenbrains.trashingDead.b2.CircleBuilder;
+	import com.sevenbrains.trashingDead.b2.PhysicInformable;
+	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.definitions.ItemAnimationsDefinition;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
-	import com.sevenbrains.trashingDead.interfaces.Destroyable;
+	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
+	import com.sevenbrains.trashingDead.interfaces.Destroyable;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
-	import com.sevenbrains.trashingDead.definitions.GameProperties;
-	import com.sevenbrains.trashingDead.managers.AssetLoader;
-	import com.sevenbrains.trashingDead.b2.BoxBuilder;
-	import com.sevenbrains.trashingDead.b2.CircleBuilder;
-	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.utils.Animation;
-	import com.sevenbrains.trashingDead.utils.MathUtils;
-	import com.sevenbrains.trashingDead.b2.PhysicInformable;
-	import com.sevenbrains.trashingDead.b2.Box;
-	import com.sevenbrains.trashingDead.b2.Circle;
 	import com.sevenbrains.trashingDead.utils.B2Utils;
+	import com.sevenbrains.trashingDead.utils.MathUtils;
+	
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import com.sevenbrains.trashingDead.models.ConfigModel;
-	import com.sevenbrains.trashingDead.events.AnimationsEvent;
-	import com.sevenbrains.trashingDead.managers.GameTimer;
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi

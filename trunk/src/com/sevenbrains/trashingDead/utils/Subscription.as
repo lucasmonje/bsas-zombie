@@ -4,30 +4,6 @@ package com.sevenbrains.trashingDead.utils
     import flash.events.IEventDispatcher;
 
     
-    /**
-     * You can create and use a subscription like this:
-     * <p/>
-     * <code>
-     * new Suscription(
-     * <br/>&nbsp;&nbsp;&nbsp;dispatcher,
-     * <br/>&nbsp;&nbsp;&nbsp;Event.COMPLETE,
-     * <br/>&nbsp;&nbsp;&nbsp;FunctionUtils.attachParams(callback, param1, param2)<br/>
-     * );
-     * </code>
-     * <p/>
-     * In that way, when the dispatcher dispatch the event COMPLETE the function is called the
-     * subscription is cancelled automatically (so the Suscription is garbage-collected).
-     * <p/>
-     * Another way is this to save the Subscription and cancel it when you want it:
-     * <p/>
-     * <code>
-     * // create a subscription<br/>
-     * var s:Subscription = new Subscription(...);<br/>
-     * <br/>
-     * // later on your code<br/>
-     * s.cancel();<br/>
-     * </code>
-     */
     public class Subscription
     {
         private var _dispatcher:IEventDispatcher;
