@@ -3,12 +3,6 @@ package com.sevenbrains.trashingDead.display.popup.nodes
 	import com.sevenbrains.trashingDead.display.popup.Popup;
 	import com.sevenbrains.trashingDead.utils.ArrayUtil;
 	
-	/**
-	 * @author Ariel
-	 * modified by matias.munoz
-	 * 
-	 * Internationalization node 
-	 */
 	public final class PopupI18nNode implements IPopupNode
 	{
 

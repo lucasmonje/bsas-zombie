@@ -1,28 +1,15 @@
 ﻿package com.sevenbrains.trashingDead.net
 {
-    import com.vostu.commons.net.ILoader;
-    
     import flash.display.Loader;
     import flash.display.LoaderInfo;
     import flash.events.Event;
-    import flash.events.EventDispatcher;
     import flash.events.IOErrorEvent;
     import flash.events.ProgressEvent;
     import flash.events.SecurityErrorEvent;
-    import flash.net.URLRequest;
     import flash.system.ApplicationDomain;
     import flash.system.LoaderContext;
     import flash.system.SecurityDomain;
     
-    /**
-     * The RslLoader class loads a runtime shared library into a context with a specified
-     * application domain and/or security domain.
-     *
-     * @see flash.system.ApplicationDomain
-     * @see flash.system.SecurityDomain
-     *
-     * @author German Allemand 
-     */
     public class RslLoader extends AbstractLoader
     {
         protected var _context:LoaderContext;

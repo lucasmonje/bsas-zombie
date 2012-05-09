@@ -1,10 +1,5 @@
 package com.sevenbrains.trashingDead.exception
 {
-	/**
-	 * Thrown when calling an abstract method that was't overriden properly.
-	 * 
-	 * @author German Allemand
-	 */
 	public class AbstractMethodException extends Error
 	{		
 		/**

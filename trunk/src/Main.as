@@ -6,14 +6,14 @@ package {
 	import com.sevenbrains.trashingDead.interfaces.IConfigBuilder;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.FullscreenManager;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	import EmbedAsset;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
-	import com.sevenbrains.trashingDead.managers.GameTimer;
 	
 	/**
 	* ...

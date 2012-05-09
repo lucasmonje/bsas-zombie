@@ -1,10 +1,5 @@
 package com.sevenbrains.trashingDead.utils
 {
-    /**
-     * Utility functions for strings
-     * 
-     * @author Ariel
-     */
     public final class StringUtil
     {
         /**

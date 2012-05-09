@@ -1,13 +1,7 @@
 package com.sevenbrains.trashingDead.display.popup.nodes
 {
-	import com.sevenbrains.trashingDead.display.popup.IPopup;
 	import com.sevenbrains.trashingDead.display.popup.Popup;
 	
-	
-	/**
-	 * @author Ariel
-	 * <br>modified by matias.munoz
-	 */
 	public final class PopupPropertyNode implements IPopupNode
 	{
 		private var key:String;

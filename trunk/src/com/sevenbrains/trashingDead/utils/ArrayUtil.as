@@ -2,11 +2,6 @@ package com.sevenbrains.trashingDead.utils
 {
     import flash.utils.Dictionary;
 
-    /**
-     * Utility functions for arrays
-     * @author Ariel
-     */
-    
     public class ArrayUtil
     {
         /**

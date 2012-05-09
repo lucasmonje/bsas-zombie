@@ -6,11 +6,6 @@ package com.sevenbrains.trashingDead.display.popup
 	import flash.display.Sprite;
 	import flash.events.Event;
 
-	/**
-	 * Helper class for popups 
-	 * @author matiasm
-	 * 
-	 */	
 	public class PopupData
 	{
 		

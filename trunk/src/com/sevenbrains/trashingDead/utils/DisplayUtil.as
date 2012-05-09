@@ -7,12 +7,6 @@ package com.sevenbrains.trashingDead.utils
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	/**
-	 * Utility functions for display objects
-	 * 
-	 * @author Ariel
-	 */
-	
 	public final class DisplayUtil
 	{
 		/**

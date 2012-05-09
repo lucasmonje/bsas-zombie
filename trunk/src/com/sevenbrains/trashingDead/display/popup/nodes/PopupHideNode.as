@@ -1,17 +1,10 @@
 package com.sevenbrains.trashingDead.display.popup.nodes
 {
-	import com.sevenbrains.trashingDead.exception.ASSERT;
-	import com.sevenbrains.trashingDead.display.popup.IPopup;
 	import com.sevenbrains.trashingDead.display.popup.Popup;
+	import com.sevenbrains.trashingDead.exception.ASSERT;
 	
 	import flash.display.DisplayObject;
 	
-	/**
-	 * Node that hides a DisplayObject
-	 * @author Ariel
-	 * <br>modified by matias.munoz
-	 * 
-	 */
 	public final class PopupHideNode implements IPopupNode
 	{
 		private var _path:String;

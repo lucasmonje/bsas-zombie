@@ -1,9 +1,5 @@
 package com.sevenbrains.trashingDead.utils
 {
-    /**
-     * Utility functions for objects
-     * @author Ariel
-     */
     
     public class ObjectUtil
     {

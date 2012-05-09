@@ -2,18 +2,6 @@ package commons.utils
 {
 	import flash.display.DisplayObject;
 
-	/**
-	 *	The function of this class is brinadar resize utility. 
-	 * 	This works by passing 2 instances of DisplayObject, one that works as a size reference and the second as target of change. 
-	 * @author acan
-	 * @code
-	 * 		var back:DisplayObject; //target of the resize
-	 * 		var content:DsiplayObject; // reference of the resize
-	 * 		var resizer : Resizer = new Resizer();
-	 * 		resizer.setup (back, content); 
-	 * 		resizer.resize();
-	 * 
-	 */	
 	public class Resizer
 	{
 		private var leftMargin:int;

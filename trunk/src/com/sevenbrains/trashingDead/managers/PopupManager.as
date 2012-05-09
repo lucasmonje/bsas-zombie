@@ -13,11 +13,6 @@ package com.sevenbrains.trashingDead.managers {
 	import flash.utils.Dictionary;
 	import com.sevenbrains.trashingDead.managers.FullscreenManager;
 	
-	/**
-	*
-	* @author matiasm
-	*
-	*/
 	public class PopupManager extends EventDispatcher {
 		
 		protected var container:DisplayObjectContainer;

@@ -9,18 +9,6 @@ package com.sevenbrains.trashingDead.net
     import flash.events.ProgressEvent;
     import flash.net.URLRequest;
     
-    /**
-     * Default implementation of ILoader, it has two main responsibilities:
-     * <br>
-     * <ol>
-     *  <li>Create an URLRequest with a versioned url (using VersionManager)</li>
-     *  <li>Retry the loading if an error occured (configured via <code>retries</code> property)</li>
-     * <ol>
-     * <br>
-     * 
-     * @author Lucas Sanchez
-     * 
-     */
     public class AbstractLoader implements ILoader
     {
         /**

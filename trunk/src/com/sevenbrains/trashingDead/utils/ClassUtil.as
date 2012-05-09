@@ -4,11 +4,6 @@ package com.sevenbrains.trashingDead.utils
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	/**
-	 * Utility functions for Classes
-	 * @author Ariel
-	 */
-	
 	public final class ClassUtil 
 	{
 		/** returns the class name of an object with namespace */
