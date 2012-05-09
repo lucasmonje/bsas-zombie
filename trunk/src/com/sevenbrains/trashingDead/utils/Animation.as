@@ -87,9 +87,10 @@ package com.sevenbrains.trashingDead.utils
 				return;
 			}
 			
-			if (++_actualFrame == _actual.to) {
+			if (++_actualFrame >= _actual.to) {
 				if (_loops > 0 && ++_actualLoop == _loops){
 					_isPlaying = false;
+					_actualFrame = _actual.to;
 					GameTimer.instance.cancelCall(_idCallTimer);
 					dispatchEvent(new AnimationsEvent(AnimationsEvent.ANIMATION_ENDED, _actual.name));
 				}else {

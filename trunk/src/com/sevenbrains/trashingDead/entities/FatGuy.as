@@ -61,14 +61,19 @@ package com.sevenbrains.trashingDead.entities
 		 * Obtiene una basura y la coloca en el lugar para arrojarsela al bateador
 		 */
 		private function getTrash():void {
-			while (_throwingContainer.numChildren > 0) {
-				_throwingContainer.removeChildAt(0);
-			}
+			cleanTrashContainer();
 			
 			_trashDefinition = getTrashDefinition();
 			var assetClass:Class = ConfigModel.assets.getDefinition(_trashDefinition.name, 'box1');
 			var assetTrash:MovieClip = new assetClass();
+			assetTrash.stop();
 			_throwingContainer.addChild(assetTrash);
+		}
+		
+		private function cleanTrashContainer():void {
+			while (_throwingContainer.numChildren > 0) {
+				_throwingContainer.removeChildAt(0);
+			}
 		}
 		
 		/**
@@ -94,6 +99,9 @@ package com.sevenbrains.trashingDead.entities
 						dispatchEvent(new PlayerEvents(PlayerEvents.THREW_TRASH, _trashDefinition));
 						_animation.setAnim(ANIM_THROUGH);
 						_state = STATE_PREPARE;
+					}else if (_animation.currentFrame == 37) {
+						cleanTrashContainer();
+						dispatchEvent(new PlayerEvents(PlayerEvents.DROP_TRASH, _trashDefinition));
 					}
 				break;
 				case STATE_WAITING:

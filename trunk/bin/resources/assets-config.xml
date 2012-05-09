@@ -6,10 +6,12 @@
 		<swf id="zombie01" path="zombies/zombie01.swf" preloaderId="10003" />
 		<swf id="zombie02" path="zombies/zombie02.swf" preloaderId="10004" />
 		<swf id="trashTv" path="trash/trashTv.swf" preloaderId="10005" />
-		<swf id="itemMolotov" path="item/itemMolotov.swf" preloaderId="10006" />
-		<swf id="gameTitle" path="screens/gameTitle.swf" preloaderId="10007" />
-		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10008" />
-		<swf id="players" path="players/players.swf" preloaderId="10009" />
+		<swf id="trashRim" path="trash/trashRim.swf" preloaderId="10006" />
+		<swf id="trashSafeBox" path="trash/trashSafeBox.swf" preloaderId="10007" />
+		<swf id="itemMolotov" path="item/itemMolotov.swf" preloaderId="10008" />
+		<swf id="gameTitle" path="screens/gameTitle.swf" preloaderId="10009" />
+		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10010" />
+		<swf id="players" path="players/players.swf" preloaderId="10011" />
 		<swf id="popupAlert" path="popups/popupAlert.swf" />
 		<swf id="popupMinutes" path="popups/popupMinutes.swf" />
 	</swfs>

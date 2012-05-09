@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.entities 
 {
-	import com.sevenbrains.trashingDead.display.userInterface.ThrowingArea;
+	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaFaster;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
@@ -30,7 +30,7 @@ package com.sevenbrains.trashingDead.entities
 		private var _state:String;
 		
 		private var _content:MovieClip;
-		private var _throwingArea:ThrowingArea;
+		private var _throwingArea:ThrowingAreaFaster;
 		
 		private var _weapons:Vector.<Item>;
 		private var _actualWeapon:int;
@@ -56,11 +56,15 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation(ANIM_HANDABLE);
 			_animation.setAnim(ANIM_BATTABLE);
 			
-			_throwingArea = new ThrowingArea(poweringArrow);
+			_throwingArea = new ThrowingAreaFaster(poweringArrow);
 			_throwingArea.addEventListener(ThrowingAreaEvent.MOUSE_UP, hitSetted);
-			_content.addChild(_throwingArea);
+			_throwingArea.x = _content.x;
+			_throwingArea.y = _content.y;
+			_content.parent.addChild(_throwingArea);
 			
 			_state = STATE_WAITING_TRASH;
+			
+			_throwingArea.activate(true);
 			
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
@@ -75,7 +79,7 @@ package com.sevenbrains.trashingDead.entities
 				case STATE_READY_TO_BAT:
 					break;
 				case STATE_BATTING:
-					_throwingArea.activate(false);
+					//_throwingArea.activate(false);
 					
 					_animation.play(ANIM_BATTABLE);
 					_state = STATE_WAITING_BATTING;
@@ -83,6 +87,7 @@ package com.sevenbrains.trashingDead.entities
 				case STATE_WAITING_BATTING:
 					if (!_animation.isPlaying) {
 						dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT, _throwingArea.hitPower, _throwingArea.hitAngle));
+						_animation.play(ANIM_PREPARING);
 						_state = STATE_WAITING_TRASH;
 					}
 					break;
@@ -91,7 +96,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function readyToBat():void {
 			_state = STATE_READY_TO_BAT;
-			_throwingArea.activate(true);
+			//_throwingArea.activate(true);
 		}
 		
 		private function hitSetted(e:ThrowingAreaEvent):void {

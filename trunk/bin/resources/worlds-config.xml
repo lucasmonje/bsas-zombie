@@ -4,6 +4,8 @@
 		<world id="stage01" background="background01" soundId="level01" zombieMaxInScreen="12" zombieTimeCreation="6000">
 			<trashes>
 				<trash code="100001" weight="1" />
+				<trash code="100002" weight="1" />
+				<trash code="100003" weight="1" />
 			</trashes>
 			<zombies>
 				<zombie code="300001" weight="1" />

@@ -19,8 +19,7 @@ package com.sevenbrains.trashingDead.entities
 		private static const STATE_REPARING:String = "reparing";
 		private static const STATE_SHOOTING:String = "shooting";
 		
-		private static const TIME_UPDATE:int = 200;
-		private static const TOLERANCE:Number = 300;
+		private static const TOLERANCE:Number = 500;
 		private static const HITS:int = 10;
 		
 		private var _content:MovieClip;
@@ -60,7 +59,7 @@ package com.sevenbrains.trashingDead.entities
 				while (i < zombiesWatcher.length) {
 					entity = zombiesWatcher[i];
 					var zombiePosX:Number = entity.getItemPosition().x;
-					if (Math.abs(zombiePosX - this.x) <= TOLERANCE) {
+					if (zombiePosX <= TOLERANCE) {
 						_zombieTargeted = entity;
 						_animation.play("shoot");
 						_state = STATE_SHOOTING;

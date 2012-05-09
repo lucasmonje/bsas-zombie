@@ -72,6 +72,7 @@ package com.sevenbrains.trashingDead.entities
 			// Listeners
 			_batter.addEventListener(PlayerEvents.TRASH_HIT, batterThrewTrash);
 			_fatGuy.addEventListener(PlayerEvents.THREW_TRASH, fatGuyThrewTrash);
+			_fatGuy.addEventListener(PlayerEvents.DROP_TRASH, fatGuyDropTrash);
 			
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
@@ -84,6 +85,7 @@ package com.sevenbrains.trashingDead.entities
 		public function destroy():void {
 			_batter.removeEventListener(PlayerEvents.TRASH_HIT, batterThrewTrash);
 			_fatGuy.removeEventListener(PlayerEvents.THREW_TRASH, fatGuyThrewTrash);
+			_fatGuy.removeEventListener(PlayerEvents.DROP_TRASH, fatGuyDropTrash);
 			
 			GameTimer.instance.cancelCall(_callId);
 		}
@@ -104,9 +106,15 @@ package com.sevenbrains.trashingDead.entities
 		 * El gordo le pasó la basura al bateador
 		 */
 		private function fatGuyThrewTrash(e:PlayerEvents):void {
-			_batter.readyToBat();
-			createTrash(ItemDefinition(e.value1));
 			_fatGuy.prepareTrash();
+		}
+		
+		 /**
+		 * El gordo está listo para agarrar una nueva basura
+		 */
+		private function fatGuyDropTrash(e:PlayerEvents):void {
+			createTrash(ItemDefinition(e.value1));
+			_batter.readyToBat();
 		}
 		
 		/**

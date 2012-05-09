@@ -3,6 +3,9 @@ package com.sevenbrains.trashingDead.entities {
 	import Box2D.Dynamics.b2Body;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import com.sevenbrains.trashingDead.enum.TrashAnimsEnum;
+	import com.sevenbrains.trashingDead.interfaces.Collisionable;
+	import flash.events.Event;
 	import flash.geom.Point;
 	
 	/**
@@ -29,8 +32,26 @@ package com.sevenbrains.trashingDead.entities {
 				body.SetLinearVelocity(vel);
 				body.SetAngularDamping(10);
 			}
+			playAnim(TrashAnimsEnum.HIT);
+		}
+		
+		override public function collide(who:Collisionable):void 
+		{
+			super.collide(who);
+			
+			if (life == 0) {
+				_enabled = true;
+				playAnim(TrashAnimsEnum.DESTROY);
+			}
 		}
 	
+		override protected function updateAnimation(e:Event):void 
+		{
+			super.updateAnimation(e);
+			if (animations.currentAnimName == TrashAnimsEnum.DESTROY) {
+				_enabled = false;
+			}
+		}
 	}
 
 }

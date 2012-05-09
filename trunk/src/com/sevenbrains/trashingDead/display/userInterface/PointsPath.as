@@ -52,12 +52,16 @@ package com.sevenbrains.trashingDead.display.userInterface
 		 * Dibuja el camino
 		 */
 		public function drawPath():void {
-			this.graphics.clear();
+			clear();
 			this.graphics.beginFill(0xff0000);
 			for each(var p:Point in _points) {
 				this.graphics.drawCircle(p.x, p.y, 5);
 			}
 			this.graphics.endFill();
+		}
+		
+		public function clear():void {
+			this.graphics.clear();
 		}
 		
 		public function destroy():void {

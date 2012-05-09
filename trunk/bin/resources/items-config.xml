@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 	<trashes>
-		<!--
-		<trash name="TrashSplit" code="100001" type="battable">
-			<physicProps density="3" friction="0.3" restitution="0.15" />
-			<properties hits="2" life="1" collisionId="A" collisionAccept="A,B,C" />
+		<trash name="trashSafeBox" code="100001" type="battable">
+			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<properties hits="5" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<animations>
+				<animation name="healthy" defaultAnim="true"/>
+				<animation name="hit" />
+				<animation name="destroy" />
+			</animations>
 		</trash>
-		<trash name="TrashNotebook" code="100002" type="battable">
-			<physicProps density="1" friction="0.3" restitution="0.1" />
-			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-		</trash>
-		-->
-		<trash name="trashTv" code="100002" type="battable">
+		<trash name="trashRim" code="100002" type="battable">
 			<physicProps density="3" friction="0.3" restitution="0.1" />
 			<properties hits="2" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<animations>
+				<animation name="healthy" defaultAnim="true"/>
+				<animation name="hit" />
+				<animation name="destroy" />
+			</animations>
+		</trash>
+		<trash name="trashTv" code="100003" type="battable">
+			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<properties hits="3" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<animations>
+				<animation name="healthy" defaultAnim="true"/>
+				<animation name="hit" />
+				<animation name="destroy" />
+			</animations>
 		</trash>
 	</trashes>
 	
