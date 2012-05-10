@@ -60,7 +60,9 @@ package com.sevenbrains.trashingDead.entities
 			_animation.addAnimation(ANIM_HANDABLE);
 			_animation.setAnim(ANIM_BATTABLE);
 			
-			_throwingArea = new ThrowingAreaRect(poweringArrow);
+			var pointerClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, "puntero");
+			
+			_throwingArea = new ThrowingAreaRect(MovieClip(new pointerClass()));
 			_throwingArea.addEventListener(ThrowingAreaEvent.MOUSE_UP, hitSetted);
 			GameCanvas.instance.hud.addChild(_throwingArea);
 			

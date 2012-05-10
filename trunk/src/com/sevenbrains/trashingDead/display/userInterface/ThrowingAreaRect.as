@@ -111,6 +111,7 @@ package com.sevenbrains.trashingDead.display.userInterface
 				if (_isTargeting) {
 					calcNewAngle();
 					setArrowAngle();
+					positionatePointer();
 				}
 				
 				if (_isPressing) {
@@ -131,8 +132,13 @@ package com.sevenbrains.trashingDead.display.userInterface
 			setArrowPower();
 		}
 		
+		private function positionatePointer():void {
+			_arrow.x = StageReference.stage.mouseX;
+			_arrow.y = StageReference.stage.mouseY;
+		}
+		
 		private function setArrowAngle():void {
-			_arrow.rotation = _angle * 180 / Math.PI;
+			//_arrow.rotation = _angle * 180 / Math.PI;
 		}
 		
 		private function setArrowPower():void {
