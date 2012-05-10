@@ -4,11 +4,13 @@ package com.sevenbrains.trashingDead.display.userInterface
 	import com.sevenbrains.trashingDead.events.ThrowingAreaEvent;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.utils.StageReference;
+	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.ui.Mouse;
 	/**
 	 * ...
 	 * @author Fulvio
@@ -31,6 +33,8 @@ package com.sevenbrains.trashingDead.display.userInterface
 		public function ThrowingAreaRect(arrow:MovieClip) 
 		{
 			_arrow = arrow;
+			_arrow.gotoAndStop(1);
+			GameCanvas.instance.hud.addChild(_arrow);
 			
 			var _stage:Stage = StageReference.stage;
 			var stageWidth:Number = StageReference.stage.width;
@@ -71,10 +75,12 @@ package com.sevenbrains.trashingDead.display.userInterface
 		
 		private function trashMoved(e:MouseEvent):void {
 			_isTargeting = true;
+			Mouse.hide();
 		}
 		
 		private function trashMovedOut(e:MouseEvent):void {
 			_isTargeting = false;
+			Mouse.show();
 		}
 		
 		private function trashMouseDown(e:MouseEvent):void {
@@ -142,11 +148,12 @@ package com.sevenbrains.trashingDead.display.userInterface
 		}
 		
 		private function setArrowPower():void {
-			_arrow.gotoAndStop(_power);
+			_arrow.charge.gotoAndStop(_power);
 		}
 		
 		override public function destroy():void {
 			activate(false);
+			GameCanvas.instance.hud.removeChild(_arrow);
 			GameTimer.instance.cancelCall(_callId);
 		}
 		
