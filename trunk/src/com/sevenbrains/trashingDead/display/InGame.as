@@ -1,9 +1,7 @@
 package com.sevenbrains.trashingDead.display 
 {
-	import com.sevenbrains.trashingDead.display.MapWorld;
-	import com.sevenbrains.trashingDead.display.popup.Popup;
+	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
-	import com.sevenbrains.trashingDead.enum.PopupType;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.managers.PopupManager;
@@ -12,7 +10,7 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -78,7 +76,6 @@ package com.sevenbrains.trashingDead.display
 			_state = STATE_MAP;
 			
 			PopupManager.instance.setLayer(GameCanvas.instance.popup);
-			PopupManager.instance.addPopup(new Popup(PopupType.POPUP_MINUTES));
 			
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_callId = GameTimer.instance.callMeEvery(1, update);

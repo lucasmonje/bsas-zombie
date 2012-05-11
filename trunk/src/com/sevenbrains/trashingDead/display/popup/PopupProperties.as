@@ -3,14 +3,14 @@ package com.sevenbrains.trashingDead.display.popup {
 	
 	public class PopupProperties {
 		private var _assetId:String;
-		private var _i18n:String;
+		private var _popupId:String;
 		private var _channel:String;
 		private var _animation:Array;
 		private var _nodes:Array;
 		
-		public function PopupProperties(assetId:String, i18n:String, channel:String, animation:Array) {
+		public function PopupProperties(popupId:String, assetId:String, channel:String, animation:Array) {
 			_assetId = assetId;
-			_i18n = i18n;
+			_popupId = popupId;
 			_channel = channel;
 			_animation = animation;
 			_nodes = [];
@@ -20,8 +20,8 @@ package com.sevenbrains.trashingDead.display.popup {
 			return _assetId;
 		}
 		
-		public function get i18n():String {
-			return _i18n;
+		public function get popupId():String {
+			return _popupId;
 		}
 		
 		public function get nodes():Array {

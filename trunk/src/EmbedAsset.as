@@ -23,9 +23,6 @@ package
 				
 		[Embed(source='..\\bin\\resources\\popups-config.xml',mimeType="application/octet-stream")]
 		public static var popupsConfigClass:Class;
-		
-		[Embed(source='..\\bin\\assets\\fonts\\ChickenButt.ttf', fontName="chickenButt", mimeType="application/x-font")]
-		public static var chickenButtClass:Class;
 	}
 
 }

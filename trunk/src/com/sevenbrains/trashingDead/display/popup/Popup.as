@@ -36,7 +36,7 @@ package com.sevenbrains.trashingDead.display.popup {
 		public function loadProperties(id:String):void {
 			_props = ConfigModel.popups.get(id);
 			ASSERT(_props, 'No popup properties found by '+id);
-			_i18n = _props.i18n;
+			_i18n = _props.popupId;
 			if (_props.assetId) {
 				loader = ConfigModel.assets.get(_props.assetId) as DefaultAssetLoader;
 			}

@@ -41,11 +41,11 @@ package com.sevenbrains.trashingDead.deserealizer {
 		private function decodePopups(xml:XMLList, aliases:Dictionary):Array {
 			var popups:Array = [];
 			for each (var popupConfig:XML in xml.elements()) {
-				var id:String = popupConfig.@id;
+				var assetId:String = popupConfig.@assetId;
 				var anims:Array = (popupConfig.@anim.toString()).toUpperCase().split(",");
-				var i18n:String = popupConfig.@i18n.toString() != "" ? popupConfig.@i18n : id;
+				var popupId:String = popupConfig.@popupId.toString() != "" ? popupConfig.@popupId : assetId;
 				var channel:String = popupConfig.@channel.toString() != "" ? popupConfig.@channel : "default";
-				var popup:PopupProperties = new PopupProperties(id, i18n, channel, anims);
+				var popup:PopupProperties = new PopupProperties(popupId, assetId, channel, anims);
 				if (popupConfig.@template.toString() != "") {
 					var template:PopupProperties = map[popupConfig.@template.toString()];
 					ASSERT(template, 'template must be defined before popup');
@@ -61,7 +61,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 						popup.addNode(decodeNode(node));
 					}
 				}
-				_idsMap[id] = popup;
+				_idsMap[popupId] = popup;
 				popups.push(popup);
 				
 			}
