@@ -9,8 +9,8 @@ package com.sevenbrains.trashingDead.display.userInterface
 	 */
 	public class ThrowingArea extends Sprite implements ThrowableArea
 	{
-		protected var _power:Number;
-		protected var _angle:Number;
+		protected var _power:int;
+		protected var _angle:int;
 		
 		public function ThrowingArea() 
 		{
