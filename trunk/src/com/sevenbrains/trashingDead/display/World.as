@@ -135,7 +135,7 @@ package com.sevenbrains.trashingDead.display {
 			_worldModel.panZoom = new PanZoom(this);
 			//add floor
 			var floor:MovieClip = bg.getChildByName("mcFloor") as MovieClip;
-			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width, floor.height);
+			_worldModel.floorRect = new Rectangle(floor.x, floor.y, floor.width + 200, floor.height);
 			var floorData:Object = new Object();
 			floorData.assetSprite = null;
 			floorData.entity = new Floor("C", [], PhysicObjectType.FLOOR);
@@ -167,6 +167,7 @@ package com.sevenbrains.trashingDead.display {
 			}
 			_worldModel.stageTimer.addEventListener(StageTimerEvent.SECOND_ROUND, onSecondRound);
 			_worldModel.stageTimer.addEventListener(StageTimerEvent.FINAL_ROUND, onFinalRound);
+			_worldModel.stageTimer.addEventListener(StageTimerEvent.COMPLETED, onCompleteStage);
 			_worldModel.stageTimer.start();
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -177,6 +178,12 @@ package com.sevenbrains.trashingDead.display {
 		
 		private function onFinalRound(e:StageTimerEvent):void {
 			PopupManager.instance.addPopup(new Popup(PopupType.FINAL_ROUND), null, true, false);
+		}
+		
+		private function onCompleteStage(e:StageTimerEvent):void {
+			var popup:Popup = new Popup(PopupType.COMPLETE_STAGE);
+			popup.client = {stageLevelNum:ConfigModel.messages.get(_props.id)};
+			PopupManager.instance.addPopup(popup, null, true, false);
 		}
 		
 		public function get physicWorld():b2World {

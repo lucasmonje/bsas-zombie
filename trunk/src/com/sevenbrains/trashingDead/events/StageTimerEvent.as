@@ -18,6 +18,8 @@ package com.sevenbrains.trashingDead.events {
 		public static const SECOND_ROUND:String = "intermediate";
 
 		public static const FINAL_ROUND:String = "final";
+
+		public static const COMPLETED:String = "completed";
 		
 		public function StageTimerEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);

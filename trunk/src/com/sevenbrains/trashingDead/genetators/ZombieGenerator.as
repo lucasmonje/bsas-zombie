@@ -31,15 +31,13 @@ package com.sevenbrains.trashingDead.genetators
 			_time = time;
 			_maximum = maximum;
 			_worldZombiesDefinition = worldZombiesDefinition.concat();
-			_callId = GameTimer.instance.callMeEvery(_time, update);
-			GameTimer.instance.pause();
 		}
 		
 		public function activate(value:Boolean):void {
 			if (value) {
-				GameTimer.instance.resume();
+				_callId = GameTimer.instance.callMeEvery(_time, update);
 			}else {
-				GameTimer.instance.pause();
+				destroy();
 			}
 		}
 		
@@ -65,7 +63,7 @@ package com.sevenbrains.trashingDead.genetators
 				if (zombieProps){
 					var pos:Point;
 					var floorY:Number = WorldModel.instance.floorRect.y - (WorldModel.instance.floorRect.height / 2);
-					pos = new Point(1100, zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE?floorY - 150:floorY);
+					pos = new Point(WorldModel.instance.panZoom.cameraBounds.right + 50, zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE?floorY - 150:floorY);
 					
 					var z:Entity = ZombieFactory.instance.createZombie(zombieProps, pos);
 					ItemManager.instance.regist(z);
@@ -75,7 +73,13 @@ package com.sevenbrains.trashingDead.genetators
 		}
 		
 		public function destroy():void {
-			GameTimer.instance.cancelCall(_callId);
+			if (_callId > 0) {
+				GameTimer.instance.cancelCall(_callId);
+			}
+			_callId = 0;
+			_worldZombiesDefinition = null;
+			_time = 0;
+			_maximum= 0;
 		}
 	}
 

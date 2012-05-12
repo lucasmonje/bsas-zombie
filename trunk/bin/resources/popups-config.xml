@@ -74,6 +74,12 @@
 			<autoClose time="1500" />
 		</popup>
 		
+		<popup popupId="popupCompleteStage" assetId="popupBigMessage" anim="0.5,scale,alpha">
+			<text path="txtTitle" key="title" args="stageLevelNum"/>
+			<playMovie />
+			<autoClose time="1500" />
+		</popup>
+		
 		<!--
 		<popup id="confirmation" assetId="popUpAlert" i18n="popup.confirmation" >
 			<text path="txtTitle" key="{className}.title" args="{className}" />

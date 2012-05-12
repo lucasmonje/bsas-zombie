@@ -8,5 +8,6 @@ package com.sevenbrains.trashingDead.enum {
 		public static const ALERT:String = "popupAlert";
 		public static const SECOND_ROUND:String = "popupSecondRound";
 		public static const FINAL_ROUND:String = "popupFinalRound";
+		public static const COMPLETE_STAGE:String = "popupCompleteStage";
 	}
 }

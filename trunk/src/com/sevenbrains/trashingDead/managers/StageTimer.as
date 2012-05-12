@@ -129,6 +129,7 @@ package com.sevenbrains.trashingDead.managers {
 			} else if (_remainingTime == _finalTime) {				
 				dispatchEvent(new StageTimerEvent(StageTimerEvent.FINAL_ROUND));
 			} else if (_remainingTime == 0) {
+				dispatchEvent(new StageTimerEvent(StageTimerEvent.COMPLETED));
 				destroy();
 			}
 		}

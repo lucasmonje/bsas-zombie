@@ -83,7 +83,7 @@ package com.sevenbrains.trashingDead.managers {
 			props.x = 0; 
 			props.ease = Tweener.EASE_IN_EXPO; 
 			Tweener.to(_target, 0.5, props);
-			_cameraBounds = new Rectangle(0, props.y, StageReference.stage.stageWidth * currentZoom, StageReference.stage.stageHeight * currentZoom);
+			_cameraBounds = new Rectangle(0, props.y, StageReference.stage.stageWidth / currentZoom, StageReference.stage.stageHeight / currentZoom);
 		}
 		
 		public function get currentZoom():Number {
