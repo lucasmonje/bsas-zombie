@@ -47,7 +47,7 @@ package com.sevenbrains.trashingDead.entities
 			addChild(_content);
 			
 			var _worldModel:WorldModel = WorldModel.instance;
-			_content.y = (_worldModel.floorRect.y * _worldModel.currentWorld.scaleY) - (_content.height * _worldModel.currentWorld.scaleY) - (_worldModel.floorRect.height * 3);
+			_content.y = (_worldModel.floorRect.y * _worldModel.panZoom.currentZoom) - (_content.height * _worldModel.panZoom.currentZoom) - (_worldModel.floorRect.height * 3);
 			
 			// La posicion donde tiene q crearse la basura para el bateador
 			var mcTrashPosition:MovieClip = _content.getChildByName("mcTrashPosition") as MovieClip;

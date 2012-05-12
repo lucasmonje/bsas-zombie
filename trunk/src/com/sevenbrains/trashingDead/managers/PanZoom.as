@@ -13,6 +13,7 @@ package com.sevenbrains.trashingDead.managers {
 	import com.sevenbrains.trashingDead.events.StageTimerEvent;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
 	import com.sevenbrains.trashingDead.models.WorldModel;
+	import com.sevenbrains.trashingDead.tween.Tweener;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	
 	import flash.display.DisplayObject;
@@ -30,7 +31,7 @@ package com.sevenbrains.trashingDead.managers {
 		
 		private var _targetInitialWidth:Number;
 
-		private var _targetHeight:Number;
+		private var _targetInitialHeight:Number;
 		
 		private var _destroyed:Boolean;
 
@@ -40,6 +41,7 @@ package com.sevenbrains.trashingDead.managers {
 				
 		public function PanZoom(target:DisplayObject) {
 			_targetInitialWidth = target.width;
+			_targetInitialHeight = target.height;
 			_destroyed = false;
 			_zoomIndex = 0;
 			_target = target;
@@ -74,19 +76,14 @@ package com.sevenbrains.trashingDead.managers {
 		}
 		
 		private function updateZoom():void {
-			_target.scaleX = _target.scaleY = currentZoom;
-			_target.y = (StageReference.stage.stageHeight - _target.height)/2;
-			_target.x = 0;
-			/*
-			var tweenProps:Object = new Object();
-			tweenProps.scaleX = currentZoom;
-			tweenProps.scaleY = currentZoom;
-			tweenProps.y = (StageReference.stage.stageHeight - (_target.height * currentZoom))/2;;
-			tweenProps.x = 0; 
-			tweenProps.ease = Tweener.EASE_IN_BACK; 
-			Tweener.to(_target, 0.25, tweenProps);
-			*/
-			_cameraBounds = new Rectangle(Math.abs(_target.x), Math.abs(_target.y), StageReference.stage.stageWidth * currentZoom, StageReference.stage.stageHeight * currentZoom);
+			var props:Object = new Object();
+			props.scaleX = currentZoom;
+			props.scaleY = currentZoom;
+			props.y = (StageReference.stage.stageHeight - (_targetInitialHeight * currentZoom))/2;;
+			props.x = 0; 
+			props.ease = Tweener.EASE_IN_EXPO; 
+			Tweener.to(_target, 0.5, props);
+			_cameraBounds = new Rectangle(0, props.y, StageReference.stage.stageWidth * currentZoom, StageReference.stage.stageHeight * currentZoom);
 		}
 		
 		public function get currentZoom():Number {

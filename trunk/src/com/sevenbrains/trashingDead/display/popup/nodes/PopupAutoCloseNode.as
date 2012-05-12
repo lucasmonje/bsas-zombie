@@ -22,7 +22,7 @@ package com.sevenbrains.trashingDead.display.popup.nodes
 		
 		public function applyTo(popup:Popup):void {
 			_popup = popup;
-			GameTimer.instance.pause();
+			//GameTimer.instance.pause();
 			_timer = new Timer(_time, 1);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			_timer.start();
@@ -53,7 +53,7 @@ package com.sevenbrains.trashingDead.display.popup.nodes
 				_timer.stop();
 				_timer = null;				
 			}
-			GameTimer.instance.resume();
+			//GameTimer.instance.resume();
 		}
 	}
 
