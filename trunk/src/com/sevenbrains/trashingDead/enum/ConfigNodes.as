@@ -9,6 +9,7 @@ package com.sevenbrains.trashingDead.enum {
 		public static const SOUNDS:String = "sounds";
 		public static const AUTO_LOAD:String = "autoLoad";
 		public static const IDS:String = "ids";
+		public static const GROUP_IDS:String = "groupIds";
 		public static const TRASHES:String = "trashes";
 		public static const WEAPONS:String = "weapons";
 		public static const ZOMBIES:String = "zombies";
@@ -17,5 +18,7 @@ package com.sevenbrains.trashingDead.enum {
 		public static const LOCALE:String = "locale";
 		public static const POPUPS:String = "popups";
 		public static const ALIASES:String = "aliases";
+		public static const SUGGESTIONS:String = "suggestions";
+		public static const PROMOTIONS:String = "promotions";
 	}
 }

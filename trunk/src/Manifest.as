@@ -1,16 +1,29 @@
+//------------------------------------------------------------------------------
+//
+//   Trashing Dead 
+//   7 Brains Studio 
+//   Copyright 2012 
+//   All rights reserved. 
+//
+//------------------------------------------------------------------------------
+
 package {
 	
+	import com.sevenbrains.trashingDead.builders.*;
+	import com.sevenbrains.trashingDead.condition.ItemConditionChecker;
+	import com.sevenbrains.trashingDead.condition.StatsConditionChecker;
+	import com.sevenbrains.trashingDead.configuration.*;
+	import com.sevenbrains.trashingDead.definitions.LockDefinition;
+	import com.sevenbrains.trashingDead.deserealizer.*;
+	import com.sevenbrains.trashingDead.display.iconList.promotion.PromotionBar;
+	import com.sevenbrains.trashingDead.managers.LockManager;
+	import com.sevenbrains.trashingDead.models.ConfigModel;
+	
 	/**
-	* ...
-	* @author Lucas Monje
-	*/
+	 * ...
+	 * @author Lucas Monje
+	 */
 	public class Manifest {
-		
-		import com.sevenbrains.trashingDead.builders.*;
-		import com.sevenbrains.trashingDead.configuration.*;
-		import com.sevenbrains.trashingDead.deserealizer.*;
-		import com.sevenbrains.trashingDead.models.ConfigModel;
-		import EmbedAsset;
 		
 		public function Manifest() {
 			EmbedAsset;
@@ -28,11 +41,22 @@ package {
 			WorldConfigDeserealizer;
 			LocaleConfigDeserealizer;
 			PopupsConfigDeserealizer;
+			ActionDeserializer;
+			ExecuteDeserializer;
+			SuggestionConfigDeserializer;
+			ConditionDeserializer;
+			LockDeserializer;
 			
 			ConfigModel;
 			ConfigBuilder;
 			LocaleBuilder;
 			
+			LockManager;
+			StatsConditionChecker;
+			ItemConditionChecker;
+			
+			PromotionBar;
+		
 		}
 	}
 }
