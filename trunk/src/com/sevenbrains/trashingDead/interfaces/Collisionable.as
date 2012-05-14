@@ -12,6 +12,7 @@ package com.sevenbrains.trashingDead.interfaces
 		function isCollisioning(who:Collisionable):Boolean;
 		function getCollisionId():String;
 		function getCollisionAccept():Array;
+		function get collisionable():Boolean;
 	}
 	
 }

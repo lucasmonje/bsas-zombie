@@ -49,28 +49,45 @@
 	
 	<zombies>
 		<zombie name="zombie01" code="300001" type="zombie">
-			<properties hits="1" life="3" collisionId="B" collisionAccept="A" speedMin="0.1" speedMax="0.2" />
-			<physicProps density="100" friction="0.3" restitution="0.0" />
+			<properties hits="1" life="3" collisionId="B" collisionAccept="A,D" speedMin="0.1" speedMax="0.2" />
+			<physicProps density="100" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true" />
 				<animation name="hit" frameTime="1" afterReproduce="walk"/>
 				<animation name="dead" frameTime="1" />
+				<animation name="attack" frameTime="1" />
 			</animations>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
-			<properties hits="1" life="1" collisionId="B" collisionAccept="A" speedMin="0.03" speedMax="0.07" />
-			<physicProps density="100" friction="0.3" restitution="0.0" />
+			<properties hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.03" speedMax="0.07" />
+			<physicProps density="100" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
 				<animation name="hit" frameTime="1" afterReproduce="walk" />
 				<animation name="dead" frameTime="1" />
+				<animation name="attack" frameTime="1" />
 			</animations>
 		</zombie>
-		<!--
 		<zombie name="zombie03" code="300003" type="flyingZombie">
-			<properties hits="1" life="1" collisionId="B" collisionAccept="A" speedMin="0.175" speedMax="0.300" />
-			<physicProps density="10" friction="0.3" restitution="0.0" />
+			<properties hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.02" speedMax="0.04" />
+			<physicProps density="100.0" friction="1.0" restitution="0.0" />
+			<animations>
+				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
+				<animation name="hit" frameTime="1" afterReproduce="walk" />
+				<animation name="dead" frameTime="1" />
+				<animation name="attack" frameTime="1" />
+			</animations>
 		</zombie>
-		-->
 	</zombies>
+	<stuffs>
+		<stuff name="barricade" code="400001" type="barricade">
+			<properties hits="0" life="10" collisionId="D" collisionAccept="B" />
+			<physicProps density="50000" friction="1.0" restitution="0.0" />
+			<animations>
+				<animation name="new" defaultAnim="true"/>
+				<animation name="half" />
+				<animation name="destroy" />
+			</animations>
+		</stuff>
+	</stuffs>
 </data>

@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.display {
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
+	import com.sevenbrains.trashingDead.entities.Barricade;
 	
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
@@ -88,6 +89,8 @@ package com.sevenbrains.trashingDead.display {
 		
 		private var _zombiesLayer:Sprite;
 		
+		private var _barricade:Barricade;
+		
 		public function World(props:WorldDefinition) {
 			_props = props;
 			_backgroundLayer = createLayer();
@@ -139,7 +142,7 @@ package com.sevenbrains.trashingDead.display {
 			var floorData:Object = new Object();
 			floorData.assetSprite = null;
 			floorData.entity = new Floor("C", [], PhysicObjectType.FLOOR);
-			var box:Box = BoxBuilder.build(_worldModel.floorRect, _physicWorld, GameProperties.WORLD_SCALE, false, new PhysicDefinition(0, 10, 0.1), floorData);
+			var box:Box = BoxBuilder.build(_worldModel.floorRect, _physicWorld, GameProperties.WORLD_SCALE, false, new PhysicDefinition(10000, 1.0, 0.0), floorData);
 			box.SetActive(true);
 			_physicWorld.registerBox(box);
 			DisplayUtil.remove(floor);
@@ -151,9 +154,15 @@ package com.sevenbrains.trashingDead.display {
 			_traceLayer.addChild(_entityPathManager.content);
 			_damageArea.init();
 			_damageLayer.addChild(_damageArea.content);
+			// Inicializa el creador de zombies
 			_zombieGenerator = new ZombieGenerator();
 			_zombieGenerator.init(_props.zombieTimeCreation, _props.zombieMaxInScreen, _props.zombies);
 			_zombieGenerator.activate(true);
+			// Inicializa la barricada
+			_barricade = new Barricade();
+			_barricade.init();
+			_worldModel.barricade = _barricade;
+			_zombiesLayer.addChild(_barricade);
 			
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();

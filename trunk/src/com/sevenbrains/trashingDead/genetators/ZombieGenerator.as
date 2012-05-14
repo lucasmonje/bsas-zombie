@@ -61,9 +61,8 @@ package com.sevenbrains.trashingDead.genetators
 				
 				var zombieProps:ItemDefinition = ConfigModel.entities.getZombieByCode(code);
 				if (zombieProps){
-					var pos:Point;
 					var floorY:Number = WorldModel.instance.floorRect.y - (WorldModel.instance.floorRect.height / 2);
-					pos = new Point(WorldModel.instance.panZoom.cameraBounds.right + 50, zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE?floorY - 150:floorY);
+					var pos:Point = new Point(WorldModel.instance.panZoom.cameraBounds.right - 150, zombieProps.type ==  PhysicObjectType.FLYING_ZOMBIE?floorY - 150:floorY);
 					
 					var z:Entity = ZombieFactory.instance.createZombie(zombieProps, pos);
 					ItemManager.instance.regist(z);

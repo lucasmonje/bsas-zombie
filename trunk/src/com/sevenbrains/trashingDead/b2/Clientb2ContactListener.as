@@ -36,7 +36,7 @@ package com.sevenbrains.trashingDead.b2
 		}
 		
 		private function validateCollision(entityA:Collisionable, entityB:Collisionable):Boolean {
-			return entityA.isCollisioning(entityB) || entityB.isCollisioning(entityA);
+			return (entityA.collisionable && entityB.collisionable) && (entityA.isCollisioning(entityB) || entityB.isCollisioning(entityA));
 		}
 	}
 

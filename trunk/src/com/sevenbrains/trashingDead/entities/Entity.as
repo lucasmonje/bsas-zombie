@@ -3,6 +3,7 @@ package com.sevenbrains.trashingDead.entities
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
+	import com.sevenbrains.trashingDead.display.World;
 	
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
@@ -53,6 +54,7 @@ package com.sevenbrains.trashingDead.entities
 		protected var _life:int;
 		protected var _bounds:Rectangle;
 		protected var _enabled:Boolean;
+		protected var _collisionable:Boolean;
 		
 		protected var mc:MovieClip;
 		protected var animations:Animation;
@@ -66,9 +68,18 @@ package com.sevenbrains.trashingDead.entities
 			_type = type;
 			_groupIndex = groupIndex;
 			_initialPosition = initialPosition;
-			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
 			_hits = _props.itemProps.hits;
 			_life = _props.itemProps.life;
+			
+			setSpeed();
+		}
+		
+		public function setSpeed():void {
+			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
+		}
+		
+		public function stopMoving():void {
+			_speed = 0;
 		}
 		
 		public function init():void {
@@ -164,6 +175,7 @@ package com.sevenbrains.trashingDead.entities
 				animations.play(_actualAnim.name);
 			}
 			
+			_collisionable = true;
 			updatePosition();
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
@@ -244,6 +256,11 @@ package com.sevenbrains.trashingDead.entities
 			return _type;
 		}
 		
+		public function get collisionable():Boolean 
+		{
+			return _collisionable;
+		}
+		
 		public function getItemPosition():Point {
 			var body:b2Body = _compositionMap.arrayMode[0];
 			return new Point(body.GetPosition().x * _worldScale, body.GetPosition().y * _worldScale);
@@ -314,8 +331,10 @@ package com.sevenbrains.trashingDead.entities
 			}
 			
 			// Si se va de pantalla se autodestruye
-			if (getItemPosition().x > WorldModel.instance.currentWorld.width ||
-				getItemPosition().y > WorldModel.instance.currentWorld.height) {
+			var itemPos:Point = getItemPosition();
+			var camera:Rectangle = WorldModel.instance.panZoom.cameraBounds;
+			if (itemPos.x > (camera.width) ||
+				itemPos.y > (camera.height)) {
 					hit(_life);
 			}
 		}

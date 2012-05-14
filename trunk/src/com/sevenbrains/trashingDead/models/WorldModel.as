@@ -11,6 +11,7 @@
 package com.sevenbrains.trashingDead.models {
 	
 	import com.sevenbrains.trashingDead.display.World;
+	import com.sevenbrains.trashingDead.entities.Barricade;
 	import com.sevenbrains.trashingDead.managers.PanZoom;
 	import com.sevenbrains.trashingDead.managers.StageTimer;
 	import flash.geom.Rectangle;
@@ -26,6 +27,8 @@ package com.sevenbrains.trashingDead.models {
 		private var _currentWorld:World;
 		
 		private var _floorRect:Rectangle;
+		
+		private var _barricade:Barricade;
 		
 		private var _gravity:b2Vec2;
 		
@@ -86,6 +89,16 @@ package com.sevenbrains.trashingDead.models {
 				_instanciable = false;
 			}
 			return _instance;
+		}
+		
+		public function get barricade():Barricade 
+		{
+			return _barricade;
+		}
+		
+		public function set barricade(value:Barricade):void 
+		{
+			_barricade = value;
 		}
 	}
 }

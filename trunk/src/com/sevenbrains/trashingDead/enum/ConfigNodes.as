@@ -12,6 +12,7 @@ package com.sevenbrains.trashingDead.enum {
 		public static const TRASHES:String = "trashes";
 		public static const WEAPONS:String = "weapons";
 		public static const ZOMBIES:String = "zombies";
+		public static const STUFFS:String = "stuffs";
 		public static const WORLDS:String = "worlds";
 		public static const LOCALE:String = "locale";
 		public static const POPUPS:String = "popups";

@@ -11,7 +11,7 @@ package com.sevenbrains.trashingDead.enum
 		public static const TRASH:String = "trash";
 		public static const FLOOR:String = "floor";
 		public static const ITEM:String = "item";
-		
+		public static const BARRICADE:String = "barricade";
 	}
 
 }

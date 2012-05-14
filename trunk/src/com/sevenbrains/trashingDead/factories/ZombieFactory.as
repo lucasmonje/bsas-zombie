@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.factories
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.entities.Zombie;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
+	import com.sevenbrains.trashingDead.models.WorldModel;
 	import flash.geom.Point;
 	/**
 	 * ...
@@ -36,10 +37,10 @@ package com.sevenbrains.trashingDead.factories
 			var zombie:Entity;
 			switch(def.type) {
 				case PhysicObjectType.ZOMBIE:
-					zombie = new Zombie(def, pos);
+					zombie = new Zombie(def, pos, def.type, WorldModel.instance.barricade);
 					break;
 				case PhysicObjectType.FLYING_ZOMBIE:
-					zombie = new FlyingZombie(def, pos);
+					zombie = new FlyingZombie(def, pos, def.type, WorldModel.instance.barricade);
 					break;
 			}
 			zombie.init();

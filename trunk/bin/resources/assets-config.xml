@@ -12,6 +12,8 @@
 		<swf id="gameTitle" path="screens/gameTitle.swf" preloaderId="10009" />
 		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10010" />
 		<swf id="players" path="players/players.swf" preloaderId="10011" />
+		<swf id="barricade" path="barricade/barricade.swf" preloaderId="10012" />
+		<swf id="zombie03" path="zombies/zombie03.swf" preloaderId="10013" />
 		<swf id="popupAlert" path="popups/popupAlert.swf" />
 		<swf id="popupBigMessage" path="popups/popupBigMessage.swf" />
 	</swfs>

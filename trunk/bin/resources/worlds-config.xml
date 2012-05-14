@@ -10,6 +10,7 @@
 			<zombies>
 				<zombie code="300001" weight="1" />
 				<zombie code="300002" weight="1" />
+				<zombie code="300003" weight="10" />
 			</zombies>
 		</world>
 	</worlds>

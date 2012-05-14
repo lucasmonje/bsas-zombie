@@ -12,12 +12,14 @@ package com.sevenbrains.trashingDead.entities
 		private var _collisionId:String;
 		private var _collisionAccept:Array;
 		private var _type:String;
+		private var _collisionable:Boolean;
 		
 		public function Floor(collisionId:String, collisionAccept:Array, type:String) 
 		{
 			_collisionId = collisionId;
 			_collisionAccept = collisionAccept.concat();
 			_type =  type;
+			_collisionable = true;
 		}
 		
 		/* INTERFACE interfaces.Collisionable */
@@ -45,6 +47,11 @@ package com.sevenbrains.trashingDead.entities
 		public function get type():String 
 		{
 			return _type;
+		}
+		
+		public function get collisionable():Boolean 
+		{
+			return _collisionable;
 		}
 		
 		

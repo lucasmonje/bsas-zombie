@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.enum
 		public static const GAME_TITLE:String = 'gameTitle';
 		public static const MAP_WORLD:String = 'mapWorld';
 		public static const PLAYERS:String = 'players';
+		public static const BARRICADE:String = 'barricade';
 	}
 
 }

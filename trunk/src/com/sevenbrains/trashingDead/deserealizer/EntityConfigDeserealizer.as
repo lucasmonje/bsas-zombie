@@ -22,6 +22,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 			_map[ConfigNodes.TRASHES] = decodeItems(_xml.trashes);
 			_map[ConfigNodes.WEAPONS] = decodeItems(_xml.weapons);
 			_map[ConfigNodes.ZOMBIES] = decodeItems(_xml.zombies);
+			_map[ConfigNodes.STUFFS] = decodeItems(_xml.stuffs);
 		}
 		
 		private function decodeItems(xml:XMLList):Array {

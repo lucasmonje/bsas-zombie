@@ -48,5 +48,18 @@ package com.sevenbrains.trashingDead.configuration {
 			}
 			return null;
 		}
+		
+		public function getStuffs():Array {
+			return _configMap[ConfigNodes.STUFFS];
+		}
+		
+		public function getStuffByCode(code:uint):ItemDefinition {
+			for each (var def:ItemDefinition in getStuffs()) {
+				if (def.code == code) {
+					return def;
+				}
+			}
+			return null;
+		}
 	}
 }
