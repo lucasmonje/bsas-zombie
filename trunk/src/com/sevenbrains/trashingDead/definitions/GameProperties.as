@@ -8,6 +8,7 @@ package com.sevenbrains.trashingDead.definitions
 	public class GameProperties 
 	{		
 		public static const POWER_INCREMENT:Number = 5;
+		
 		public static const POWER_LIMIT:Number = 100;
 		
 		public static const ANGLE_BOTTOM:Number = 0.45;

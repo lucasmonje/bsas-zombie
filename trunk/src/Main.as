@@ -9,10 +9,12 @@ package {
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.FullscreenManager;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.utils.CheatCentral;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
@@ -33,6 +35,7 @@ package {
 		private var _actualScreen:String;
 		private var _map:Dictionary;
 		private var _appController:ApplicationController;
+		private var _cheats:CheatCentral;
 		
 		public function Main():void {
 			if (stage) {
@@ -50,6 +53,8 @@ package {
 			FullscreenManager.instance.root = this;
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			loadConfig();
+			_cheats = new CheatCentral();
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKpressed);
 		}
 		
 		private function loadConfig():void {
@@ -105,6 +110,10 @@ package {
 				screen.init();
 				addChild(Sprite(screen));
 			}
+		}
+		
+		private function onKpressed(e:KeyboardEvent):void {
+			_cheats.cheat(String.fromCharCode(e.charCode), e.ctrlKey, e.altKey, e.shiftKey);
 		}
 	}
 }

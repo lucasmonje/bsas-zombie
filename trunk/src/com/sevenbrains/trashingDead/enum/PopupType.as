@@ -9,5 +9,6 @@ package com.sevenbrains.trashingDead.enum {
 		public static const SECOND_ROUND:String = "popupSecondRound";
 		public static const FINAL_ROUND:String = "popupFinalRound";
 		public static const COMPLETE_STAGE:String = "popupCompleteStage";
+		public static const MATERIALS:String = "popupMaterial";
 	}
 }

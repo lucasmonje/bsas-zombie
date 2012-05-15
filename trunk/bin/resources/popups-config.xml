@@ -52,6 +52,11 @@
 		
 		<!-- Popups -->
 		
+		<popup popupId="popupMaterial" assetId="popupMaterial" anim="0.5,alpha">
+			<btnClose />
+			<escClose />
+		</popup>
+		
 		<popup popupId="popupAlert" assetId="popupAlert" anim="0.5,scale,alpha,rotation">
 			<title/>
 			<body/>
