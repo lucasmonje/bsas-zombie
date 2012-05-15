@@ -43,8 +43,9 @@ package com.sevenbrains.trashingDead.managers {
 		private var _urlMap:Dictionary = new Dictionary();
 		
 		public function VersionManager() {
-			if (!instanciationEnabled)
-				throw new Error("VersionManager is a singleton class, use instance instead");
+			if (!instanciationEnabled) {
+				throw new Error("VersionManager is a singleton class, use instance instead");				
+			}
 		}
 		
 		public function get defaultVersion():String {

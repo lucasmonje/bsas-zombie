@@ -6,23 +6,32 @@
 //   All rights reserved. 
 //
 //------------------------------------------------------------------------------
-
 package com.sevenbrains.trashingDead.managers {
 	
 	import com.sevenbrains.trashingDead.condition.core.ConditionDefinition;
 	import com.sevenbrains.trashingDead.condition.core.IConditionChecker;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
+	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.exception.UnsupportedOperationException;
-	
 	import flash.utils.Dictionary;
+	
 	
 	public class LockManager {
 		
+		private static var _instance:LockManager;
+		
+		private static var instanciationEnabled:Boolean;
+		
 		private var conditionCheckers:Dictionary;
+		
 		private var locksById:Dictionary;
+		
 		private var unlockedLocks:Dictionary;
 		
 		public function LockManager() {
+			if (!instanciationEnabled) {
+				throw new PrivateConstructorException("LockManager is a singleton class, use instance instead");
+			}
 			locksById = new Dictionary();
 			unlockedLocks = new Dictionary();
 		}
@@ -42,9 +51,8 @@ package com.sevenbrains.trashingDead.managers {
 			var infos:Array = new Array();
 			
 			if (!lock) {
-				return infos;				
+				return infos;
 			}
-			
 			var checker:IConditionChecker;
 			
 			for each (var condition:ConditionDefinition in lock.conditions) {
@@ -66,9 +74,8 @@ package com.sevenbrains.trashingDead.managers {
 			var infos:Array = new Array();
 			
 			if (!lock) {
-				return infos;				
+				return infos;
 			}
-			
 			var checker:IConditionChecker;
 			
 			for each (var condition:ConditionDefinition in lock.conditions) {
@@ -79,7 +86,6 @@ package com.sevenbrains.trashingDead.managers {
 				}
 				infos = infos.concat(checker.getMissingConditions(condition));
 			}
-			
 			return infos;
 		}
 		
@@ -121,7 +127,6 @@ package com.sevenbrains.trashingDead.managers {
 					return true;
 				}
 			}
-			
 			return false;
 		}
 		
@@ -132,6 +137,15 @@ package com.sevenbrains.trashingDead.managers {
 				lock = getLock(id);
 				unlockedLocks[lock] = true;
 			}
+		}
+		
+		public static function get instance():LockManager {
+			if (!_instance) {
+				instanciationEnabled = true;
+				_instance = new LockManager();
+				instanciationEnabled = false;
+			}
+			return _instance;
 		}
 	}
 }
