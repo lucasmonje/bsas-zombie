@@ -5,6 +5,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.ItemPropertiesDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
+	import com.sevenbrains.trashingDead.definitions.rewards.RewardList;
 	import com.sevenbrains.trashingDead.deserealizer.core.AbstractDeserealizer;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import com.sevenbrains.trashingDead.utils.BooleanUtils;
@@ -37,7 +38,9 @@ package com.sevenbrains.trashingDead.deserealizer {
 					animations.push(new ItemAnimationsDefinition(child.@name, child.@frameTime, child.@afterReproduce, BooleanUtils.fromString(child.@defaultAnim)));
 				}
 				
-				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area, animations);
+				var rewardList:RewardList = RewardConfigDeserializer.instance.decodeRewards(element);
+				
+				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, props, physic, area, animations, rewardList);
 				items.push(itemDef);
 			}
 			return items;

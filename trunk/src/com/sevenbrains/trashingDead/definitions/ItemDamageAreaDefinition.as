@@ -7,13 +7,13 @@ package com.sevenbrains.trashingDead.definitions
 	public class ItemDamageAreaDefinition 
 	{
 		private var _radius:Number;
-		private var _times:uint;
+		private var _time:uint;
 		private var _hit:uint;
 		
-		public function ItemDamageAreaDefinition(radius:Number, times:uint, hit:uint) 
+		public function ItemDamageAreaDefinition(radius:Number, time:uint, hit:uint) 
 		{
 			_radius = radius;
-			_times = times;
+			_time = time;
 			_hit = hit;
 		}
 		
@@ -22,9 +22,9 @@ package com.sevenbrains.trashingDead.definitions
 			return _radius;
 		}
 		
-		public function get times():uint 
+		public function get time():uint 
 		{
-			return _times;
+			return _time;
 		}
 		
 		public function get hit():uint 

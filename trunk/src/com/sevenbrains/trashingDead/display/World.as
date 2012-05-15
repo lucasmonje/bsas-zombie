@@ -14,8 +14,6 @@ package com.sevenbrains.trashingDead.display {
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
-	import com.sevenbrains.trashingDead.entities.Barricade;
-	
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.GamePhysicWorld;
@@ -23,6 +21,7 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.display.popup.Popup;
+	import com.sevenbrains.trashingDead.entities.Barricade;
 	import com.sevenbrains.trashingDead.entities.Floor;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
@@ -42,14 +41,12 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.StageReference;
-	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
-	
 	
 	/*
 	* ...
@@ -251,5 +248,6 @@ package com.sevenbrains.trashingDead.display {
 			_physicWorld.ClearForces();
 			_physicWorld.DrawDebugData();
 		}
+		
 	}
 }

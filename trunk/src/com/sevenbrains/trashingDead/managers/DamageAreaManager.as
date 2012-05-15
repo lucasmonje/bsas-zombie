@@ -2,7 +2,8 @@ package com.sevenbrains.trashingDead.managers
 {
 	import com.sevenbrains.trashingDead.definitions.ItemDamageAreaDefinition;
 	import com.sevenbrains.trashingDead.entities.DamageArea;
-	import com.sevenbrains.trashingDead.events.GameTimerEvent;
+	import com.sevenbrains.trashingDead.entities.Entity;
+	import com.sevenbrains.trashingDead.managers.ItemManager;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -28,6 +29,8 @@ package com.sevenbrains.trashingDead.managers
 		private var _damageAreas:Vector.<DamageArea>;
 		
 		private var _content:Sprite;
+		
+		private var _callId:int;
 				
 		public function DamageAreaManager() 
 		{
@@ -39,7 +42,7 @@ package com.sevenbrains.trashingDead.managers
 		public function init():void {
 			_damageAreas = new Vector.<DamageArea>();
 			_content = new Sprite();
-			GameTimer.instance.addEventListener(GameTimerEvent.TIME_UPDATE_SECOND, update);
+			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
 		public function addDamageArea(pos:Point, props:ItemDamageAreaDefinition):void {
@@ -55,22 +58,43 @@ package com.sevenbrains.trashingDead.managers
 			return _content;
 		}
 		
-		public function update(e:GameTimerEvent):void {
+		public function update():void {
+			
+			var zombies:Array = ItemManager.instance.getZombies();
+			
 			var i:int = 0;
 			var damageArea:DamageArea;
 			while (i < _damageAreas.length) {
 				damageArea = _damageAreas[i];
-				if (--damageArea.times == 0) {
+				
+				checkZombiesInsideDamageArea(zombies, damageArea);
+				
+				if (damageArea.isSpent()) {
 					_content.removeChild(damageArea.content);
 					_damageAreas.splice(i, 1);
+					damageArea.destroy();
 				}else {
 					i++;
 				}
 			}
 		}
 		
+		/**
+		 * Chequea si algun zombie esta dentro de un damage area y le descuenta vida
+		 * @param	zombie
+		 * @param	damageArea
+		 */
+		private function checkZombiesInsideDamageArea(zombies:Array, damageArea:DamageArea):void {
+			for each(var entity:Entity in zombies) {
+				if (damageArea.isInside(entity.getItemPosition())) {
+					entity.hit(damageArea.hits);
+				}
+			}
+		}
+		
 		public function destroy():void {
-			GameTimer.instance.removeEventListener(GameTimerEvent.TIME_UPDATE_SECOND, update);
+			GameTimer.instance.cancelCall(_callId);
+			
 			while (_content.numChildren > 0) {
 				_content.removeChildAt(0);
 			}

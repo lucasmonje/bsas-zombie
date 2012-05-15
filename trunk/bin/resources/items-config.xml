@@ -31,10 +31,16 @@
 	</trashes>
 	
 	<weapons>
+		<!--  
+		Definicion de DamageArea
+		radius: el area que abarca el daño
+		time: tiempo en segundos que dura
+		hit: el daño que infringe al que colisione
+		-->
 		<weapon name="Bat" code="200001" icon="Bat" type="battable" />
 		<weapon name="itemMolotov" code="100003" icon="Molotov" type="handable">
 			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-			<damageArea radius="1" times="10" hit="2" />
+			<damageArea radius="1" time="10" hit="1" />
 		</weapon>
 		<!--
 		<weapon name="Grenade" code="100004" icon="Grenade" type="handable">
@@ -57,6 +63,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
+			<rewards>
+				<coinsReward value="10" />
+				<xpReward value="2" />
+			</rewards>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
 			<properties hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.03" speedMax="0.07" />
@@ -67,6 +77,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
+			<rewards>
+				<coinsReward value="5" />
+				<xpReward value="1" />
+			</rewards>
 		</zombie>
 		<zombie name="zombie03" code="300003" type="flyingZombie">
 			<properties hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.02" speedMax="0.04" />
@@ -77,6 +91,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
+			<rewards>
+				<coinsReward value="15" />
+				<xpReward value="3" />
+			</rewards>
 		</zombie>
 	</zombies>
 	<stuffs>
