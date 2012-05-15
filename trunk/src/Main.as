@@ -1,5 +1,7 @@
 package {
 	
+	import com.adobe.cairngorm.model.ModelLocator;
+	import com.sevenbrains.trashingDead.controller.ApplicationController;
 	import com.sevenbrains.trashingDead.display.InGame;
 	import com.sevenbrains.trashingDead.display.MainMenu;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
@@ -30,6 +32,7 @@ package {
 		private var _loaded:int;
 		private var _actualScreen:String;
 		private var _map:Dictionary;
+		private var _appController:ApplicationController;
 		
 		public function Main():void {
 			if (stage) {
@@ -41,6 +44,7 @@ package {
 		
 		private function init(e:Event=null):void {
 			Manifest;
+			_appController = new ApplicationController();
 			StageReference.initReference(stage);
 			GameTimer.instance.start();
 			FullscreenManager.instance.root = this;

@@ -13,6 +13,8 @@ package {
 	import com.sevenbrains.trashingDead.condition.ItemConditionChecker;
 	import com.sevenbrains.trashingDead.condition.StatsConditionChecker;
 	import com.sevenbrains.trashingDead.configuration.*;
+	import com.sevenbrains.trashingDead.controller.command.ToggleMusicCommand;
+	import com.sevenbrains.trashingDead.controller.event.ToggleMusicEvent;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
 	import com.sevenbrains.trashingDead.deserealizer.*;
 	import com.sevenbrains.trashingDead.display.iconList.promotion.PromotionBar;
@@ -56,6 +58,10 @@ package {
 			ItemConditionChecker;
 			
 			PromotionBar;
+			
+			ToggleMusicEvent;
+			
+			ToggleMusicCommand;
 		
 		}
 	}

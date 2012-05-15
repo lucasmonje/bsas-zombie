@@ -1,5 +1,8 @@
 package com.sevenbrains.trashingDead.display 
 {
+	import com.adobe.cairngorm.control.CairngormEvent;
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	import com.sevenbrains.trashingDead.controller.event.ToggleMusicEvent;
 	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
@@ -17,6 +20,7 @@ package com.sevenbrains.trashingDead.display
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
+
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -59,6 +63,8 @@ package com.sevenbrains.trashingDead.display
 			addChild(GameCanvas.instance.hud);
 			addChild(GameCanvas.instance.popup);
 			addChild(GameCanvas.instance.loading);
+			
+			CairngormEventDispatcher.getInstance().dispatchEvent(new ToggleMusicEvent());
 			
 			_world = null;
 			
