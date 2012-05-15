@@ -51,6 +51,8 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="src\com\adobe\as3corelib.swc" />
+    <element path="lib\cairngorm-2.2.1.swc" />
+    <element path="lib\as3corelib.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

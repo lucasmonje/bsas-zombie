@@ -39,6 +39,7 @@ package com.sevenbrains.trashingDead.display
 		private var _worldMap:MapWorld;
 		private var _world:World;
 		private var _loading:Loading;
+		private var _hud:Hud;
 		
 		private var _actualScreen:Screenable;
 		private var _data:String;
@@ -67,6 +68,9 @@ package com.sevenbrains.trashingDead.display
 			CairngormEventDispatcher.getInstance().dispatchEvent(new ToggleMusicEvent());
 			
 			_world = null;
+			
+			_hud = new Hud();
+			_hud.init();
 			
 			_worldMap = new MapWorld();
 			_worldMap.init();
@@ -105,6 +109,8 @@ package com.sevenbrains.trashingDead.display
 						_world.addEventListener(Event.COMPLETE, onWorldLoaded);
 						_world.init();
 						
+						GameCanvas.instance.hud.addChild(_hud);
+						
 						_state = STATE_LOADING;
 					break;
 				case STATE_WORLD:
@@ -112,6 +118,8 @@ package com.sevenbrains.trashingDead.display
 						_worldMap = new MapWorld();
 						_worldMap.init();
 						changeScreen(_worldMap);
+						
+						GameCanvas.instance.hud.removeChild(_hud);
 						
 						_state = STATE_MAP;
 					}

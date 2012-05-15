@@ -22,14 +22,14 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		public function init():void {
+			var hudClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, "stage") as Class;
+			var _content:MovieClip = new hudClass();
+			addChild(_content);
+			
 			_weaponContainer = new Sprite();
-			_weaponContainer.x = 50;
-			_weaponContainer.y = 50;
-			addChild(_weaponContainer);
+			//changeWeapon(null);
 			
-			changeWeapon(null);
-			
-			UserModel.instance.players.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
+			//UserModel.instance.players.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
 		}
 		
 		private function changeWeapon(e:PlayerEvents):void {
