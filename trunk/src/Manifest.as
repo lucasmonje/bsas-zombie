@@ -20,6 +20,8 @@ package {
 	import com.sevenbrains.trashingDead.display.iconList.promotion.PromotionBar;
 	import com.sevenbrains.trashingDead.managers.LockManager;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
+	import com.sevenbrains.trashingDead.controller.event.GrantRewardEvent;
+	import com.sevenbrains.trashingDead.controller.command.GrantRewardCommand;
 	
 	/**
 	 * ...
@@ -60,8 +62,10 @@ package {
 			PromotionBar;
 			
 			ToggleMusicEvent;
+			GrantRewardEvent;
 			
 			ToggleMusicCommand;
+			GrantRewardCommand;
 		
 		}
 	}

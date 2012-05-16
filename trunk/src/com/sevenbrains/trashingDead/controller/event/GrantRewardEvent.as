@@ -9,7 +9,7 @@ package com.sevenbrains.trashingDead.controller.event
 	 */
 	public class GrantRewardEvent extends CairngormEvent 
 	{
-		public static const EVENT:String = "toggleMusicEvent";
+		public static const EVENT:String = "grantRewardEvent";
 		
 		private var _rewardList:RewardList;
 		
