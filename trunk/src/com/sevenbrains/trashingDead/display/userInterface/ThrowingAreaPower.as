@@ -112,8 +112,8 @@ package com.sevenbrains.trashingDead.display.userInterface
 				
 				if (_isPressing) {
 					_power += GameProperties.POWER_INCREMENT;
-					if (_power > GameProperties.POWER_LIMIT) {
-						_power = GameProperties.POWER_LIMIT;
+					if (_power > GameProperties.POWER_MAX_PERCENTAGE) {
+						_power = GameProperties.POWER_MAX_PERCENTAGE;
 					}
 					_arrow.gotoAndStop(_power);
 				}

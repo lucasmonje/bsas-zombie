@@ -2,7 +2,7 @@
 <data>
 	<trashes>
 		<trash name="trashSafeBox" code="100001" type="battable">
-			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<physicProps density="0.9" friction="0.3" restitution="0.1" />
 			<properties hits="5" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
@@ -11,7 +11,7 @@
 			</animations>
 		</trash>
 		<trash name="trashRim" code="100002" type="battable">
-			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<physicProps density="0.6" friction="0.3" restitution="0.1" />
 			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
@@ -20,8 +20,17 @@
 			</animations>
 		</trash>
 		<trash name="trashTv" code="100003" type="battable">
-			<physicProps density="3" friction="0.3" restitution="0.1" />
+			<physicProps density="0.8" friction="0.3" restitution="0.1" />
 			<properties hits="3" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<animations>
+				<animation name="healthy" defaultAnim="true"/>
+				<animation name="hit" />
+				<animation name="destroy" />
+			</animations>
+		</trash>
+		<trash name="trashRock" code="100004" type="handable">
+			<physicProps density="0.1" friction="0.3" restitution="0.1" />
+			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />

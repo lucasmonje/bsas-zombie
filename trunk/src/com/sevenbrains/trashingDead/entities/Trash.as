@@ -26,11 +26,10 @@ package com.sevenbrains.trashingDead.entities {
 			}
 		}
 		
-		public function shot(vel:b2Vec2):void {
+		public function shot(force:b2Vec2):void {
 			for each (var body:b2Body in _compositionMap.arrayMode) {
 				body.SetActive(true);
-				body.SetLinearVelocity(vel);
-				body.SetAngularDamping(10);
+				body.ApplyForce(force, body.GetPosition());
 			}
 			playAnim(TrashAnimsEnum.HIT);
 		}

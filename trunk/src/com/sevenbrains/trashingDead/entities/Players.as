@@ -10,6 +10,7 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.factories.TrashFactory;
 	import com.sevenbrains.trashingDead.managers.ItemManager;
+	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -138,7 +139,9 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	angle
 		 */
 		private function trashHit(power:Number, angle:Number):void {
-			_currentTrash.shot(new b2Vec2((power * Math.cos(angle)) / 4, (power * Math.sin(angle)) / 4));
+			var powerForce:Number = GameProperties.POWER_INIT * power / 100;
+			var force:b2Vec2 = new b2Vec2((powerForce * Math.cos(angle)), (powerForce * Math.sin(angle)));
+			_currentTrash.shot(force);
 			WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
 			_currentTrash = null;
 		}
