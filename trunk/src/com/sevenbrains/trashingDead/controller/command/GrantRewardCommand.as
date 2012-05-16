@@ -34,6 +34,8 @@ package com.sevenbrains.trashingDead.controller.command
 						break;
 					case XpReward:
 						break;
+					case MaterialReward:
+						break;
 				}
 			}
 		}
