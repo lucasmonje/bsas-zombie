@@ -71,6 +71,8 @@ package com.sevenbrains.trashingDead.entities {
 						attack();
 						if (_target.isDestroyed()) {
 							_state = STATE_WALKING;
+							playAnim(EntitiesAnimsEnum.WALK);
+							setSpeed();
 						}else {
 							playAnim(EntitiesAnimsEnum.ATTACK);
 						}
@@ -84,6 +86,9 @@ package com.sevenbrains.trashingDead.entities {
 		}
 		
 		private function isNearToTarget():Boolean {
+			if (!_target || (_target && _target.isDestroyed())) {
+				return false;
+			}
 			var distance:Number = Math.abs(_target.getItemPosition().x - this.getItemPosition().x);
 			return (distance < TOLERANCE);
 		}

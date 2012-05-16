@@ -27,11 +27,6 @@ package com.sevenbrains.trashingDead.entities
 			super(props, initialPosition, PhysicObjectType.BARRICADE, 1);
 		}
 		
-		override public function init():void 
-		{
-			super.init();
-		}
-		
 		override public function collide(who:Collisionable):void 
 		{
 			if (!(who is Floor)){

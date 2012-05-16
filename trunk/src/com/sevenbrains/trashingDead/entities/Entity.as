@@ -111,7 +111,8 @@ package com.sevenbrains.trashingDead.entities
 					if (type.indexOf("box") > -1) {
 						assetClass = ConfigModel.assets.getDefinition(_props.name, content.name);
 						if (Boolean(assetClass)) {
-							mc = new assetClass();
+							var assetMc:MovieClip = new assetClass();
+							mc = assetMc.entity;
 							addChild(mc);
 							_assetsList.push(mc);
 						} else {

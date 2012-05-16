@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
 	<worlds>
-		<world id="stage01" background="background01" stageTime="60" soundId="level01" zombieMaxInScreen="12" zombieTimeCreation="6000">
+		<world id="stage01" background="background01" stageTime="120" soundId="level01" zombieMaxInScreen="12" zombieTimeCreation="6000">
 			<trashes>
 				<trash code="100001" weight="1" />
 				<trash code="100002" weight="1" />
@@ -10,7 +10,8 @@
 			<zombies>
 				<zombie code="300001" weight="1" />
 				<zombie code="300002" weight="1" />
-				<zombie code="300003" weight="10" />
+				<zombie code="300003" weight="1" />
+				<zombie code="300004" weight="4" />
 			</zombies>
 		</world>
 	</worlds>

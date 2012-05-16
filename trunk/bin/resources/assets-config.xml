@@ -17,5 +17,6 @@
 		<swf id="popupAlert" path="popups/popupAlert.swf" />
 		<swf id="popupBigMessage" path="popups/popupBigMessage.swf" />
 		<swf id="popupMaterial" path="popups/popupMaterial.swf" />
+		<swf id="zombie04" path="zombies/zombie04.swf" preloaderId="10014" />
 	</swfs>
 </data>
