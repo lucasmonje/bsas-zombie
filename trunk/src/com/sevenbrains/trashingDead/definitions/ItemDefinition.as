@@ -11,14 +11,13 @@ package com.sevenbrains.trashingDead.definitions
 		private var _code:uint;
 		private var _icon:String;
 		private var _type:String;
-		private var _rewardList:RewardList;
 		
 		private var _itemProps:ItemPropertiesDefinition;
 		private var _physicProps:PhysicDefinition;
 		private var _damageArea:ItemDamageAreaDefinition;
 		private var _animations:Vector.<ItemAnimationsDefinition>;
 		
-		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:PhysicDefinition, damageArea:ItemDamageAreaDefinition, animations:Vector.<ItemAnimationsDefinition>, rewardList:RewardList) 
+		public function ItemDefinition(name:String, code:uint, icon:String, type:String, props:ItemPropertiesDefinition, physic:PhysicDefinition, damageArea:ItemDamageAreaDefinition, animations:Vector.<ItemAnimationsDefinition>) 
 		{
 			_name = name;
 			_code = code;
@@ -30,7 +29,6 @@ package com.sevenbrains.trashingDead.definitions
 			_damageArea = damageArea;
 			_animations = animations.concat();
 			
-			_rewardList = rewardList;
 		}
 		
 		public function get itemProps():ItemPropertiesDefinition 
@@ -71,11 +69,6 @@ package com.sevenbrains.trashingDead.definitions
 		public function get animations():Vector.<ItemAnimationsDefinition> 
 		{
 			return _animations;
-		}
-		
-		public function get rewardList():RewardList 
-		{
-			return _rewardList;
 		}
 		
 	}
