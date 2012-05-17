@@ -9,6 +9,10 @@
 
 package com.sevenbrains.trashingDead.execute.actions {
 	
+	import com.sevenbrains.trashingDead.execute.definition.PopupActionDefinition;
+	import com.sevenbrains.trashingDead.execute.interfaces.IAction;
+	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	
 	public class PopupAction implements IAction {
 		
 		public function PopupAction() {

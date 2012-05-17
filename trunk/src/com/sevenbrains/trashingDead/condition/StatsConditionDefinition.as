@@ -10,6 +10,7 @@
 package com.sevenbrains.trashingDead.condition {
 	
 	import com.sevenbrains.trashingDead.condition.core.ConditionDefinition;
+	import com.sevenbrains.trashingDead.enum.ConditionsType;
 	import com.sevenbrains.trashingDead.interfaces.IStats;
 	
 	public class StatsConditionDefinition extends ConditionDefinition {
@@ -20,7 +21,7 @@ package com.sevenbrains.trashingDead.condition {
 		
 		public function StatsConditionDefinition() {
 			super();
-			_checkerId = "statsConditionChecker";
+			_checkerId = ConditionsType.STATS;
 		}
 		
 		public function get stats():IStats {

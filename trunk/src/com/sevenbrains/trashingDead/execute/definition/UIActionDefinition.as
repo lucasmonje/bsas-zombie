@@ -9,6 +9,7 @@
 
 package com.sevenbrains.trashingDead.execute.definition {
 	
+	import com.sevenbrains.trashingDead.enum.ActionsType;
 	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
 	
 	public class UIActionDefinition implements IActionDefinition {
@@ -18,7 +19,7 @@ package com.sevenbrains.trashingDead.execute.definition {
 		private var _tab:String;
 		
 		public function UIActionDefinition() {
-			_actionId = "uiAction";
+			_actionId = ActionsType.UI_ACTION;
 		}
 		
 		public function get actionId():String {

@@ -8,11 +8,15 @@
 //------------------------------------------------------------------------------
 package com.sevenbrains.trashingDead.managers {
 	
+	import com.sevenbrains.trashingDead.condition.ItemConditionChecker;
+	import com.sevenbrains.trashingDead.condition.StatsConditionChecker;
 	import com.sevenbrains.trashingDead.condition.core.ConditionDefinition;
 	import com.sevenbrains.trashingDead.condition.core.IConditionChecker;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
+	import com.sevenbrains.trashingDead.enum.ConditionsType;
 	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.exception.UnsupportedOperationException;
+	
 	import flash.utils.Dictionary;
 	
 	
@@ -32,8 +36,15 @@ package com.sevenbrains.trashingDead.managers {
 			if (!instanciationEnabled) {
 				throw new PrivateConstructorException("LockManager is a singleton class, use instance instead");
 			}
+			initVars();
+		}
+		
+		private function initVars():void {
 			locksById = new Dictionary();
 			unlockedLocks = new Dictionary();
+			conditionCheckers = new Dictionary();
+			conditionCheckers[ConditionsType.ITEM] = new ItemConditionChecker();
+			conditionCheckers[ConditionsType.STATS] = new StatsConditionChecker();
 		}
 		
 		public function addLock(lock:LockDefinition):void {

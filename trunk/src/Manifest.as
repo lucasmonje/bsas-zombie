@@ -13,15 +13,18 @@ package {
 	import com.sevenbrains.trashingDead.condition.ItemConditionChecker;
 	import com.sevenbrains.trashingDead.condition.StatsConditionChecker;
 	import com.sevenbrains.trashingDead.configuration.*;
+	import com.sevenbrains.trashingDead.controller.command.GrantRewardCommand;
 	import com.sevenbrains.trashingDead.controller.command.ToggleMusicCommand;
+	import com.sevenbrains.trashingDead.controller.event.GrantRewardEvent;
 	import com.sevenbrains.trashingDead.controller.event.ToggleMusicEvent;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
 	import com.sevenbrains.trashingDead.deserealizer.*;
 	import com.sevenbrains.trashingDead.display.iconList.promotion.PromotionBar;
+	import com.sevenbrains.trashingDead.execute.actions.PopupAction;
+	import com.sevenbrains.trashingDead.execute.actions.UIAction;
+	import com.sevenbrains.trashingDead.managers.ExecuteManager;
 	import com.sevenbrains.trashingDead.managers.LockManager;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
-	import com.sevenbrains.trashingDead.controller.event.GrantRewardEvent;
-	import com.sevenbrains.trashingDead.controller.command.GrantRewardCommand;
 	
 	/**
 	 * ...
@@ -58,6 +61,10 @@ package {
 			LockManager;
 			StatsConditionChecker;
 			ItemConditionChecker;
+			
+			ExecuteManager;
+			PopupAction;
+			UIAction;
 			
 			PromotionBar;
 			

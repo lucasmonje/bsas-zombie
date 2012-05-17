@@ -10,6 +10,7 @@
 package com.sevenbrains.trashingDead.condition {
 	
 	import com.sevenbrains.trashingDead.condition.core.ConditionDefinition;
+	import com.sevenbrains.trashingDead.enum.ConditionsType;
 	
 	public class ItemConditionDefinition extends ConditionDefinition {
 		
@@ -20,7 +21,7 @@ package com.sevenbrains.trashingDead.condition {
 		
 		public function ItemConditionDefinition() {
 			super();
-			_checkerId = "itemConditionChecker";
+			_checkerId = ConditionsType.ITEM;
 		}
 		
 		public function get code():int {

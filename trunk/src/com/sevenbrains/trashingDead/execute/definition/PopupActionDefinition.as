@@ -9,6 +9,7 @@
 
 package com.sevenbrains.trashingDead.execute.definition {
 	
+	import com.sevenbrains.trashingDead.enum.ActionsType;
 	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
 	
 	public class PopupActionDefinition implements IActionDefinition {
@@ -22,7 +23,7 @@ package com.sevenbrains.trashingDead.execute.definition {
 		private var _id:String;
 		
 		public function PopupActionDefinition() {
-			_actionId = "popupAction";
+			_actionId = ActionsType.POPUP_ACTION;
 		}
 		
 		public function get actionId():String {

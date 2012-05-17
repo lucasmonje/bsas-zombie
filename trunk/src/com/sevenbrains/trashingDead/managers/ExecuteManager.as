@@ -6,31 +6,40 @@
 //   All rights reserved. 
 //
 //------------------------------------------------------------------------------
-
 package com.sevenbrains.trashingDead.managers {
 	
 	import com.sevenbrains.trashingDead.definitions.ExecuteDefinition;
+	import com.sevenbrains.trashingDead.enum.ActionsType;
+	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.exception.UnsupportedOperationException;
+	import com.sevenbrains.trashingDead.execute.actions.*;
 	import com.sevenbrains.trashingDead.execute.interfaces.IAction;
 	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
 	
 	import flash.utils.Dictionary;
 	
-	public class ExecuteManager {
 	
-		public var actions:Dictionary;
+	public class ExecuteManager {
 		
-		protected var executesById:Dictionary;
+		private static var _instance:ExecuteManager;
+		
+		private static var instanciationEnabled:Boolean;
+		
+		private var actions:Dictionary;
+		
+		private var executesById:Dictionary;
 		
 		public function ExecuteManager() {
-			executesById = new Dictionary();
+			if (!instanciationEnabled) {
+				throw new PrivateConstructorException("ExecuteManager is a singleton class, use instance instead");
+			}
+			initVars();
 		}
 		
 		public function execute(execute:ExecuteDefinition):Boolean {
 			if (!execute) {
 				return false;
 			}
-			
 			var action:IAction;
 			
 			for each (var actionDef:IActionDefinition in execute.actions) {
@@ -42,6 +51,22 @@ package com.sevenbrains.trashingDead.managers {
 				action.execute(actionDef);
 			}
 			return true;
+		}
+		
+		private function initVars():void {
+			executesById = new Dictionary();
+			actions = new Dictionary();
+			actions[ActionsType.POPUP_ACTION] = new PopupAction();
+			actions[ActionsType.UI_ACTION] = new UIAction();
+		}
+		
+		public static function get instance():ExecuteManager {
+			if (!_instance) {
+				instanciationEnabled = true;
+				_instance = new ExecuteManager();
+				instanciationEnabled = false;
+			}
+			return _instance;
 		}
 	}
 }
