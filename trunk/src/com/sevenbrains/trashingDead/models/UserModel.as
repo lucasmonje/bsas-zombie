@@ -12,7 +12,9 @@ package com.sevenbrains.trashingDead.models {
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Players;
+	import com.sevenbrains.trashingDead.models.user.Inventory;
 	import com.sevenbrains.trashingDead.models.user.Stats;
+	
 	import flash.geom.Point;
 	
 	/**
@@ -37,6 +39,8 @@ package com.sevenbrains.trashingDead.models {
 		private var _players:Players;
 		
 		private var _stats:Stats;
+
+		private var _inventory:Inventory;
 		
 		public function UserModel() {
 			if (!_instanciable) {
@@ -60,6 +64,10 @@ package com.sevenbrains.trashingDead.models {
 		
 		public function get stats():Stats {
 			return _stats;
+		}
+
+		public function get inventory():Inventory {
+			return _inventory;
 		}
 	}
 

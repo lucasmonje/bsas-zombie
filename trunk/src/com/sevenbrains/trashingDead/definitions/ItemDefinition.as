@@ -1,11 +1,13 @@
 package com.sevenbrains.trashingDead.definitions 
 {
 	import com.sevenbrains.trashingDead.definitions.rewards.RewardList;
+	import com.sevenbrains.trashingDead.interfaces.IClassifiable;
+
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class ItemDefinition 
+	public class ItemDefinition implements IClassifiable
 	{
 		private var _name:String;
 		private var _code:uint;
