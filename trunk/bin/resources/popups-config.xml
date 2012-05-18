@@ -67,6 +67,13 @@
 			<escClose />
 		</popup>
 		
+		<popup popupId="popupMaterial" assetId="popupMaterial" anim="0.5,scale,alpha">
+			<playMovie />
+			<enterClose />
+			<btnClose />
+			<escClose />
+		</popup>
+		
 		<popup popupId="popupSecondRound" assetId="popupBigMessage" anim="0.5,scale,alpha">
 			<title/>
 			<playMovie />
