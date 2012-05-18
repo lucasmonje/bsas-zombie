@@ -1,30 +1,29 @@
 package com.sevenbrains.trashingDead.entities 
 {
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingArea;
-	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaFaster;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaRect;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
-	import com.sevenbrains.trashingDead.interfaces.ThrowableArea;
+	import com.sevenbrains.trashingDead.events.ThrowingAreaEvent;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
-	import com.sevenbrains.trashingDead.events.ThrowingAreaEvent;
 	import flash.display.MovieClip;
 	import flash.events.EventDispatcher;
-	import flash.events.KeyboardEvent;
-	import flash.ui.Keyboard;
-	import com.sevenbrains.trashingDead.models.WorldModel;
-	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	/**
 	 * ...
-	 * @author lmonje
+	 * @author Fulvio Crescenzi
 	 */
 	public class Batter extends EventDispatcher 
 	{
-		private static const STATE_READY_TO_BAT:String = "ready";
+		private static const STATE_READY_TO_BAT:String = "ready_to_bat";
 		private static const STATE_BATTING:String = "batting";
 		private static const STATE_WAITING_BATTING:String = "waiting_batting";
+		private static const STATE_READY_TO_HANDLE:String = "ready_to_handle";
+		private static const STATE_HANDLING:String = "handling";
+		private static const STATE_WAITING_HANDLING:String = "waiting_handling";
 		private static const STATE_WAITING_TRASH:String = "waiting_trash";
 		
 		private static const ANIM_BATTABLE:String = "battable";
@@ -36,15 +35,14 @@ package com.sevenbrains.trashingDead.entities
 		private var _content:MovieClip;
 		private var _throwingArea:ThrowingArea;
 		
-		private var _weapons:Vector.<Item>;
-		private var _actualWeapon:int;
+		private var _itemCode:Number;
+		private var _actualWeapon:String;
 		
 		private var _animation:Animation;
 		
 		private var _callId:int;
 		
-		public function Batter(weapons:Vector.<Item>) {
-			_weapons = weapons;
+		public function Batter() {
 		}
 		
 		/**
@@ -67,6 +65,7 @@ package com.sevenbrains.trashingDead.entities
 			GameCanvas.instance.hud.addChild(_throwingArea);
 			
 			_state = STATE_WAITING_TRASH;
+			_actualWeapon = "battable";
 			
 			_throwingArea.activate(true);
 			
@@ -80,7 +79,13 @@ package com.sevenbrains.trashingDead.entities
 			switch(_state) {
 				case STATE_WAITING_TRASH:
 					break;
+				case STATE_READY_TO_HANDLE:
 				case STATE_READY_TO_BAT:
+					break;
+				case STATE_HANDLING:
+					
+					_animation.play(ANIM_HANDABLE);
+					_state = STATE_WAITING_HANDLING;
 					break;
 				case STATE_BATTING:
 					//_throwingArea.activate(false);
@@ -96,7 +101,19 @@ package com.sevenbrains.trashingDead.entities
 						_state = STATE_WAITING_TRASH;
 					}
 					break;
+				case STATE_WAITING_HANDLING:
+					if (!_animation.isPlaying) {
+						dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, _throwingArea.hitPower, _throwingArea.hitAngle, _itemCode));
+						_throwingArea.resetValues();
+						_animation.setAnim(ANIM_HANDABLE);
+						_state = STATE_READY_TO_HANDLE;
+					}
+					break;
 			}
+		}
+		
+		public function readyToHandle():void {
+			_state = STATE_READY_TO_HANDLE;
 		}
 		
 		public function readyToBat():void {
@@ -105,61 +122,51 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		private function hitSetted(e:ThrowingAreaEvent):void {
-			_state = STATE_BATTING;
-		}
-		
-		/**
-		 * Cambio de arma
-		 */
-		public function keyUp(e:KeyboardEvent):void {
-			if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.RIGHT) {
-				changeWeapon(e.keyCode == Keyboard.LEFT);
+			if (_state == STATE_READY_TO_BAT){
+				_state = STATE_BATTING;
+			}else if (_state == STATE_READY_TO_HANDLE) {
+				_state = STATE_HANDLING;
 			}
 		}
 		
 		/**
 		 * Cambia el arma
 		 */
-		private function changeWeapon(left:Boolean):void {
-			var len:int = _weapons.length;
-			if (left) {
-				actualWeapon = actualWeapon == 0? len - 1: actualWeapon-1;
-			}else {
-				actualWeapon = actualWeapon == len -1? 0: actualWeapon+1;
+		public function changeWeapon(type:String, code:Number = 0):void {
+			if (_actualWeapon == type) {
+				return;
 			}
 			
-			if (getActualWeapon().props.type == 'handable') {
-				var clazz:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, getActualWeapon().props.icon);
-				var container:MovieClip = MovieClip(_content.item);
-				while (container && container.numChildren > 0) {
-					container.removeChildAt(0);
-				}
-				container.addChild(new clazz());
+			_actualWeapon = type;
+			_itemCode = code;
+			if (type == 'handable') {
+				readyToHandle();
+				_animation.setAnim(ANIM_HANDABLE);
+				loadItem();
+			}else if ('battable') {
+				readyToBat();
+				_animation.setAnim(ANIM_BATTABLE);
+			}
+			dispatchEvent(new PlayerEvents(PlayerEvents.CHANGE_WEAPON, type));
+		}
+		
+		private function loadItem():void {
+			var itemDef:ItemDefinition = ConfigModel.entities.getTrashByCode(_itemCode);
+			if (itemDef) {
+				var classBtnRock:Class = ConfigModel.assets.getDefinition(itemDef.name, "box1") as Class;
+				var mcBtnRock:MovieClip = new classBtnRock();
+				mcBtnRock.x = _content.item.width >> 1;
+				mcBtnRock.y = _content.item.height >> 1;
+				var itemContent:MovieClip = _content.item as MovieClip;
+				emptyContent(itemContent);
+				itemContent.addChild(mcBtnRock);
 			}
 		}
 		
-		/**
-		 * Retorna el item de arma actual
-		 */
-		public function getActualWeapon():Item {
-			return _weapons[_actualWeapon];
-		}
-		
-		/**
-		 * Retorna el id del arma actual
-		 */
-		public function get actualWeapon():int {
-			return _actualWeapon;
-		}
-		
-		/**
-		 * Setea el arma actual
-		 */
-		public function set actualWeapon(value:int):void {
-			var old:int = _actualWeapon;
-			_actualWeapon = value;
-			_animation.setAnim(getActualWeapon().props.type);
-			dispatchEvent(new PlayerEvents(PlayerEvents.CHANGE_WEAPON, _actualWeapon.toString(), old.toString()));
+		private function emptyContent(mc:MovieClip):void {
+			while (mc.numChildren > 0) {
+				mc.removeChildAt(0);
+			}
 		}
 		
 		public function destroy():void {

@@ -49,6 +49,10 @@ package com.sevenbrains.trashingDead.entities
 			GameTimer.instance.callMeEvery(1, update);
 		}
 		
+		public function reset():void {
+			_animation.setAnim(ANIM_THROUGH);
+		}
+		
 		public function giveTrash():void {
 			_state = STATE_THREW;
 		}
@@ -70,7 +74,7 @@ package com.sevenbrains.trashingDead.entities
 			_throwingContainer.addChild(assetTrash);
 		}
 		
-		private function cleanTrashContainer():void {
+		public function cleanTrashContainer():void {
 			while (_throwingContainer.numChildren > 0) {
 				_throwingContainer.removeChildAt(0);
 			}
@@ -80,8 +84,13 @@ package com.sevenbrains.trashingDead.entities
 		 * Devuelve un trash definision random
 		 */
 		public function getTrashDefinition():ItemDefinition {
-			var entities:Array = ConfigModel.entities.getTrashes().concat();
+			var entities:Array = ConfigModel.entities.getTrashesByType('battable').concat();
 			return entities[MathUtils.getRandomInt(1, entities.length) - 1];
+		}
+		
+		public function getTrashAndGive():void {
+			getTrash();
+			giveTrash();
 		}
 		
 		private function update():void {

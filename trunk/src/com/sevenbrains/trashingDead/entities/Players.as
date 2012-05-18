@@ -65,7 +65,7 @@ package com.sevenbrains.trashingDead.entities
 			var girlContent:MovieClip = _content.getChildByName("mcPlayer_3") as MovieClip;
 			
 			// Inicializacion de los players
-			_batter = new Batter(null);
+			_batter = new Batter();
 			_batter.init(batterContent, _content.getChildByName("mcPoweringContainer") as MovieClip);
 			
 			_fatGuy = new FatGuy();
@@ -76,6 +76,8 @@ package com.sevenbrains.trashingDead.entities
 			
 			// Listeners
 			_batter.addEventListener(PlayerEvents.TRASH_HIT, batterThrewTrash);
+			_batter.addEventListener(PlayerEvents.THREW_ITEM, batterThrewItem);
+			_batter.addEventListener(PlayerEvents.CHANGE_WEAPON, batterChangeWeapon);
 			_fatGuy.addEventListener(PlayerEvents.THREW_TRASH, fatGuyThrewTrash);
 			_fatGuy.addEventListener(PlayerEvents.DROP_TRASH, fatGuyDropTrash);
 			
@@ -89,13 +91,36 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function destroy():void {
 			_batter.removeEventListener(PlayerEvents.TRASH_HIT, batterThrewTrash);
+			_batter.removeEventListener(PlayerEvents.THREW_ITEM, batterThrewItem);
+			_batter.removeEventListener(PlayerEvents.CHANGE_WEAPON, batterChangeWeapon);
 			_fatGuy.removeEventListener(PlayerEvents.THREW_TRASH, fatGuyThrewTrash);
 			_fatGuy.removeEventListener(PlayerEvents.DROP_TRASH, fatGuyDropTrash);
 			
 			GameTimer.instance.cancelCall(_callId);
 		}
 		
-		private function  update():void {
+		private function update():void {
+		}
+		
+		private function batterChangeWeapon(e:PlayerEvents):void {
+			destroyActualTrash();
+			_fatGuy.cleanTrashContainer();
+			if (e.value1 == "battable") {
+				_fatGuy.getTrashAndGive();
+			}else {
+				_fatGuy.reset();
+			}
+		}
+		
+		private function batterThrewItem(e:PlayerEvents):void {
+			var itemCode:Number = Number(e.value3);
+			if (itemCode > 0){
+				var itemDef:ItemDefinition = ConfigModel.entities.getTrashByCode(itemCode);
+				if (itemDef) {
+					createTrash(itemDef, new Point(_trashPosition.x, _trashPosition.y - 50));
+					trashHit(Number(e.value1), Number(e.value2));
+				}
+			}
 		}
 		
 		/**
@@ -120,15 +145,15 @@ package com.sevenbrains.trashingDead.entities
 		 * El gordo está listo para agarrar una nueva basura
 		 */
 		private function fatGuyDropTrash(e:PlayerEvents):void {
-			createTrash(ItemDefinition(e.value1));
+			createTrash(ItemDefinition(e.value1), _trashPosition);
 			_batter.readyToBat();
 		}
 		
 		/**
 		 * Crea la basura en base a la definicion que le paso el gordo
 		 */
-		private function createTrash(entityDef:ItemDefinition):void {
-			_currentTrash = TrashFactory.instance.createTrash(entityDef, _trashPosition);
+		private function createTrash(entityDef:ItemDefinition, position:Point):void {
+			_currentTrash = TrashFactory.instance.createTrash(entityDef, position);
 			ItemManager.instance.regist(_currentTrash);
 			WorldModel.instance.currentWorld.playerLayer.addChild(_currentTrash);
 		}
@@ -139,11 +164,21 @@ package com.sevenbrains.trashingDead.entities
 		 * @param	angle
 		 */
 		private function trashHit(power:Number, angle:Number):void {
-			var powerForce:Number = GameProperties.POWER_INIT * power / 100;
-			var force:b2Vec2 = new b2Vec2((powerForce * Math.cos(angle)), (powerForce * Math.sin(angle)));
-			_currentTrash.shot(force);
-			WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
-			_currentTrash = null;
+			if (_currentTrash){
+				var powerForce:Number = GameProperties.POWER_INIT * power / 100;
+				var force:b2Vec2 = new b2Vec2((powerForce * Math.cos(angle)), (powerForce * Math.sin(angle)));
+				_currentTrash.shot(force);
+				WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
+				_currentTrash = null;
+			}
+		}
+		
+		private function destroyActualTrash():void {
+			if (_currentTrash){
+				ItemManager.instance.unregist(_currentTrash);
+				_currentTrash.destroy();
+				_currentTrash = null;
+			}
 		}
 		
 	}

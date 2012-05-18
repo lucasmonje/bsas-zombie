@@ -18,12 +18,14 @@ package com.sevenbrains.trashingDead.events
 		
 		private var _value1:*;
 		private var _value2:*;
+		private var _value3:*;
 		
-		public function PlayerEvents(type:String, value1:* = null, value2:* = null) 
+		public function PlayerEvents(type:String, value1:* = null, value2:* = null, value3:* = null) 
 		{ 
 			super(type);
 			_value1 = value1;
 			_value2 = value2;
+			_value3 = value3;
 		} 
 		
 		public function get value1():* 
@@ -34,6 +36,11 @@ package com.sevenbrains.trashingDead.events
 		public function get value2():*
 		{
 			return _value2;
+		}
+		
+		public function get value3():* 
+		{
+			return _value3;
 		}
 		
 	}

@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.entities {
 	*/
 	public class Trash extends Entity {
 		
+		
 		public function Trash(props:ItemDefinition, initialPosition:Point) {
 			super(props, initialPosition, PhysicObjectType.TRASH, 2);
 		}

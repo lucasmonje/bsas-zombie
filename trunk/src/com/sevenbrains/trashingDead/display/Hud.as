@@ -1,18 +1,19 @@
 package com.sevenbrains.trashingDead.display 
 {
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
-	import com.sevenbrains.trashingDead.events.PlayerEvents;
-	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.UserModel;
-	
+	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
 	public class Hud extends Sprite 
 	{
+		private static const ITEM_ROCK_CODE:Number = 100004;
 		
 		private var _weaponContainer:Sprite;
 		
@@ -26,21 +27,28 @@ package com.sevenbrains.trashingDead.display
 			var _content:MovieClip = new hudClass();
 			addChild(_content);
 			
-			_weaponContainer = new Sprite();
-			//changeWeapon(null);
+			var classBtnTrash:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, "Bat") as Class;
+			var mcBtnTrash:MovieClip = new classBtnTrash();
+			mcBtnTrash.x = _content.btnSpecialsTrash.width >> 1;
+			mcBtnTrash.y = _content.btnSpecialsTrash.height >> 1;
+			MovieClip(_content.btnTrash).addChild(mcBtnTrash);
+
+			var classBtnRock:Class = ConfigModel.assets.getDefinition("trashRock", "box1") as Class;
+			var mcBtnRock:MovieClip = new classBtnRock();
+			mcBtnRock.x = _content.btnSpecialsTrash.width >> 1;
+			mcBtnRock.y = _content.btnSpecialsTrash.height >> 1;
+			MovieClip(_content.btnSpecialsTrash).addChild(mcBtnRock);
 			
-			//UserModel.instance.players.batter.addEventListener(PlayerEvents.CHANGE_WEAPON, changeWeapon);
+			_content.btnTrash.addEventListener(MouseEvent.CLICK, buttonTrashClicked);
+			_content.btnSpecialsTrash.addEventListener(MouseEvent.CLICK, buttonItemClicked);
 		}
 		
-		private function changeWeapon(e:PlayerEvents):void {
-			while (_weaponContainer.numChildren > 0) {
-				_weaponContainer.removeChildAt(0);
-			}
-			
-			var cAsset:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, UserModel.instance.players.batter.getActualWeapon().props.icon);
-			var mc:MovieClip = new cAsset();
-			
-			_weaponContainer.addChild(mc);			
+		private function buttonTrashClicked(e:MouseEvent):void {
+			UserModel.instance.players.batter.changeWeapon("battable");
+		}
+		
+		private function buttonItemClicked(e:MouseEvent):void {
+			UserModel.instance.players.batter.changeWeapon("handable", 100004);
 		}
 	}
 

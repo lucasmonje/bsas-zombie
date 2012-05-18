@@ -23,6 +23,25 @@ package com.sevenbrains.trashingDead.configuration {
 			return _configMap[ConfigNodes.TRASHES];
 		}
 		
+		public function getTrashesByType(type:String):Array {
+			var list:Array = [];
+			for each (var def:ItemDefinition in getTrashes()) {
+				if (def.type == type) {
+					list.push(def);
+				}
+			}
+			return list;
+		}
+		
+		public function getTrashByCode(code:Number):ItemDefinition {
+			for each (var def:ItemDefinition in getTrashes()) {
+				if (def.code == code) {
+					return def;
+				}
+			}
+			return null;
+		}
+		
 		public function getWeapons():Array {
 			return _configMap[ConfigNodes.WEAPONS];
 		}
