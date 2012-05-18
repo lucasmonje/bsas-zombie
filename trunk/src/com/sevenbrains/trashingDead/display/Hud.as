@@ -22,7 +22,7 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		public function init():void {
-			var hudClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, "stage") as Class;
+			var hudClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.HUD, "asset") as Class;
 			var _content:MovieClip = new hudClass();
 			addChild(_content);
 			

@@ -261,6 +261,16 @@ package com.sevenbrains.trashingDead.entities
 		{
 			return _collisionable;
 		}
+
+		public function getBodyDimension():Point {
+			var box:Box = _compositionMap.arrayMode[0];
+			return new Point(box.initialStageBounds.width, box.initialStageBounds.y);
+		}
+		
+		public function getItemDimension():Point {
+			var mc:MovieClip = _assetsList[0];
+			return new Point(mc.width, mc.height);
+		}
 		
 		public function getItemPosition():Point {
 			var body:b2Body = _compositionMap.arrayMode[0];

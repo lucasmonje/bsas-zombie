@@ -21,7 +21,7 @@ package com.sevenbrains.trashingDead.entities
 			var _worldModel:WorldModel = WorldModel.instance;
 			var props:ItemDefinition = ConfigModel.entities.getStuffByCode(BARRICADE_CODE);
 			var initialPosition:Point = new Point();
-			initialPosition.x = 500;
+			initialPosition.x = 350;
 			initialPosition.y = (_worldModel.floorRect.y * _worldModel.panZoom.currentZoom) - (50 * _worldModel.panZoom.currentZoom) - (_worldModel.floorRect.height * 3);
 			
 			super(props, initialPosition, PhysicObjectType.BARRICADE, 1);

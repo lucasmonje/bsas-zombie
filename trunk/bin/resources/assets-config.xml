@@ -19,5 +19,6 @@
 		<swf id="popupMaterial" path="popups/popupMaterial.swf" />
 		<swf id="zombie04" path="zombies/zombie04.swf" preloaderId="10014" />
 		<swf id="trashRock" path="trash/trashRock.swf" preloaderId="10015" />
+		<swf id="hud" path="screens/hud.swf" preloaderId="10016" />
 	</swfs>
 </data>

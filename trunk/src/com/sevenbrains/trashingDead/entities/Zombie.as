@@ -25,7 +25,7 @@ package com.sevenbrains.trashingDead.entities {
 		protected static const STATE_WALKING:String = "walking";
 		protected static const STATE_ATTACKING:String = "attacking";
 
-		private static const TOLERANCE:Number = 100;
+		private static const OFFSET_NEAR_TARGET:Number = -10;
 		
 		protected var _state:String;
 		
@@ -89,8 +89,9 @@ package com.sevenbrains.trashingDead.entities {
 			if (!_target || (_target && _target.isDestroyed())) {
 				return false;
 			}
+			var radius:Number = (_target.getBodyDimension().x >> 1) + (this.getBodyDimension().x >> 1) + OFFSET_NEAR_TARGET;
 			var distance:Number = Math.abs(_target.getItemPosition().x - this.getItemPosition().x);
-			return (distance < TOLERANCE);
+			return (distance < radius);
 		}
 
 		override public function hit(value:int):void 
