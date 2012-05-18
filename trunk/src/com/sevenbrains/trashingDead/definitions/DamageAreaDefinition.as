@@ -15,30 +15,30 @@ package com.sevenbrains.trashingDead.definitions {
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class PhysicDefinition {
+	public class DamageAreaDefinition {
 		
-		private var _density:Number;
+		private var _hit:uint;
 		
-		private var _friction:Number;
+		private var _radius:Number;
 		
-		private var _restitution:Number;
+		private var _time:uint;
 		
-		public function PhysicDefinition(density:Number, friction:Number, restitution:Number) {
-			_density = density;
-			_friction = friction;
-			_restitution = restitution;
+		public function DamageAreaDefinition(radius:Number, time:uint, hit:uint) {
+			_radius = radius;
+			_time = time;
+			_hit = hit;
 		}
 		
-		public function get density():Number {
-			return _density;
+		public function get hit():uint {
+			return _hit;
 		}
 		
-		public function get friction():Number {
-			return _friction;
+		public function get radius():Number {
+			return _radius;
 		}
 		
-		public function get restitution():Number {
-			return _restitution;
+		public function get time():uint {
+			return _time;
 		}
 	}
 }

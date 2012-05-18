@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.entities 
 {
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	
 	/**

@@ -11,8 +11,8 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.b2.CircleBuilder;
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
-	import com.sevenbrains.trashingDead.definitions.ItemAnimationsDefinition;
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.AnimationDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
@@ -44,7 +44,7 @@ package com.sevenbrains.trashingDead.entities
 		private var _physicMapView:MovieClip;
 		private var _joints:Dictionary;
 		
-		private var _props:ItemDefinition;
+		private var _props:EntityDefinition;
 		
 		protected var _type:String;
 		protected var _groupIndex:int;
@@ -58,24 +58,24 @@ package com.sevenbrains.trashingDead.entities
 		
 		protected var mc:MovieClip;
 		protected var animations:Animation;
-		private var _actualAnim:ItemAnimationsDefinition;
+		private var _actualAnim:AnimationDefinition;
 		
 		private var _callId:int;
 		
-		public function Entity(props:ItemDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
+		public function Entity(props:EntityDefinition, initialPosition:Point, type:String, groupIndex:int = 1) 
 		{
 			_props = props;
 			_type = type;
 			_groupIndex = groupIndex;
 			_initialPosition = initialPosition;
-			_hits = _props.itemProps.hits;
-			_life = _props.itemProps.life;
+			_hits = _props.collisionDefinition.hits;
+			_life = _props.collisionDefinition.life;
 			
 			setSpeed();
 		}
 		
 		public function setSpeed():void {
-			_speed = MathUtils.getRandom(_props.itemProps.speedMin, _props.itemProps.speedMax);
+			_speed = MathUtils.getRandom(_props.collisionDefinition.speedMin, _props.collisionDefinition.speedMax);
 		}
 		
 		public function stopMoving():void {
@@ -165,7 +165,7 @@ package com.sevenbrains.trashingDead.entities
 			
 			animations = new Animation(mc);
 			if (props.animations.length > 0){
-				for each(var anim:ItemAnimationsDefinition in props.animations) {
+				for each(var anim:AnimationDefinition in props.animations) {
 					animations.addAnimation(anim.name);
 					if (anim.defaultAnim) {
 						_actualAnim = anim;
@@ -199,7 +199,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		private function setActualAnim(name:String):void {
 			_actualAnim = null;
-			for each(var anim:ItemAnimationsDefinition in props.animations) {
+			for each(var anim:AnimationDefinition in props.animations) {
 				if (anim.name == name) {
 					_actualAnim = anim;
 				}
@@ -213,7 +213,7 @@ package com.sevenbrains.trashingDead.entities
 			}
 		}
 		
-		public function get props():ItemDefinition 
+		public function get props():EntityDefinition 
 		{
 			return _props;
 		}
@@ -301,11 +301,11 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		public function getCollisionId():String {
-			return _props.itemProps.collisionId;
+			return _props.collisionDefinition.collisionId;
 		}
 		
 		public function getCollisionAccept():Array {
-			return _props.itemProps.collisionAccepts.concat();
+			return _props.collisionDefinition.collisionAccepts.concat();
 		}
 		
 		public function collide(who:Collisionable):void {

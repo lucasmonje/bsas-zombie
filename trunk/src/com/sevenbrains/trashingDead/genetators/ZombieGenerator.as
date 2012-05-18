@@ -9,7 +9,7 @@
 
 package com.sevenbrains.trashingDead.genetators {
 	
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
@@ -80,7 +80,7 @@ package com.sevenbrains.trashingDead.genetators {
 					}
 				}
 				
-				var zombieProps:ItemDefinition = ConfigModel.entities.getZombieByCode(code);
+				var zombieProps:EntityDefinition = ConfigModel.entities.getZombieByCode(code);
 				
 				if (zombieProps) {
 					var floorY:Number = WorldModel.instance.floorRect.y - (WorldModel.instance.floorRect.height / 2);

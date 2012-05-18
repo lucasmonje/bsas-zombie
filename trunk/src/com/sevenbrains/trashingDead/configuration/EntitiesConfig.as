@@ -3,7 +3,7 @@ package com.sevenbrains.trashingDead.configuration {
 	import com.sevenbrains.trashingDead.configuration.core.AbstractConfig;
 	import flash.utils.Dictionary;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	
 	/**
 	* ...
@@ -46,8 +46,8 @@ package com.sevenbrains.trashingDead.configuration {
 			return _configMap[ConfigNodes.WEAPONS];
 		}
 		
-		public function getWeaponByName(name:String):ItemDefinition {
-			for each (var def:ItemDefinition in getWeapons()) {
+		public function getWeaponByName(name:String):EntityDefinition {
+			for each (var def:EntityDefinition in getWeapons()) {
 				if (def.name == name) {
 					return def;
 				}
@@ -59,8 +59,8 @@ package com.sevenbrains.trashingDead.configuration {
 			return _configMap[ConfigNodes.ZOMBIES];
 		}
 		
-		public function getZombieByCode(code:uint):ItemDefinition {
-			for each (var def:ItemDefinition in getZombies()) {
+		public function getZombieByCode(code:uint):EntityDefinition {
+			for each (var def:EntityDefinition in getZombies()) {
 				if (def.code == code) {
 					return def;
 				}
@@ -72,8 +72,8 @@ package com.sevenbrains.trashingDead.configuration {
 			return _configMap[ConfigNodes.STUFFS];
 		}
 		
-		public function getStuffByCode(code:uint):ItemDefinition {
-			for each (var def:ItemDefinition in getStuffs()) {
+		public function getStuffByCode(code:uint):EntityDefinition {
+			for each (var def:EntityDefinition in getStuffs()) {
 				if (def.code == code) {
 					return def;
 				}

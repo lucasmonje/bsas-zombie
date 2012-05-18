@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.managers 
 {
-	import com.sevenbrains.trashingDead.definitions.ItemDamageAreaDefinition;
+	import com.sevenbrains.trashingDead.definitions.DamageAreaDefinition;
 	import com.sevenbrains.trashingDead.entities.DamageArea;
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.managers.ItemManager;
@@ -45,7 +45,7 @@ package com.sevenbrains.trashingDead.managers
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
-		public function addDamageArea(pos:Point, props:ItemDamageAreaDefinition):void {
+		public function addDamageArea(pos:Point, props:DamageAreaDefinition):void {
 			var damageArea:DamageArea = new DamageArea(pos, props);
 			
 			_content.addChild(damageArea.content);

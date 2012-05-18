@@ -2,7 +2,7 @@ package com.sevenbrains.trashingDead.entities
 {
 	import Box2D.Collision.b2AABB;
 	import com.sevenbrains.trashingDead.b2.Box;
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import com.sevenbrains.trashingDead.models.WorldModel;
@@ -19,7 +19,7 @@ package com.sevenbrains.trashingDead.entities
 		public function Barricade() 
 		{
 			var _worldModel:WorldModel = WorldModel.instance;
-			var props:ItemDefinition = ConfigModel.entities.getStuffByCode(BARRICADE_CODE);
+			var props:EntityDefinition = ConfigModel.entities.getStuffByCode(BARRICADE_CODE);
 			var initialPosition:Point = new Point();
 			initialPosition.x = 350;
 			initialPosition.y = (_worldModel.floorRect.y * _worldModel.panZoom.currentZoom) - (50 * _worldModel.panZoom.currentZoom) - (_worldModel.floorRect.height * 3);
@@ -38,7 +38,7 @@ package com.sevenbrains.trashingDead.entities
 		{
 			super.hit(value);
 			trace(_life);
-			if (_life == (props.itemProps.life >> 1)) {
+			if (_life == (props.collisionDefinition.life >> 1)) {
 				playAnim("half");
 			}else if (_life == 0) {
 				playAnim("destroy");

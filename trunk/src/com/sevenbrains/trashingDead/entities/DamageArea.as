@@ -1,7 +1,7 @@
 package com.sevenbrains.trashingDead.entities 
 {
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
-	import com.sevenbrains.trashingDead.definitions.ItemDamageAreaDefinition;
+	import com.sevenbrains.trashingDead.definitions.DamageAreaDefinition;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -18,9 +18,9 @@ package com.sevenbrains.trashingDead.entities
 		private var _content:Sprite;
 		private var _spent:Boolean;
 		
-		private var _props:ItemDamageAreaDefinition;
+		private var _props:DamageAreaDefinition;
 		
-		public function DamageArea(position:Point, props:ItemDamageAreaDefinition) 
+		public function DamageArea(position:Point, props:DamageAreaDefinition) 
 		{
 			_props = props;
 			
