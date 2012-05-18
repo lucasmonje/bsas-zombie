@@ -1,9 +1,10 @@
 package com.sevenbrains.trashingDead.configuration {
 
 	import com.sevenbrains.trashingDead.configuration.core.AbstractConfig;
-	import flash.utils.Dictionary;
-	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.enum.ConfigNodes;
+	
+	import flash.utils.Dictionary;
 	
 	/**
 	* ...
@@ -25,7 +26,7 @@ package com.sevenbrains.trashingDead.configuration {
 		
 		public function getTrashesByType(type:String):Array {
 			var list:Array = [];
-			for each (var def:ItemDefinition in getTrashes()) {
+			for each (var def:EntityDefinition in getTrashes()) {
 				if (def.type == type) {
 					list.push(def);
 				}
@@ -33,8 +34,8 @@ package com.sevenbrains.trashingDead.configuration {
 			return list;
 		}
 		
-		public function getTrashByCode(code:Number):ItemDefinition {
-			for each (var def:ItemDefinition in getTrashes()) {
+		public function getTrashByCode(code:Number):EntityDefinition {
+			for each (var def:EntityDefinition in getTrashes()) {
 				if (def.code == code) {
 					return def;
 				}

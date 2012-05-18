@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.entities 
 {
-	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
 	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingArea;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaRect;
@@ -10,8 +10,10 @@ package com.sevenbrains.trashingDead.entities
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
+	
 	import flash.display.MovieClip;
 	import flash.events.EventDispatcher;
+
 	/**
 	 * ...
 	 * @author Fulvio Crescenzi
@@ -151,9 +153,9 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		private function loadItem():void {
-			var itemDef:ItemDefinition = ConfigModel.entities.getTrashByCode(_itemCode);
-			if (itemDef) {
-				var classBtnRock:Class = ConfigModel.assets.getDefinition(itemDef.name, "box1") as Class;
+			var entityDef:EntityDefinition = ConfigModel.entities.getTrashByCode(_itemCode);
+			if (entityDef) {
+				var classBtnRock:Class = ConfigModel.assets.getDefinition(entityDef.name, "box1") as Class;
 				var mcBtnRock:MovieClip = new classBtnRock();
 				mcBtnRock.x = _content.item.width >> 1;
 				mcBtnRock.y = _content.item.height >> 1;

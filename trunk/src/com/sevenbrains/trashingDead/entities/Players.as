@@ -1,16 +1,18 @@
 package com.sevenbrains.trashingDead.entities 
 {
 	import Box2D.Common.Math.b2Vec2;
+	
 	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
+	import com.sevenbrains.trashingDead.factories.TrashFactory;
+	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.managers.ItemManager;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
-	import com.sevenbrains.trashingDead.managers.GameTimer;
-	import com.sevenbrains.trashingDead.factories.TrashFactory;
-	import com.sevenbrains.trashingDead.managers.ItemManager;
-	import com.sevenbrains.trashingDead.definitions.GameProperties;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -115,9 +117,9 @@ package com.sevenbrains.trashingDead.entities
 		private function batterThrewItem(e:PlayerEvents):void {
 			var itemCode:Number = Number(e.value3);
 			if (itemCode > 0){
-				var itemDef:ItemDefinition = ConfigModel.entities.getTrashByCode(itemCode);
-				if (itemDef) {
-					createTrash(itemDef, new Point(_trashPosition.x, _trashPosition.y - 50));
+				var entityDef:EntityDefinition = ConfigModel.entities.getTrashByCode(itemCode);
+				if (entityDef) {
+					createTrash(entityDef, new Point(_trashPosition.x, _trashPosition.y - 50));
 					trashHit(Number(e.value1), Number(e.value2));
 				}
 			}
