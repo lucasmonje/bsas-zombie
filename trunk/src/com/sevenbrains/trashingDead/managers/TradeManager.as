@@ -12,15 +12,11 @@ package com.sevenbrains.trashingDead.managers {
 	import com.sevenbrains.trashingDead.exception.InvalidArgumentException;
 	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
-	import com.sevenbrains.trashingDead.models.trade.TradeOperation;
 	import com.sevenbrains.trashingDead.models.trade.TradeValueInfo;
 	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
 	import com.sevenbrains.trashingDead.processor.ICostProcessor;
 	import com.sevenbrains.trashingDead.processor.IRewardProcessor;
-	import com.sevenbrains.trashingDead.processor.ITradeValuePostProcessor;
 	import com.sevenbrains.trashingDead.processor.Processors;
-	
-	import flash.utils.Dictionary;
 	
 	public class TradeManager {
 		

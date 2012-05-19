@@ -24,9 +24,9 @@ package com.sevenbrains.trashingDead.processor.impl {
 		}
 		
 		public function canProcess(value:ITradeValue, quantity:int = 1, context:IOperationContext = null):Boolean {
-			if (value == null)
+			if (value == null) {
 				return true;
-			
+			}
 			var multipleTradeValue:MultipleTradeValue = value as MultipleTradeValue;
 			
 			for each (var value:ITradeValue in multipleTradeValue.values) {
@@ -39,8 +39,9 @@ package com.sevenbrains.trashingDead.processor.impl {
 		}
 		
 		public function preProcessCost(value:ITradeValue, context:IOperationContext = null, preprocess:Boolean = false):Vector.<ITradeValue> {
-			if (!preprocess)
+			if (!preprocess) {
 				return Vector.<ITradeValue>(MultipleTradeValue(value).values);
+			}
 			var newValues:Vector.<ITradeValue> = new Vector.<ITradeValue>();
 			
 			for each (var tradeValue:ITradeValue in MultipleTradeValue(value).values) {
@@ -56,8 +57,9 @@ package com.sevenbrains.trashingDead.processor.impl {
 		}
 		
 		public function preProcessReward(value:ITradeValue, context:IOperationContext = null, preprocess:Boolean = false):Vector.<ITradeValue> {
-			if (!preprocess)
+			if (!preprocess) {
 				return Vector.<ITradeValue>([value]);
+			}
 			var newValues:Vector.<ITradeValue> = new Vector.<ITradeValue>();
 			
 			for each (var tradeValue:ITradeValue in MultipleTradeValue(value).values) {
