@@ -154,6 +154,8 @@ package com.sevenbrains.trashingDead.display.popup {
 		// Localization
 		public function localizeByPath(path:String, key:String, args:Array=null):String {
 			var field:TextField = getFieldByPath(path);
+			field.mouseEnabled = false;
+			field.mouseWheelEnabled = false;
 			ASSERT(field, 'Popup::path "' + path + '" not found to localize');
 			return localize(field, key, args);
 		}

@@ -44,6 +44,15 @@
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="destroy" />
 			</animations>
+			<lock>
+				<stats xp="1000" />
+				<buyable>
+					<cost credits="10" />
+				</buyable>
+			</lock>
+			<buyable>
+				<cost credits="1" />
+			</buyable>
 		</trash>
 	</trashes>
 	
@@ -67,10 +76,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
-			<rewards>
-				<coinsReward value="10" />
-				<xpReward value="2" />
-			</rewards>
+			<reward>
+				<stats coins="10" />
+				<stats xp="2" />
+			</reward>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
 			<collision hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.03" speedMax="0.07" />
@@ -81,10 +90,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
-			<rewards>
-				<coinsReward value="5" />
-				<xpReward value="1" />
-			</rewards>
+			<reward>
+				<stats coins="5" />
+				<stats xp="1" />
+			</reward>
 		</zombie>
 		<zombie name="zombie03" code="300003" type="flyingZombie">
 			<collision hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.02" speedMax="0.04" />
@@ -95,10 +104,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
-			<rewards>
-				<coinsReward value="15" />
-				<xpReward value="3" />
-			</rewards>
+			<reward>
+				<stats coins="15" />
+				<stats xp="3" />
+			</reward>
 		</zombie>
 		<zombie name="zombie04" code="300004" type="zombie">
 			<collision hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.07" speedMax="0.1" />
@@ -109,10 +118,10 @@
 				<animation name="dead" frameTime="1" />
 				<animation name="attack" frameTime="1" />
 			</animations>
-			<rewards>
-				<coinsReward value="15" />
-				<xpReward value="3" />
-			</rewards>
+			<reward>
+				<stats coins="15" />
+				<stats xp="3" />
+			</reward>
 		</zombie>
 	</zombies>
 	<stuffs>

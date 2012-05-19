@@ -179,17 +179,17 @@ package com.sevenbrains.trashingDead.display {
 		}
 		
 		private function onSecondRound(e:StageTimerEvent):void {
-			PopupManager.instance.addPopup(new Popup(PopupType.SECOND_ROUND), null, true, false);
+			PopupManager.instance.addPopup(new Popup(PopupType.SECOND_ROUND), null, true);
 		}
 		
 		private function onFinalRound(e:StageTimerEvent):void {
-			PopupManager.instance.addPopup(new Popup(PopupType.FINAL_ROUND), null, true, false);
+			PopupManager.instance.addPopup(new Popup(PopupType.FINAL_ROUND), null, true);
 		}
 		
 		private function onCompleteStage(e:StageTimerEvent):void {
 			var popup:Popup = new Popup(PopupType.COMPLETE_STAGE);
 			popup.client = {stageLevelNum:ConfigModel.messages.get(_props.id)};
-			PopupManager.instance.addPopup(popup, null, true, false);
+			PopupManager.instance.addPopup(popup, null, true);
 		}
 		
 		public function get physicWorld():b2World {
