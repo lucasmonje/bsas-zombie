@@ -12,9 +12,11 @@ package com.sevenbrains.trashingDead.processor.impl {
 	import com.sevenbrains.trashingDead.exception.InvalidArgumentException;
 	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
+	import com.sevenbrains.trashingDead.models.trade.ProbabilityData;
 	import com.sevenbrains.trashingDead.models.trade.ProbabilityTradeValue;
 	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
 	import com.sevenbrains.trashingDead.processor.IRewardProcessor;
+	
 	import flash.utils.Dictionary;
 	
 	public class ProbabilityRewardProcessor implements IRewardProcessor {

@@ -36,10 +36,6 @@ package com.sevenbrains.trashingDead.models.trade {
 			return copy;
 		}
 		
-		override public function get possibleModifierEffects():Array {
-			return [StatsModifier];
-		}
-		
 		override public function get singleInfos():Vector.<ISingleInfo> {
 			var infos:Vector.<ISingleInfo> = new Vector.<ISingleInfo>();
 			

@@ -20,8 +20,8 @@ package com.sevenbrains.trashingDead.models.user {
 		
 		public static const COINS:String = "coins";
 		public static const CREDITS:String = "credits";
-		public static const LEVEL:String = "level";
 		public static const XP:String = "xp";
+		public static const VALID_STATS:Array = [COINS,CREDITS,XP];
 		
 		protected var _statsValues:Dictionary;
 		

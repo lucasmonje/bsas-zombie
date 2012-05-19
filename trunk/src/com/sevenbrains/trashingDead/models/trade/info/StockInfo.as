@@ -23,8 +23,8 @@ package com.sevenbrains.trashingDead.models.trade.info {
 			_quantity = quantity;
 		}
 		
-		public function get name():String {
-			return _name;
+		public function get code():uint {
+			return _code;
 		}
 		
 		public function get quantity():int {

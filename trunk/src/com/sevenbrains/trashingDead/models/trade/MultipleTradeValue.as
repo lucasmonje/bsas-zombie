@@ -46,7 +46,7 @@ package com.sevenbrains.trashingDead.models.trade {
 		}
 		
 		override public function get possibleModifierEffects():Array {
-			var set:ISet = new HashSet();
+			var set:HashSet = new HashSet();
 			
 			for each (var tradeValue:ITradeValue in values) {
 				set.addAll(tradeValue.possibleModifierEffects);

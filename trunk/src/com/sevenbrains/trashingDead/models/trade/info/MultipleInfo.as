@@ -9,6 +9,7 @@
 
 package com.sevenbrains.trashingDead.models.trade.info {
 	
+	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.models.utils.ISingleInfo;
 	
 	public class MultipleInfo implements ISingleInfo {

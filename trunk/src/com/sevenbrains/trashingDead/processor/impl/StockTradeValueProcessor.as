@@ -46,7 +46,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 				throw new InvalidArgumentException("StockTradeValueProcessor expects a StockTradeValue");
 			}
 			
-			var currentQuantity:int = UserModel.instance.inventory.getItemQuantityByCode((stockTradeValue.code);
+			var currentQuantity:int = UserModel.instance.inventory.getItemQuantityByCode(stockTradeValue.code);
 			return currentQuantity >= (stockTradeValue.quantity * quantity);
 		}
 		

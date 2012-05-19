@@ -14,10 +14,11 @@ package com.sevenbrains.trashingDead.managers {
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.models.trade.TradeOperation;
 	import com.sevenbrains.trashingDead.models.trade.TradeValueInfo;
+	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
 	import com.sevenbrains.trashingDead.processor.ICostProcessor;
 	import com.sevenbrains.trashingDead.processor.IRewardProcessor;
 	import com.sevenbrains.trashingDead.processor.ITradeValuePostProcessor;
-	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
+	import com.sevenbrains.trashingDead.processor.Processors;
 	
 	import flash.utils.Dictionary;
 	
@@ -35,16 +36,10 @@ package com.sevenbrains.trashingDead.managers {
 			return _instance;
 		}
 		
-		private var _costProcessorsMap:Dictionary;
-		private var _lockManager:LockManager;
-		private var _postProcessors:Dictionary;
-		private var _rewardProcessorsMap:Dictionary;
-		
 		public function TradeManager() {
 			if (!_instanciable) {
 				throw new PrivateConstructorException("This is a singleton class");
 			}
-			_lockManager = LockManager.instance;
 		}
 		
 		public function canProcessCost(value:ITradeValue, quantity:int = 1, context:IOperationContext = null, applyModifiers:Boolean = false):Boolean {
@@ -52,14 +47,14 @@ package com.sevenbrains.trashingDead.managers {
 				return true;
 			}
 			
-			if (_lockManager.isLocked(value.lock)) {
+			if (LockManager.instance.isLocked(value.lock)) {
 				return true;
 			}
 			
 			var values:Vector.<ITradeValue> = getCostProcessor(value).preProcessCost(value, context, applyModifiers);
 			
 			for each (var v:ITradeValue in values) {
-				if (!_lockManager.isLocked(v.lock)) {
+				if (!LockManager.instance.isLocked(v.lock)) {
 					if (!getCostProcessor(v).canProcess(v, quantity, context)) {
 						return false;
 					}
@@ -74,7 +69,7 @@ package com.sevenbrains.trashingDead.managers {
 				return null;
 			}
 			
-			if (_lockManager.isLocked(value.lock)) {
+			if (LockManager.instance.isLocked(value.lock)) {
 				return new TradeValueInfo();
 			}
 			
@@ -86,7 +81,7 @@ package com.sevenbrains.trashingDead.managers {
 			
 			for (var i:int = 0; i < quantity; i++) {
 				for each (v in values) {
-					if (!_lockManager.isLocked(v.lock)) { // check lock in preprocessed value
+					if (!LockManager.instance.isLocked(v.lock)) { // check lock in preprocessed value
 						result = result.concat(getCostProcessor(v).processCost(v, context));
 					}
 				}
@@ -96,15 +91,11 @@ package com.sevenbrains.trashingDead.managers {
 				tradeInfo.addTradeValue(v);
 			}
 			
-			for each (var strategy:ITradeValuePostProcessor in _postProcessors) {
-				strategy.process(value, tradeInfo, TradeOperation.REMOVE, context);
-			}
-			
 			return tradeInfo;
 		}
 		
 		private function getCostProcessor(value:ITradeValue):ICostProcessor {
-			var costProcessor:ICostProcessor = _costProcessorsMap[value.type];
+			var costProcessor:ICostProcessor = Processors.map[value.type];
 			
 			if (!costProcessor) {
 				var msg:String = "TradeManager can't find a costProcessor for type:" + value.type;
@@ -114,7 +105,7 @@ package com.sevenbrains.trashingDead.managers {
 		}
 		
 		private function getRewardProcessor(value:ITradeValue):IRewardProcessor {
-			var rewardProcessor:IRewardProcessor = _rewardProcessorsMap[value.type];
+			var rewardProcessor:IRewardProcessor = Processors.map[value.type];
 			
 			if (!rewardProcessor) {
 				var msg:String = "TradeManager can't find a rewardProcessor for type:" + value.type;
