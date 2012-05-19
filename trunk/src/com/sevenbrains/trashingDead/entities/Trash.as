@@ -7,6 +7,7 @@ package com.sevenbrains.trashingDead.entities {
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import com.sevenbrains.trashingDead.managers.DamageAreaManager;
 	
 	/**
 	* ...
@@ -41,6 +42,9 @@ package com.sevenbrains.trashingDead.entities {
 			if (life == 0) {
 				_enabled = true;
 				playAnim(TrashAnimsEnum.DESTROY);
+				if (this.props.damageAreaProps){
+					DamageAreaManager.instance.addDamageArea(this.getItemPosition(), this.props.damageAreaProps);
+				}
 			}
 		}
 	

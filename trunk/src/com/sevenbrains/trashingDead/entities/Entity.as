@@ -194,8 +194,10 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		protected function playAnim(name:String):void {
-			animations.play(name);
-			setActualAnim(name);
+			if (animations.hasAnim(name)){
+				animations.play(name);
+				setActualAnim(name);
+			}
 		}
 		
 		private function setActualAnim(name:String):void {

@@ -55,6 +55,10 @@ package com.sevenbrains.trashingDead.utils
 			throw new Error("No se encuentra label " + name + " en la animacion");
 		}
 		
+		public function hasAnim(name:String):Boolean {
+			return Boolean(getAnim(name));
+		}
+		
 		public function setAnim(name:String):void {
 			_actual = getAnim(name);
 			_actualFrame = _actual.from;

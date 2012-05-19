@@ -145,7 +145,7 @@ package com.sevenbrains.trashingDead.entities
 		 * Cambia el arma
 		 */
 		public function changeWeapon(type:String, code:Number = 0):void {
-			if (_actualWeapon == type) {
+			if (_actualWeapon == type && _itemCode == code) {
 				return;
 			}
 			

@@ -33,7 +33,15 @@
 			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
-				<animation name="hit" />
+				<animation name="destroy" />
+			</animations>
+		</trash>
+		<trash name="itemMolotov" code="100005" type="handable">
+			<physicProps density="0.3" friction="1.0" restitution="0.0" />
+			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<damageArea radius="1" time="10000" hit="1" />
+			<animations>
+				<animation name="healthy" defaultAnim="true"/>
 				<animation name="destroy" />
 			</animations>
 		</trash>
@@ -47,19 +55,6 @@
 		hit: el daño que infringe al que colisione
 		-->
 		<weapon name="Bat" code="200001" icon="Bat" type="battable" />
-		<weapon name="itemMolotov" code="100003" icon="Molotov" type="handable">
-			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-			<damageArea radius="1" time="10" hit="1" />
-		</weapon>
-		<!--
-		<weapon name="Grenade" code="100004" icon="Grenade" type="handable">
-			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
-			<damageArea radius="2" times="10" hit="5" />
-			<locks>
-				<level value="4" />
-			</locks>
-		</weapon>
-		-->
 	</weapons>
 	
 	<zombies>

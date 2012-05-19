@@ -16,6 +16,8 @@ package com.sevenbrains.trashingDead.enum
 		public static const PLAYERS:String = 'players';
 		public static const BARRICADE:String = 'barricade';
 		public static const HUD:String = 'hud';
+		public static const TRASH_ROCK:String = 'trashRock';
+		public static const ITEM_MOLOTOV:String = 'itemMolotov';
 	}
 
 }
