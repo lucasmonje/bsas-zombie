@@ -45,6 +45,8 @@ package com.sevenbrains.trashingDead.managers
 				if (e == entity) {
 					_entityList.splice(i, 1);
 					return;
+				}else {
+					i++;
 				}
 			}
 		}

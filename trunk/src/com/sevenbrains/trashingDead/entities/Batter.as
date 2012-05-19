@@ -27,10 +27,12 @@ package com.sevenbrains.trashingDead.entities
 		private static const STATE_HANDLING:String = "handling";
 		private static const STATE_WAITING_HANDLING:String = "waiting_handling";
 		private static const STATE_WAITING_TRASH:String = "waiting_trash";
+		private static const STATE_WAITING_ITEM:String = "waiting_item";
 		
 		private static const ANIM_BATTABLE:String = "battable";
 		private static const ANIM_HANDABLE:String = "handable";
-		private static const ANIM_PREPARING:String = "preparing";
+		private static const ANIM_PREPARING_BATTABLE:String = "preparing";
+		private static const ANIM_PREPARING_HANDABLE:String = "preparing_handable";
 		
 		private var _state:String;
 		
@@ -56,8 +58,9 @@ package com.sevenbrains.trashingDead.entities
 			
 			_animation = new Animation(_content);
 			_animation.addAnimation(ANIM_BATTABLE);
-			_animation.addAnimation(ANIM_PREPARING);
+			_animation.addAnimation(ANIM_PREPARING_BATTABLE);
 			_animation.addAnimation(ANIM_HANDABLE);
+			_animation.addAnimation(ANIM_PREPARING_HANDABLE);
 			_animation.setAnim(ANIM_BATTABLE);
 			
 			var pointerClass:Class = ConfigModel.assets.getDefinition(AssetsEnum.COMMONS, "puntero");
@@ -79,36 +82,39 @@ package com.sevenbrains.trashingDead.entities
 		 */
 		private function update():void {
 			switch(_state) {
-				case STATE_WAITING_TRASH:
+				case STATE_WAITING_ITEM:
+					if (_animation.currentAnimName == ANIM_PREPARING_HANDABLE && !_animation.isPlaying) {
+						readyToHandle();
+					}
 					break;
+				case STATE_WAITING_TRASH:
 				case STATE_READY_TO_HANDLE:
 				case STATE_READY_TO_BAT:
 					break;
 				case STATE_HANDLING:
-					
 					_animation.play(ANIM_HANDABLE);
 					_state = STATE_WAITING_HANDLING;
 					break;
 				case STATE_BATTING:
-					//_throwingArea.activate(false);
-					
 					_animation.play(ANIM_BATTABLE);
 					_state = STATE_WAITING_BATTING;
 					break;
 				case STATE_WAITING_BATTING:
 					if (!_animation.isPlaying) {
+						_throwingArea.activate(false);
 						dispatchEvent(new PlayerEvents(PlayerEvents.TRASH_HIT, _throwingArea.hitPower, _throwingArea.hitAngle));
 						_throwingArea.resetValues();
-						_animation.play(ANIM_PREPARING);
+						_animation.play(ANIM_PREPARING_BATTABLE);
 						_state = STATE_WAITING_TRASH;
 					}
 					break;
 				case STATE_WAITING_HANDLING:
 					if (!_animation.isPlaying) {
+						_throwingArea.activate(false);
 						dispatchEvent(new PlayerEvents(PlayerEvents.THREW_ITEM, _throwingArea.hitPower, _throwingArea.hitAngle, _itemCode));
 						_throwingArea.resetValues();
-						_animation.setAnim(ANIM_HANDABLE);
-						_state = STATE_READY_TO_HANDLE;
+						_animation.play(ANIM_PREPARING_HANDABLE);
+						_state = STATE_WAITING_ITEM;
 					}
 					break;
 			}
@@ -116,11 +122,15 @@ package com.sevenbrains.trashingDead.entities
 		
 		public function readyToHandle():void {
 			_state = STATE_READY_TO_HANDLE;
+			_throwingArea.activate(true);
+			_animation.setAnim(ANIM_HANDABLE);
+			loadItem();
 		}
 		
 		public function readyToBat():void {
 			_state = STATE_READY_TO_BAT;
-			//_throwingArea.activate(true);
+			_throwingArea.activate(true);
+			_animation.setAnim(ANIM_BATTABLE);
 		}
 		
 		private function hitSetted(e:ThrowingAreaEvent):void {
@@ -143,11 +153,8 @@ package com.sevenbrains.trashingDead.entities
 			_itemCode = code;
 			if (type == 'handable') {
 				readyToHandle();
-				_animation.setAnim(ANIM_HANDABLE);
-				loadItem();
 			}else if ('battable') {
 				readyToBat();
-				_animation.setAnim(ANIM_BATTABLE);
 			}
 			dispatchEvent(new PlayerEvents(PlayerEvents.CHANGE_WEAPON, type));
 		}

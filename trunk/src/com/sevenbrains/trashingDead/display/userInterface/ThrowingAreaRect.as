@@ -50,6 +50,9 @@ package com.sevenbrains.trashingDead.display.userInterface
 			
 			_state = STATE_OFF;
 			
+			this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+			this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
+			
 			_callId = GameTimer.instance.callMeEvery(1, update);
 		}
 		
@@ -59,15 +62,15 @@ package com.sevenbrains.trashingDead.display.userInterface
 				
 				resetValues();
 				
-				this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-				this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
+				//this.addEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+				//this.addEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
 				this.addEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 				this.addEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}else {
 				_state = STATE_OFF;
 				
-				this.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
-				this.removeEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
+				//this.removeEventListener(MouseEvent.MOUSE_MOVE, trashMoved);
+				//this.removeEventListener(MouseEvent.MOUSE_OUT, trashMovedOut);
 				this.removeEventListener(MouseEvent.MOUSE_DOWN, trashMouseDown);
 				this.removeEventListener(MouseEvent.MOUSE_UP, trashMouseUp);
 			}
@@ -88,9 +91,11 @@ package com.sevenbrains.trashingDead.display.userInterface
 		}
 		
 		private function trashMouseUp(e:MouseEvent):void {
-			_isPressing = false;
-			
-			dispatchEvent(new ThrowingAreaEvent(ThrowingAreaEvent.MOUSE_UP));
+			if (_isPressing){
+				_isPressing = false;
+				
+				dispatchEvent(new ThrowingAreaEvent(ThrowingAreaEvent.MOUSE_UP));
+			}
 		}
 		
 		private function isPressing():Boolean {
@@ -112,12 +117,13 @@ package com.sevenbrains.trashingDead.display.userInterface
 		}
 		
 		private function update():void {
+			
+			positionatePointer();
+			
 			if (_state == STATE_ON) {
 				
 				if (_isTargeting) {
 					calcNewAngle();
-					setArrowAngle();
-					positionatePointer();
 				}
 				
 				if (_isPressing) {
@@ -134,7 +140,6 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_power = 0;
 			_angle = 0;
 			
-			setArrowAngle();
 			setArrowPower();
 		}
 		
@@ -143,9 +148,6 @@ package com.sevenbrains.trashingDead.display.userInterface
 			_arrow.y = StageReference.stage.mouseY;
 		}
 		
-		private function setArrowAngle():void {
-			//_arrow.rotation = _angle * 180 / Math.PI;
-		}
 		
 		private function setArrowPower():void {
 			_arrow.charge.gotoAndStop(_power);

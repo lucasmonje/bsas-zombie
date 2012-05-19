@@ -170,13 +170,12 @@ package com.sevenbrains.trashingDead.entities
 				var powerForce:Number = GameProperties.POWER_INIT * power / 100;
 				var force:b2Vec2 = new b2Vec2((powerForce * Math.cos(angle)), (powerForce * Math.sin(angle)));
 				_currentTrash.shot(force);
-				WorldModel.instance.currentWorld.entityPathManager.regist(_currentTrash);
 				_currentTrash = null;
 			}
 		}
 		
 		private function destroyActualTrash():void {
-			if (_currentTrash){
+			if (_currentTrash) {
 				ItemManager.instance.unregist(_currentTrash);
 				_currentTrash.destroy();
 				_currentTrash = null;
