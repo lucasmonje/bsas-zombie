@@ -11,34 +11,37 @@ package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.sevenbrains.trashingDead.condition.core.ConditionDefinition;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
+	import com.sevenbrains.trashingDead.deserealizer.core.Deserializers;
+	import com.sevenbrains.trashingDead.interfaces.Deserializable;
 	import com.sevenbrains.trashingDead.managers.LockManager;
 	
 	import flash.utils.Dictionary;
 	
-	public class LockDeserializer {
+	public class LockDeserializer implements Deserializable {
 		
+		public static const TYPE:String = "lockDeserializer";
+
 		private static var deserializedLocks:Object;
 		
 		private static var missingIdRef:Dictionary;
 		
 		public var lockManager:LockManager;
 		
-		private var _xml:XML;
+		private var node:XML;
 		
-		public function LockDeserializer(source:XML) {
-			_xml = source;
+		public function LockDeserializer() {
 			deserializedLocks = new Object();
 			missingIdRef = new Dictionary();
 		}
 		
-		public function deserialize():LockDefinition {
-			if (!_xml) {
+		public function deserialize(node:XML):* {
+			if (!node) {
 				return null;
 			}
 			var lockDefinition:LockDefinition;
 			
-			if (String(_xml.@["id-ref"]).length) {
-				var idRef:int = int(_xml.@["id-ref"]);
+			if (String(node.@["id-ref"]).length) {
+				var idRef:int = int(node.@["id-ref"]);
 				
 				if (!deserializedLocks.hasOwnProperty(idRef)) {
 					if (!Boolean(missingIdRef[idRef])) {
@@ -55,7 +58,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				
 			} else {
 				
-				var id:int = int(_xml.@id) ? int(_xml.@id) : -1;
+				var id:int = int(node.@id) ? int(node.@id) : -1;
 				
 				if (deserializedLocks.hasOwnProperty(id)) {
 					throw new Error("Duplicated Lock with id=" + id);
@@ -63,19 +66,19 @@ package com.sevenbrains.trashingDead.deserealizer {
 				
 				if (Boolean(missingIdRef[id])) {
 					lockDefinition = missingIdRef[id] as LockDefinition;
-					deserializeLock(lockDefinition, _xml);
+					deserializeLock(lockDefinition, node);
 					delete missingIdRef[id];
 				} else {
 					lockDefinition = new LockDefinition();
 					lockDefinition.id = id;
-					deserializeLock(lockDefinition, _xml);
+					deserializeLock(lockDefinition, node);
 				}
 			}
 			return lockDefinition;
 		}
 
 		private function deserializeCondition(definition:LockDefinition, node:XML):void {
-			var conditionDeserializer:ConditionDeserializer = new ConditionDeserializer();
+			var conditionDeserializer:ConditionDeserializer = Deserializers.map[ConditionDeserializer.TYPE];
 			var condition:ConditionDefinition = conditionDeserializer.deserialize(node);
 			
 			if (condition) {

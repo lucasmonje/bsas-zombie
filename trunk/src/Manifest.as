@@ -19,6 +19,7 @@ package {
 	import com.sevenbrains.trashingDead.controller.event.ToggleMusicEvent;
 	import com.sevenbrains.trashingDead.definitions.LockDefinition;
 	import com.sevenbrains.trashingDead.deserealizer.*;
+	import com.sevenbrains.trashingDead.deserealizer.core.Deserializers;
 	import com.sevenbrains.trashingDead.display.iconList.promotion.PromotionBar;
 	import com.sevenbrains.trashingDead.execute.actions.PopupAction;
 	import com.sevenbrains.trashingDead.execute.actions.UIAction;
@@ -35,7 +36,7 @@ package {
 		
 		public function Manifest() {
 			EmbedAsset;
-			
+			Deserializers;
 			AssetsConfig;
 			ItemsConfig;
 			SoundsConfig;
@@ -43,12 +44,12 @@ package {
 			LocaleConfig;
 			PopupsConfig
 			
-			AssetsConfigDeserealizer;
-			ItemConfigDeserealizer;
-			SoundConfigDeserealizer;
-			WorldConfigDeserealizer;
-			LocaleConfigDeserealizer;
-			PopupsConfigDeserealizer;
+			AssetsConfigDeserializer;
+			ItemConfigDeserializer;
+			SoundConfigDeserializer;
+			WorldConfigDeserializer;
+			LocaleConfigDeserializer;
+			PopupsConfigDeserializer;
 			ActionDeserializer;
 			ExecuteDeserializer;
 			SuggestionConfigDeserializer;

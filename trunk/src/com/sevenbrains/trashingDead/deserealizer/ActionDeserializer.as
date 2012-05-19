@@ -10,14 +10,17 @@
 package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.adobe.serialization.json.JSON;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	import com.sevenbrains.trashingDead.execute.definition.PopupActionDefinition;
 	import com.sevenbrains.trashingDead.execute.definition.UIActionDefinition;
-	import com.sevenbrains.trashingDead.execute.IActionDefinition;
+	import com.sevenbrains.trashingDead.interfaces.Deserializable;
 	
 	import flash.utils.Dictionary;
 	
-	public class ActionDeserializer {
+	public class ActionDeserializer implements Deserializable {
 		
+		public static const TYPE:String = "sctionDeserializer";
+
 		private static const POPUP:String = "popup";
 		private static const UI:String = "ui";
 		
@@ -27,12 +30,12 @@ package com.sevenbrains.trashingDead.deserealizer {
 
 		private var _xml:XML;
 		
-		public function ActionDeserializer(source:XML) {
-			_xml = new XML(source);
+		public function ActionDeserializer() {
 			createBuilderMap()
 		}
 		
-		public function deserialize():IActionDefinition {
+		public function deserialize(node:XML):* {
+			_xml = node;
 			_idsMap = new Dictionary();
 			var builder:Function = getBuilder(_xml);
 			

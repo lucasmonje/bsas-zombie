@@ -10,15 +10,20 @@
 package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.sevenbrains.trashingDead.definitions.SuggestionDefinition;
-	import com.sevenbrains.trashingDead.deserealizer.core.AbstractDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.core.BuilderDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.core.Deserializers;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import com.sevenbrains.trashingDead.exception.DuplicateIdException;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
 	import com.sevenbrains.trashingDead.utils.BooleanUtils;
 	import com.sevenbrains.trashingDead.utils.ClassUtil;
+	
 	import flash.utils.Dictionary;
 	
-	public class SuggestionConfigDeserializer extends AbstractDeserealizer {
+	public class SuggestionConfigDeserializer extends BuilderDeserealizer implements Buildable {
 		
+		public static const TYPE:String = "suggestionConfigDeserializer";
+
 		private var _groupIdsMap:Dictionary;
 		
 		private var _idsMap:Dictionary;
@@ -29,26 +34,27 @@ package com.sevenbrains.trashingDead.deserealizer {
 			super(source);
 		}
 		
-		override public function deserialize():void {
-			_xml = new XML(_source);
+		override public function deserialize(source:String):* {
+			_xml = new XML(source);
 			_groupIdsMap = new Dictionary();
 			_idsMap = new Dictionary();
 			_map = new Dictionary();
 			_map[ConfigNodes.SUGGESTIONS] = deserializeSuggestions(_xml.children());
 			_map[ConfigNodes.GROUP_IDS] = _groupIdsMap;
 			_map[ConfigNodes.IDS] = _idsMap;
+			return _map;
 		}
 		
 		private function deserializeSuggestion(node:XML):SuggestionDefinition {
 			var suggDef:SuggestionDefinition = new SuggestionDefinition();
-			var lockDeserializer:LockDeserializer = new LockDeserializer(node);
-			var executeDeserializer:ExecuteDeserializer = new ExecuteDeserializer(node);
+			var lockDeserializer:LockDeserializer = Deserializers.map[LockDeserializer.TYPE];
+			var executeDeserializer:ExecuteDeserializer = Deserializers.map[ExecuteDeserializer.TYPE];
 			suggDef.name = node.@name.toString();
 			suggDef.id = node.@id.toString();
 			suggDef.persist = BooleanUtils.fromString(node.@persist.toString());
 			suggDef.url = _prefixPath + node.@name.toString() + '.swf';
-			suggDef.lock = lockDeserializer.deserialize();
-			suggDef.execute = executeDeserializer.deserialize();
+			suggDef.lock = lockDeserializer.deserialize(node);
+			suggDef.execute = executeDeserializer.deserialize(node);
 			return suggDef;
 		}
 		

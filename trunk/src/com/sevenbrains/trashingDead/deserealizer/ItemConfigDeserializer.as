@@ -5,22 +5,25 @@ package com.sevenbrains.trashingDead.deserealizer {
 	import com.sevenbrains.trashingDead.definitions.DamageAreaDefinition;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
-	import com.sevenbrains.trashingDead.deserealizer.core.AbstractDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.core.BuilderDeserealizer;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
 	import com.sevenbrains.trashingDead.utils.BooleanUtils;
 	
 	import flash.utils.Dictionary;
 	
-	public class ItemConfigDeserealizer extends AbstractDeserealizer {
+	public class ItemConfigDeserializer extends BuilderDeserealizer implements Buildable  {
+	
+		public static const TYPE:String = "itemConfigDeserializer";
 		
 		private var _idsMap:Dictionary;
 		
-		public function ItemConfigDeserealizer(source:String) {
+		public function ItemConfigDeserializer(source:String) {
 			super(source);
 		}
 		
-		override public function deserialize():void {
-			_xml = new XML(_source);
+		override public function deserialize(source:String):* {
+			_xml = new XML(source);
 			_idsMap = new Dictionary();
 			_map = new Dictionary();
 			_map[ConfigNodes.TRASHES] = decodeItems(_xml.trashes);
@@ -28,6 +31,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 			_map[ConfigNodes.ZOMBIES] = decodeItems(_xml.zombies);
 			_map[ConfigNodes.STUFFS] = decodeItems(_xml.stuffs);
 			_map[ConfigNodes.IDS] = _idsMap;
+			return _map;
 		}
 		
 		private function decodeItems(xml:XMLList):Array {

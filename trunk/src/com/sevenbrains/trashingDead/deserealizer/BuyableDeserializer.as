@@ -9,25 +9,23 @@
 
 package com.sevenbrains.trashingDead.deserealizer {
 	
+	import com.sevenbrains.trashingDead.definitions.BuyableDefinition;
 	import com.sevenbrains.trashingDead.interfaces.Deserializable;
-	import com.sevenbrains.trashingDead.models.user.Stats;
 	
-	public class StatsDeserializer implements Deserializable {
+	public class BuyableDeserializer implements Deserializable {
 		
-		public static const TYPE:String = "statsDeserializer";
+		public static const TYPE:String = "buyableDeserializer";
 
-		public function StatsDeserializer() {
+		public function BuyableDeserializer() {
 		
 		}
 		
 		public function deserialize(node:XML):* {
-			var stats:Stats = new Stats();
-			var attributes:XMLList = node.attributes();
-			
-			for each (var attribute:XML in attributes) {
-				stats.set(attribute.localName(), int(attribute));
+			if (!Boolean(node.length())) {
+				return null;
 			}
-			return stats;
+			var buyableDef:BuyableDefinition;
+			return buyableDef;
 		}
 	}
 }

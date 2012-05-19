@@ -1,10 +1,13 @@
 package com.sevenbrains.trashingDead.deserealizer.core {
 	import com.sevenbrains.trashingDead.exception.AbstractMethodException;
-	import com.sevenbrains.trashingDead.interfaces.Deserealizable;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
+	import com.sevenbrains.trashingDead.interfaces.Deserializable;
 	import com.sevenbrains.trashingDead.utils.ClassUtil;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+
 	/**
 	* Dispatched when data has loaded successfully.
 	* @eventType flash.events.Event
@@ -19,25 +22,25 @@ package com.sevenbrains.trashingDead.deserealizer.core {
 	* ...
 	* @author Lucas Monje
 	*/
-	public class AbstractDeserealizer implements Deserealizable {
+	public class BuilderDeserealizer implements Buildable {
 		
 		protected var _map:Dictionary;
 		protected var _source:String;
 		protected var _xml:XML;
 		protected var _dispacher:EventDispatcher;
 		
-		public function AbstractDeserealizer(source:String) {
+		public function BuilderDeserealizer(source:String) {
 			_dispacher = new EventDispatcher();
 			_source = source;
 		}
 		
 		public function init():void {
 			notifyInit();
-			deserialize();
+			deserialize(_source);
 			notifyEnd();
 		}
 		
-		public function deserialize():void {
+		public function deserialize(source:String):* {
 			throw new AbstractMethodException("deserialize(source:XML)");
 		}
 		

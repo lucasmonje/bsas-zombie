@@ -1,7 +1,7 @@
 package com.sevenbrains.trashingDead.builders {
 	
 	import com.sevenbrains.trashingDead.interfaces.Configurable;
-	import com.sevenbrains.trashingDead.interfaces.Deserealizable;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
 	import com.sevenbrains.trashingDead.interfaces.Destroyable;
 	import com.sevenbrains.trashingDead.interfaces.IConfigBuilder;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
@@ -31,7 +31,7 @@ package com.sevenbrains.trashingDead.builders {
 		private var _configClass:Class;
 		private var _model:String;
 		private var _destroyed:Boolean;
-		private var _deserializer:Deserealizable;
+		private var _deserializer:Buildable;
 		private var _config:Configurable;
 		private var _dispacher:EventDispatcher;
 		

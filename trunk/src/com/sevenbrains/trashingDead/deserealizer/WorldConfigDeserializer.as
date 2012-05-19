@@ -2,28 +2,33 @@ package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.sevenbrains.trashingDead.definitions.WorldDefinition;
 	import com.sevenbrains.trashingDead.definitions.WorldEntitiesDefinition;
-	import com.sevenbrains.trashingDead.deserealizer.core.AbstractDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.core.BuilderDeserealizer;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
+	
 	import flash.utils.Dictionary;
 	
 	/**
 	* ...
 	* @author Fulvio Crescenzi
 	*/
-	public class WorldConfigDeserealizer extends AbstractDeserealizer {
+	public class WorldConfigDeserializer extends BuilderDeserealizer implements Buildable {
+		
+		public static const TYPE:String = "worldConfigDeserializer";
 		
 		private var _idsMap:Dictionary;
 		
-		public function WorldConfigDeserealizer(source:String) {
+		public function WorldConfigDeserializer(source:String) {
 			super(source);
 		}
 		
-		override public function deserialize():void {
-			_xml = new XML(_source);
+		override public function deserialize(source:String):* {
+			_xml = new XML(source);
 			_idsMap = new Dictionary();
 			_map = new Dictionary();
 			_map[ConfigNodes.WORLDS] = decodeWorlds(_xml.worlds);
 			_map[ConfigNodes.IDS] = _idsMap;
+			return _map;
 		}
 		
 		private function decodeWorlds(xml:XMLList):Array {

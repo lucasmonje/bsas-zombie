@@ -1,31 +1,36 @@
 package com.sevenbrains.trashingDead.deserealizer {
-	import com.sevenbrains.trashingDead.deserealizer.core.AbstractDeserealizer;
-	import com.sevenbrains.trashingDead.display.popup.nodes.*;
+	import com.sevenbrains.trashingDead.deserealizer.core.BuilderDeserealizer;
+	import com.sevenbrains.trashingDead.display.popup.PopupChannel;
 	import com.sevenbrains.trashingDead.display.popup.PopupProperties;
+	import com.sevenbrains.trashingDead.display.popup.nodes.*;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import com.sevenbrains.trashingDead.exception.ASSERT;
 	import com.sevenbrains.trashingDead.exception.InvalidArgumentException;
+	import com.sevenbrains.trashingDead.interfaces.Buildable;
 	import com.sevenbrains.trashingDead.utils.BooleanUtils;
 	import com.sevenbrains.trashingDead.utils.ObjectUtil;
+	
 	import flash.utils.Dictionary;
 	import flash.xml.XMLNode;
-	import com.sevenbrains.trashingDead.display.popup.PopupChannel;
 	
-	public class PopupsConfigDeserealizer extends AbstractDeserealizer {
+	public class PopupsConfigDeserializer extends BuilderDeserealizer implements Buildable {
 		
+		public static const TYPE:String = "popupsConfigDeserializer";
+
 		private var _idsMap:Dictionary;
 		
-		public function PopupsConfigDeserealizer(source:String) {
+		public function PopupsConfigDeserializer(source:String) {
 			super(source);
 		}
 		
-		override public function deserialize():void {
-			_xml = new XML(_source);
+		override public function deserialize(source:String):* {
+			_xml = new XML(source);
 			_map = new Dictionary();
 			_idsMap = new Dictionary();
 			var aliases:Dictionary = decodeAliases(_xml.aliases);
 			_map[ConfigNodes.POPUPS] = decodePopups(_xml.popups, aliases);
 			_map[ConfigNodes.IDS] = _idsMap;
+			return _map;
 		}
 		
 		private function decodeAliases(xml:XMLList):Dictionary {
