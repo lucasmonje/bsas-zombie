@@ -12,9 +12,15 @@ package com.sevenbrains.trashingDead.processor.impl {
 	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.models.trade.MultipleTradeValue;
+	import com.sevenbrains.trashingDead.models.trade.info.MultipleInfo;
+	import com.sevenbrains.trashingDead.models.trade.info.ProbabilityInfo;
+	import com.sevenbrains.trashingDead.models.trade.info.StatsInfo;
+	import com.sevenbrains.trashingDead.models.trade.info.StockInfo;
 	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
 	import com.sevenbrains.trashingDead.processor.ICostProcessor;
 	import com.sevenbrains.trashingDead.processor.ITradeValueProcessor;
+	import com.sevenbrains.trashingDead.processor.PROCESSORS;
+	
 	import flash.utils.Dictionary;
 	
 	public class MultipleTradeValueProcessor implements ITradeValueProcessor {
@@ -30,10 +36,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 			}
 			return _instance;
 		}
-		
-		protected var _costProcessorsMap:Dictionary;
-		protected var _rewardProcessorsMap:Dictionary;
-		
+			
 		public function MultipleTradeValueProcessor() {
 			if (!_instanciable) {
 				throw new PrivateConstructorException("This is a singleton class");
@@ -48,7 +51,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 			var multipleTradeValue:MultipleTradeValue = value as MultipleTradeValue;
 			
 			for each (var value:ITradeValue in multipleTradeValue.values) {
-				if (!ICostProcessor(_costProcessorsMap[value.type]).canProcess(value, quantity, context)) {
+				if (!ICostProcessor(PROCESSORS[value.type]).canProcess(value, quantity, context)) {
 					return false;
 				}
 			}
@@ -63,7 +66,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 			
 			for each (var tradeValue:ITradeValue in MultipleTradeValue(value).values) {
 				if (tradeValue.canBeModified()) {
-					var processor:ICostProcessor = _costProcessorsMap[tradeValue.type] as ICostProcessor;
+					var processor:ICostProcessor = PROCESSORS[tradeValue.type] as ICostProcessor;
 					newValues = newValues.concat(processor.preProcessCost(tradeValue, context, preprocess));
 				} else {
 					newValues = newValues.concat(MultipleTradeValue(value).values);
@@ -80,7 +83,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 			
 			for each (var tradeValue:ITradeValue in MultipleTradeValue(value).values) {
 				if (tradeValue.canBeModified()) {
-					var processor:IRewardProcessor = _rewardProcessorsMap[tradeValue.type] as IRewardProcessor;
+					var processor:IRewardProcessor = PROCESSORS[tradeValue.type] as IRewardProcessor;
 					newValues = newValues.concat(processor.preProcessReward(tradeValue, context, preprocess));
 				} else {
 					newValues.push(tradeValue);
@@ -100,7 +103,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 			var values:Vector.<ITradeValue> = new Vector.<ITradeValue>();
 			
 			for each (var value:ITradeValue in multipleTradeValue.values) {
-				values = values.concat(ICostProcessor(_costProcessorsMap[value.type]).processCost(value, context));
+				values = values.concat(ICostProcessor(PROCESSORS[value.type]).processCost(value, context));
 			}
 			
 			return values;
@@ -116,14 +119,11 @@ package com.sevenbrains.trashingDead.processor.impl {
 			var values:Vector.<ITradeValue> = new Vector.<ITradeValue>();
 			
 			for each (var value:ITradeValue in multipleTradeValue.values) {
-				values = values.concat(IRewardProcessor(_rewardProcessorsMap[value.type]).processReward(value, context));
+				values = values.concat(PROCESSORS[value.type]).processReward(value, context));
 			}
 			
 			return values;
 		}
-		
-		private function initVars():void {
-		
-		}
+
 	}
 }

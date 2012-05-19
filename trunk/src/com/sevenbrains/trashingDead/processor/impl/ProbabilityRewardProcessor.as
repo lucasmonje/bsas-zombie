@@ -31,13 +31,10 @@ package com.sevenbrains.trashingDead.processor.impl {
 			return _instance;
 		}
 		
-		public var processorsMap:Dictionary;
-		
 		public function ProbabilityRewardProcessor() {
 			if (!_instanciable) {
 				throw new PrivateConstructorException("This is a singleton class");
 			}
-			initVars();
 		}
 		
 		public function preProcessReward(value:ITradeValue, context:IOperationContext = null, preprocess:Boolean = false):Vector.<ITradeValue> {
@@ -64,10 +61,6 @@ package com.sevenbrains.trashingDead.processor.impl {
 				}
 			}
 			return null;
-		}
-		
-		private function initVars():void {
-		
 		}
 	}
 }
