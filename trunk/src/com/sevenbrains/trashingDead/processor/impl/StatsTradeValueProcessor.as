@@ -10,7 +10,6 @@
 package com.sevenbrains.trashingDead.processor.impl {
 	
 	import com.sevenbrains.trashingDead.exception.InvalidArgumentException;
-	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.models.trade.StatsTradeValue;
@@ -19,22 +18,7 @@ package com.sevenbrains.trashingDead.processor.impl {
 	
 	public class StatsTradeValueProcessor implements ITradeValueProcessor {
 		
-		private static var _instance:StatsTradeValueProcessor = null;
-		private static var _instanciable:Boolean = false;
-		
-		public static function get instance():StatsTradeValueProcessor {
-			if (!_instance) {
-				_instanciable = true;
-				_instance = new StatsTradeValueProcessor();
-				_instanciable = false;
-			}
-			return _instance;
-		}
-		
 		public function StatsTradeValueProcessor() {
-			if (!_instanciable) {
-				throw new PrivateConstructorException("This is a singleton class");
-			}
 		}
 		
 		public function canProcess(value:ITradeValue, quantity:int = 1, context:IOperationContext = null):Boolean {

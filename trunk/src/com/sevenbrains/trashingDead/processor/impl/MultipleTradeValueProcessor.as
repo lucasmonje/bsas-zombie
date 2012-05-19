@@ -10,39 +10,17 @@
 package com.sevenbrains.trashingDead.processor.impl {
 	
 	import com.sevenbrains.trashingDead.exception.InvalidArgumentException;
-	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.models.trade.MultipleTradeValue;
-	import com.sevenbrains.trashingDead.models.trade.info.MultipleInfo;
-	import com.sevenbrains.trashingDead.models.trade.info.ProbabilityInfo;
-	import com.sevenbrains.trashingDead.models.trade.info.StatsInfo;
-	import com.sevenbrains.trashingDead.models.trade.info.StockInfo;
 	import com.sevenbrains.trashingDead.models.utils.IOperationContext;
 	import com.sevenbrains.trashingDead.processor.ICostProcessor;
 	import com.sevenbrains.trashingDead.processor.IRewardProcessor;
 	import com.sevenbrains.trashingDead.processor.ITradeValueProcessor;
 	import com.sevenbrains.trashingDead.processor.Processors;
 	
-	import flash.utils.Dictionary;
-	
 	public class MultipleTradeValueProcessor implements ITradeValueProcessor {
 		
-		private static var _instance:MultipleTradeValueProcessor = null;
-		private static var _instanciable:Boolean = false;
-		
-		public static function get instance():MultipleTradeValueProcessor {
-			if (!_instance) {
-				_instanciable = true;
-				_instance = new MultipleTradeValueProcessor();
-				_instanciable = false;
-			}
-			return _instance;
-		}
-			
 		public function MultipleTradeValueProcessor() {
-			if (!_instanciable) {
-				throw new PrivateConstructorException("This is a singleton class");
-			}
 		}
 		
 		public function canProcess(value:ITradeValue, quantity:int = 1, context:IOperationContext = null):Boolean {
@@ -125,6 +103,5 @@ package com.sevenbrains.trashingDead.processor.impl {
 			
 			return values;
 		}
-
 	}
 }
