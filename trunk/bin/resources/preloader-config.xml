@@ -9,9 +9,9 @@
 		</config>
 		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
 			<param name="xmlClassName" value="xmlItemsConfigClass" /> 
-			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.EntityConfigDeserealizer" /> 
-			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.EntitiesConfig" /> 
-			<param name="model" value="entities" /> 			
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.ItemConfigDeserealizer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.ItemsConfig" /> 
+			<param name="model" value="items" />
 		</config>
 		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
 			<param name="xmlClassName" value="xmlWorldsConfigClass" /> 
@@ -38,4 +38,4 @@
 			<param name="model" value="messages" /> 			
 		</config>
 	</preloaderProccess>
-	</data>
+</data>

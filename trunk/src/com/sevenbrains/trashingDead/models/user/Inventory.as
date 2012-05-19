@@ -49,6 +49,15 @@ package com.sevenbrains.trashingDead.models.user {
 				return 0;
 			}
 		}
+
+		public function getItemQuantityByCode(code:uint):int {
+			if (_items[code]) {
+				var stockedItem:StockedItem = _items[code];
+				return stockedItem.quantity;
+			} else {
+				return 0;
+			}
+		}
 		
 		public function getItems():Array {
 			var arr:Array = new Array();

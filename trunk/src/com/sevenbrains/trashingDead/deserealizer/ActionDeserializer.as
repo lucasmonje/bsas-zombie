@@ -12,7 +12,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 	import com.adobe.serialization.json.JSON;
 	import com.sevenbrains.trashingDead.execute.definition.PopupActionDefinition;
 	import com.sevenbrains.trashingDead.execute.definition.UIActionDefinition;
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	
 	import flash.utils.Dictionary;
 	

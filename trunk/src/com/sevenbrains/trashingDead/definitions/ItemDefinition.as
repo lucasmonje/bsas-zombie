@@ -17,7 +17,7 @@ package com.sevenbrains.trashingDead.definitions {
 	 * ...
 	 * @author Fulvio Crescenzi
 	 */
-	public class EntityDefinition implements IClassifiable {
+	public class ItemDefinition implements IClassifiable {
 		
 		private var _animations:Vector.<AnimationDefinition>;
 		
@@ -35,15 +35,15 @@ package com.sevenbrains.trashingDead.definitions {
 		
 		private var _type:String;
 		
-		public function EntityDefinition(name:String, code:uint, icon:String, type:String, collisionDefinition:CollisionDefinition, physic:PhysicDefinition, damageArea:DamageAreaDefinition, animations:Vector.<AnimationDefinition>) {
+		public function ItemDefinition(name:String, code:uint, icon:String, type:String, collisionDef:CollisionDefinition = null, physic:PhysicDefinition = null, damageArea:DamageAreaDefinition = null, animations:Vector.<AnimationDefinition> = null) {
 			_name = name;
 			_code = code;
 			_icon = icon;
 			_type = type;
-			_collisionDefinition = collisionDefinition;
+			_collisionDefinition = collisionDef;
 			_physicProps = physic;
 			_damageArea = damageArea;
-			_animations = animations.concat();
+			_animations = animations;
 		}
 		
 		public function get animations():Vector.<AnimationDefinition> {
@@ -62,7 +62,7 @@ package com.sevenbrains.trashingDead.definitions {
 			return _icon;
 		}
 		
-		public function get collisionDefinition():CollisionDefinition {
+		public function get collisionDef():CollisionDefinition {
 			return _collisionDefinition;
 		}
 		

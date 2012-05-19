@@ -13,8 +13,8 @@ package com.sevenbrains.trashingDead.managers {
 	import com.sevenbrains.trashingDead.exception.PrivateConstructorException;
 	import com.sevenbrains.trashingDead.exception.UnsupportedOperationException;
 	import com.sevenbrains.trashingDead.execute.actions.*;
-	import com.sevenbrains.trashingDead.execute.interfaces.IAction;
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IAction;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	
 	import flash.utils.Dictionary;
 	

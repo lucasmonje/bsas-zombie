@@ -1,7 +1,7 @@
 package com.sevenbrains.trashingDead.entities {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import flash.geom.Point;
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	
@@ -11,7 +11,7 @@ package com.sevenbrains.trashingDead.entities {
 	*/
 	public class FlyingZombie extends Zombie {
 		
-		public function FlyingZombie(props:EntityDefinition, initialPosition:Point, zombieType:String, target:Entity) {
+		public function FlyingZombie(props:ItemDefinition, initialPosition:Point, zombieType:String, target:Entity) {
 			super(props, initialPosition, zombieType, target);
 		}
 		

@@ -3,7 +3,7 @@
 	<trashes>
 		<trash name="trashSafeBox" code="100001" type="battable">
 			<physicProps density="0.9" friction="0.3" restitution="0.1" />
-			<properties hits="5" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="5" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />
@@ -12,7 +12,7 @@
 		</trash>
 		<trash name="trashRim" code="100002" type="battable">
 			<physicProps density="0.6" friction="0.3" restitution="0.1" />
-			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />
@@ -21,7 +21,7 @@
 		</trash>
 		<trash name="trashTv" code="100003" type="battable">
 			<physicProps density="0.8" friction="0.3" restitution="0.1" />
-			<properties hits="3" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="3" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />
@@ -30,7 +30,7 @@
 		</trash>
 		<trash name="trashRock" code="100004" type="handable">
 			<physicProps density="0.1" friction="0.3" restitution="0.1" />
-			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<animations>
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="hit" />
@@ -48,12 +48,12 @@
 		-->
 		<weapon name="Bat" code="200001" icon="Bat" type="battable" />
 		<weapon name="itemMolotov" code="100003" icon="Molotov" type="handable">
-			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<damageArea radius="1" time="10" hit="1" />
 		</weapon>
 		<!--
 		<weapon name="Grenade" code="100004" icon="Grenade" type="handable">
-			<properties hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
+			<collision hits="1" life="1" collisionId="A" collisionAccept="A,B,C"/>
 			<damageArea radius="2" times="10" hit="5" />
 			<locks>
 				<level value="4" />
@@ -64,7 +64,7 @@
 	
 	<zombies>
 		<zombie name="zombie01" code="300001" type="zombie">
-			<properties hits="1" life="3" collisionId="B" collisionAccept="A,D" speedMin="0.1" speedMax="0.2" />
+			<collision hits="1" life="3" collisionId="B" collisionAccept="A,D" speedMin="0.1" speedMax="0.2" />
 			<physicProps density="100" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true" />
@@ -78,7 +78,7 @@
 			</rewards>
 		</zombie>
 		<zombie name="zombie02" code="300002" type="zombie">
-			<properties hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.03" speedMax="0.07" />
+			<collision hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.03" speedMax="0.07" />
 			<physicProps density="100" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
@@ -92,7 +92,7 @@
 			</rewards>
 		</zombie>
 		<zombie name="zombie03" code="300003" type="flyingZombie">
-			<properties hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.02" speedMax="0.04" />
+			<collision hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.02" speedMax="0.04" />
 			<physicProps density="100.0" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
@@ -106,7 +106,7 @@
 			</rewards>
 		</zombie>
 		<zombie name="zombie04" code="300004" type="zombie">
-			<properties hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.07" speedMax="0.1" />
+			<collision hits="1" life="2" collisionId="B" collisionAccept="A,D" speedMin="0.07" speedMax="0.1" />
 			<physicProps density="100.0" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="walk" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
@@ -122,7 +122,7 @@
 	</zombies>
 	<stuffs>
 		<stuff name="barricade" code="400001" type="barricade">
-			<properties hits="0" life="100" collisionId="D" collisionAccept="B" />
+			<collision hits="0" life="100" collisionId="D" collisionAccept="B" />
 			<physicProps density="50000" friction="1.0" restitution="0.0" />
 			<animations>
 				<animation name="new" defaultAnim="true"/>

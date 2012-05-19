@@ -10,7 +10,7 @@
 package com.sevenbrains.trashingDead.execute.definition {
 	
 	import com.sevenbrains.trashingDead.enum.ActionsType;
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	
 	public class UIActionDefinition implements IActionDefinition {
 		

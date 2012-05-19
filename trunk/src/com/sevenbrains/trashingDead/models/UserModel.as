@@ -9,7 +9,7 @@
 
 package com.sevenbrains.trashingDead.models {
 	
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.entities.Item;
 	import com.sevenbrains.trashingDead.entities.Players;
 	import com.sevenbrains.trashingDead.models.user.Inventory;
@@ -51,7 +51,7 @@ package com.sevenbrains.trashingDead.models {
 		public function init():void {
 			var weapons:Vector.<Item> = new Vector.<Item>();
 			
-			for each (var weaponDef:EntityDefinition in ConfigModel.entities.getWeapons()) {
+			for each (var weaponDef:ItemDefinition in ConfigModel.items.getWeapons()) {
 				weapons.push(new Item(weaponDef, new Point()));
 			}
 			

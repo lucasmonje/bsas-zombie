@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.factories 
 {
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.entities.Trash;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	import com.sevenbrains.trashingDead.utils.MathUtils;
@@ -30,7 +30,7 @@ package com.sevenbrains.trashingDead.factories
 			}
 		}
 		
-		public function createTrash(def:EntityDefinition, pos:Point):Trash {
+		public function createTrash(def:ItemDefinition, pos:Point):Trash {
 			var trash:Trash = new Trash(def, pos);
 			trash.init();
 			return trash;

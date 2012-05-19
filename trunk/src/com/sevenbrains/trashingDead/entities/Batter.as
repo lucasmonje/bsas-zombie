@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.entities 
 {
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingArea;
 	import com.sevenbrains.trashingDead.display.userInterface.ThrowingAreaRect;
@@ -153,7 +153,7 @@ package com.sevenbrains.trashingDead.entities
 		}
 		
 		private function loadItem():void {
-			var entityDef:EntityDefinition = ConfigModel.entities.getTrashByCode(_itemCode);
+			var entityDef:ItemDefinition = ConfigModel.items.getTrashByCode(_itemCode);
 			if (entityDef) {
 				var classBtnRock:Class = ConfigModel.assets.getDefinition(entityDef.name, "box1") as Class;
 				var mcBtnRock:MovieClip = new classBtnRock();

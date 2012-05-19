@@ -1,6 +1,6 @@
 package com.sevenbrains.trashingDead.entities 
 {
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
@@ -29,7 +29,7 @@ package com.sevenbrains.trashingDead.entities
 		
 		private var _state:String;
 		
-		private var _trashDefinition:EntityDefinition;
+		private var _trashDefinition:ItemDefinition;
 		
 		public function FatGuy() 
 		{
@@ -83,8 +83,8 @@ package com.sevenbrains.trashingDead.entities
 		/**
 		 * Devuelve un trash definision random
 		 */
-		public function getTrashDefinition():EntityDefinition {
-			var entities:Array = ConfigModel.entities.getTrashesByType('battable').concat();
+		public function getTrashDefinition():ItemDefinition {
+			var entities:Array = ConfigModel.items.getTrashesByType('battable').concat();
 			return entities[MathUtils.getRandomInt(1, entities.length) - 1];
 		}
 		

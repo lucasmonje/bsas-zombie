@@ -9,7 +9,7 @@
 
 package com.sevenbrains.trashingDead.factories {
 	
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.entities.Entity;
 	import com.sevenbrains.trashingDead.entities.FlyingZombie;
 	import com.sevenbrains.trashingDead.entities.Zombie;
@@ -40,7 +40,7 @@ package com.sevenbrains.trashingDead.factories {
 			}
 		}
 		
-		public function createZombie(def:EntityDefinition, pos:Point):Entity {
+		public function createZombie(def:ItemDefinition, pos:Point):Entity {
 			var zombie:Entity;
 			
 			switch (def.type) {

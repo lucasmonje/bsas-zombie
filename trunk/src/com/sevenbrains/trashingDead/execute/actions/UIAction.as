@@ -10,8 +10,8 @@
 package com.sevenbrains.trashingDead.execute.actions {
 	
 	import com.sevenbrains.trashingDead.execute.definition.UIActionDefinition;
-	import com.sevenbrains.trashingDead.execute.interfaces.IAction;
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IAction;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	
 	public class UIAction implements IAction {
 		

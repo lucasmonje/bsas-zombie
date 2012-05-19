@@ -2,7 +2,7 @@ package com.sevenbrains.trashingDead.entities
 {
 	import Box2D.Common.Math.b2Vec2;
 	
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.enum.AssetsEnum;
 	import com.sevenbrains.trashingDead.events.PlayerEvents;
@@ -117,7 +117,7 @@ package com.sevenbrains.trashingDead.entities
 		private function batterThrewItem(e:PlayerEvents):void {
 			var itemCode:Number = Number(e.value3);
 			if (itemCode > 0){
-				var entityDef:EntityDefinition = ConfigModel.entities.getTrashByCode(itemCode);
+				var entityDef:ItemDefinition = ConfigModel.items.getTrashByCode(itemCode);
 				if (entityDef) {
 					createTrash(entityDef, new Point(_trashPosition.x, _trashPosition.y - 50));
 					trashHit(Number(e.value1), Number(e.value2));
@@ -147,14 +147,14 @@ package com.sevenbrains.trashingDead.entities
 		 * El gordo está listo para agarrar una nueva basura
 		 */
 		private function fatGuyDropTrash(e:PlayerEvents):void {
-			createTrash(EntityDefinition(e.value1), _trashPosition);
+			createTrash(ItemDefinition(e.value1), _trashPosition);
 			_batter.readyToBat();
 		}
 		
 		/**
 		 * Crea la basura en base a la definicion que le paso el gordo
 		 */
-		private function createTrash(entityDef:EntityDefinition, position:Point):void {
+		private function createTrash(entityDef:ItemDefinition, position:Point):void {
 			_currentTrash = TrashFactory.instance.createTrash(entityDef, position);
 			ItemManager.instance.regist(_currentTrash);
 			WorldModel.instance.currentWorld.playerLayer.addChild(_currentTrash);

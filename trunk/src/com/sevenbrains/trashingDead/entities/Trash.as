@@ -1,7 +1,7 @@
 package com.sevenbrains.trashingDead.entities {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.enum.TrashAnimsEnum;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
@@ -14,7 +14,7 @@ package com.sevenbrains.trashingDead.entities {
 	*/
 	public class Trash extends Entity {
 		
-		public function Trash(props:EntityDefinition, initialPosition:Point) {
+		public function Trash(props:ItemDefinition, initialPosition:Point) {
 			super(props, initialPosition, PhysicObjectType.TRASH, 2);
 		}
 		

@@ -7,10 +7,8 @@
 //
 //------------------------------------------------------------------------------
 
-package com.sevenbrains.trashingDead.execute.interfaces {
+package com.sevenbrains.trashingDead.processor {
 	
-	public interface IAction {
-		
-		function execute(iDef:IActionDefinition):void;
+	public interface ITradeValueProcessor extends ICostProcessor, IRewardProcessor {
 	}
 }

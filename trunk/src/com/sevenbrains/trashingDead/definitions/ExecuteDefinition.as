@@ -9,7 +9,7 @@
 
 package com.sevenbrains.trashingDead.definitions {
 	
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	import com.sevenbrains.trashingDead.utils.ClassUtil;
 	
 	import flash.utils.Dictionary;

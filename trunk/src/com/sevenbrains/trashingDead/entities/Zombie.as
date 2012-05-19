@@ -4,7 +4,7 @@ package com.sevenbrains.trashingDead.entities {
 	import Box2D.Dynamics.b2Body;
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
-	import com.sevenbrains.trashingDead.definitions.EntityDefinition;
+	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import com.sevenbrains.trashingDead.models.UserModel;
@@ -31,7 +31,7 @@ package com.sevenbrains.trashingDead.entities {
 		
 		private var _target:Entity;
 		
-		public function Zombie(props:EntityDefinition, initialPosition:Point, zombieType:String, target:Entity) {
+		public function Zombie(props:ItemDefinition, initialPosition:Point, zombieType:String, target:Entity) {
 			_target = target;
 			super(props, initialPosition, zombieType, -1);
 			_state = STATE_WALKING;

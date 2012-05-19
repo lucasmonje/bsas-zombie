@@ -24,6 +24,7 @@ package {
 	import com.sevenbrains.trashingDead.execute.actions.UIAction;
 	import com.sevenbrains.trashingDead.managers.ExecuteManager;
 	import com.sevenbrains.trashingDead.managers.LockManager;
+	import com.sevenbrains.trashingDead.managers.TradeManager;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
 	
 	/**
@@ -36,14 +37,14 @@ package {
 			EmbedAsset;
 			
 			AssetsConfig;
-			EntitiesConfig;
+			ItemsConfig;
 			SoundsConfig;
 			WorldsConfig;
 			LocaleConfig;
 			PopupsConfig
 			
 			AssetsConfigDeserealizer;
-			EntityConfigDeserealizer;
+			ItemConfigDeserealizer;
 			SoundConfigDeserealizer;
 			WorldConfigDeserealizer;
 			LocaleConfigDeserealizer;
@@ -73,6 +74,8 @@ package {
 			
 			ToggleMusicCommand;
 			GrantRewardCommand;
+			
+			TradeManager;
 		
 		}
 	}

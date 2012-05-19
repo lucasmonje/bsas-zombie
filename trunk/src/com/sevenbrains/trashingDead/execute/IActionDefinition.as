@@ -7,7 +7,7 @@
 //
 //------------------------------------------------------------------------------
 
-package com.sevenbrains.trashingDead.execute.interfaces {
+package com.sevenbrains.trashingDead.execute {
 	
 	public interface IActionDefinition {
 		function get actionId():String;

@@ -11,7 +11,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.sevenbrains.trashingDead.definitions.ExecuteDefinition;
 	import com.sevenbrains.trashingDead.deserealizer.ActionDeserializer;
-	import com.sevenbrains.trashingDead.execute.interfaces.IActionDefinition;
+	import com.sevenbrains.trashingDead.execute.IActionDefinition;
 	import flash.utils.Dictionary;
 	
 	public class ExecuteDeserializer {
