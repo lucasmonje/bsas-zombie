@@ -46,6 +46,8 @@ package com.sevenbrains.trashingDead.models {
 			if (!_instanciable) {
 				throw new Error("This is a singleton class!");
 			}
+			_players = new Players();
+			_stats = new Stats();
 		}
 		
 		public function init():void {
@@ -54,8 +56,6 @@ package com.sevenbrains.trashingDead.models {
 			for each (var weaponDef:ItemDefinition in ConfigModel.items.getWeapons()) {
 				weapons.push(new Item(weaponDef, new Point()));
 			}
-			
-			_players = new Players();
 		}
 		
 		public function get players():Players {

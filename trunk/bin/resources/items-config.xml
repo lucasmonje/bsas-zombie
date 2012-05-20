@@ -44,15 +44,10 @@
 				<animation name="healthy" defaultAnim="true"/>
 				<animation name="destroy" />
 			</animations>
+			<cost credits="1" />
 			<lock>
-				<stats xp="1000" />
-				<buyable>
-					<cost credits="10" />
-				</buyable>
+				<condition xp="1000" />
 			</lock>
-			<buyable>
-				<cost credits="1" />
-			</buyable>
 		</trash>
 	</trashes>
 	

@@ -9,6 +9,7 @@ package {
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.FullscreenManager;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
+	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.utils.CheatCentral;
 	import com.sevenbrains.trashingDead.utils.StageReference;
 	
@@ -50,6 +51,7 @@ package {
 			_appController = new ApplicationController();
 			StageReference.initReference(stage);
 			GameTimer.instance.start();
+			UserModel.instance;
 			FullscreenManager.instance.root = this;
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			loadConfig();

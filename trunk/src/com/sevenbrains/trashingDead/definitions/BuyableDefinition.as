@@ -15,11 +15,9 @@ package com.sevenbrains.trashingDead.definitions {
 		
 		private var _cost:ITradeValue;
 		private var _lockDefinition:LockDefinition;
-		private var _name:String;
 		private var _reward:ITradeValue;
 		
-		public function BuyableDefinition(name:String, cost:ITradeValue, reward:ITradeValue, lockDef:LockDefinition) {
-			_name = name;
+		public function BuyableDefinition(cost:ITradeValue, reward:ITradeValue, lockDef:LockDefinition) {
 			_cost = cost;
 			_reward = reward;
 			_lockDefinition = lockDef;
@@ -31,10 +29,6 @@ package com.sevenbrains.trashingDead.definitions {
 		
 		public function get lockDefinition():LockDefinition {
 			return _lockDefinition;
-		}
-		
-		public function get name():String {
-			return _name;
 		}
 		
 		public function get reward():ITradeValue {

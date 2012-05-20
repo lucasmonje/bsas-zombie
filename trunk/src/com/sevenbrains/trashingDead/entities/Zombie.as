@@ -2,16 +2,17 @@ package com.sevenbrains.trashingDead.entities {
 	
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
+	
 	import com.sevenbrains.trashingDead.b2.PhysicInformable;
 	import com.sevenbrains.trashingDead.definitions.GameProperties;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.enum.EntitiesAnimsEnum;
 	import com.sevenbrains.trashingDead.enum.PhysicObjectType;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
+	import com.sevenbrains.trashingDead.managers.TradeManager;
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.utils.Animation;
-	import com.sevenbrains.trashingDead.models.UserModel;
-	import com.sevenbrains.trashingDead.interfaces.Collisionable;
-	import com.sevenbrains.trashingDead.enum.EntitiesAnimsEnum;
+	
 	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -122,6 +123,7 @@ package com.sevenbrains.trashingDead.entities {
 				playAnim(EntitiesAnimsEnum.HIT);
 			}else {
 				_enabled = true;
+				TradeManager.instance.processReward(props.reward);
 				playAnim(EntitiesAnimsEnum.DEAD);
 			}
 		}

@@ -27,9 +27,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 		private static const STATS:String = "stats";
 		
 		public var statsClass:Class = Stats;
-		
-		private var _validStats:Dictionary;
-		
+				
 		private var builderMap:Dictionary;
 
 		private var _node:XML;
@@ -85,7 +83,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				var statName:String = attribute.localName();
 				var statKey:String =  statName.split("_")[0];
 				
-				if (_validStats[statKey]) {
+				if (Stats.VALID_STATS[statKey]) {
 					stats.set(statName, parseInt(attribute));
 				}
 			}
@@ -118,7 +116,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				var statName:String = attribute.localName();
 				var statKey:String =  statName.split("_")[0];
 				
-				if (_validStats[statKey]) {
+				if (Stats.VALID_STATS[statKey]) {
 					return STATS;
 				}
 			}

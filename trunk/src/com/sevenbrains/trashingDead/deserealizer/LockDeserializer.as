@@ -94,7 +94,7 @@ package com.sevenbrains.trashingDead.deserealizer {
 				deserializeCondition(definition, conditionNode);
 			}
 			
-			lockManager.addLock(definition);
+			LockManager.instance.addLock(definition);
 			
 			if (definition.id > 0) {
 				deserializedLocks[definition.id] = definition;

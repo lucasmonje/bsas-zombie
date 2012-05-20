@@ -1,13 +1,17 @@
 package com.sevenbrains.trashingDead.deserealizer {
 	
 	import com.sevenbrains.trashingDead.definitions.AnimationDefinition;
+	import com.sevenbrains.trashingDead.definitions.BuyableDefinition;
 	import com.sevenbrains.trashingDead.definitions.CollisionDefinition;
 	import com.sevenbrains.trashingDead.definitions.DamageAreaDefinition;
 	import com.sevenbrains.trashingDead.definitions.ItemDefinition;
+	import com.sevenbrains.trashingDead.definitions.LockDefinition;
 	import com.sevenbrains.trashingDead.definitions.PhysicDefinition;
 	import com.sevenbrains.trashingDead.deserealizer.core.BuilderDeserealizer;
+	import com.sevenbrains.trashingDead.deserealizer.core.Deserializers;
 	import com.sevenbrains.trashingDead.enum.ConfigNodes;
 	import com.sevenbrains.trashingDead.interfaces.Buildable;
+	import com.sevenbrains.trashingDead.models.trade.ITradeValue;
 	import com.sevenbrains.trashingDead.utils.BooleanUtils;
 	
 	import flash.utils.Dictionary;
@@ -36,12 +40,28 @@ package com.sevenbrains.trashingDead.deserealizer {
 		
 		private function decodeItems(xml:XMLList):Array {
 			var items:Array = [];
+			var tradeValueDeserializer:TradeValueDeserializer = Deserializers.map[TradeValueDeserializer.TYPE];
+			var lockDeserializer:LockDeserializer = Deserializers.map[LockDeserializer.TYPE];
 			for each (var element:XML in xml.elements()) {
 				var physic:PhysicDefinition = getPhysicDef(element.physicProps);
 				var collision:CollisionDefinition = getCollisionDef(element.collision);
 				var area:DamageAreaDefinition = getDamageAreaDef(element.damageArea);
 				var animations:Vector.<AnimationDefinition> = getAnimationsDef(element.animations);
-				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, collision, physic, area, animations);
+				
+				var cost:ITradeValue;
+				if (element.cost.length()) {
+					cost = tradeValueDeserializer.deserialize(element.cost[0]);
+				}
+				var reward:ITradeValue;
+				if (element.reward.length()) {
+					reward = tradeValueDeserializer.deserialize(element.reward[0]);
+				}
+				var lockDef:LockDefinition;
+				if (element.lock.length()) {
+					lockDef = lockDeserializer.deserialize(element.lock[0]); 
+				}
+				
+				var itemDef:ItemDefinition = new ItemDefinition(element.@name, element.@code, element.@icon, element.@type, collision, physic, area, animations, cost, reward, lockDef);
 				items.push(itemDef);
 				_idsMap[itemDef.code] = itemDef;
 			}

@@ -21,12 +21,17 @@ package com.sevenbrains.trashingDead.models.user {
 		public static const COINS:String = "coins";
 		public static const CREDITS:String = "credits";
 		public static const XP:String = "xp";
-		public static const VALID_STATS:Array = [COINS,CREDITS,XP];
+		
+		public static var VALID_STATS:Dictionary;
 		
 		protected var _statsValues:Dictionary;
 		
 		public function Stats() {
-			_statsValues = new Dictionary();
+			_statsValues = new Dictionary(true);
+			VALID_STATS = new Dictionary(true);
+			VALID_STATS[COINS] = COINS;
+			VALID_STATS[CREDITS] = CREDITS;
+			VALID_STATS[XP] = XP;
 		}
 		
 		public function add(stats:IStats):IStats {
