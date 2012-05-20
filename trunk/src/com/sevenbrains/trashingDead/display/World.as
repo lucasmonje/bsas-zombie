@@ -164,6 +164,7 @@ package com.sevenbrains.trashingDead.display {
 			if (GameProperties.DEBUG_MODE) {
 				setDebugMode();
 			}
+			
 			_state = ClassStatesEnum.RUNNING;
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_callId = _gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
@@ -236,8 +237,7 @@ package com.sevenbrains.trashingDead.display {
 			var debug:b2DebugDraw = new b2DebugDraw();
 			var sprite:Sprite = new Sprite();
 			debug.SetSprite(sprite);
-			var scale:int = 1 / GameProperties.WORLD_SCALE;
-			debug.SetDrawScale(1 / scale);
+			debug.SetDrawScale(GameProperties.WORLD_SCALE);
 			debug.SetFlags(b2DebugDraw.e_shapeBit);
 			_physicWorld.SetDebugDraw(debug);
 			_debugLayer.addChild(sprite);

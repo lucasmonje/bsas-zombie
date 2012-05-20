@@ -6,6 +6,7 @@ package com.sevenbrains.trashingDead.enum
 	 */
 	public class EntitiesAnimsEnum 
 	{
+		public static const APPEAR:String = "appears";
 		public static const WALK:String = "walk";
 		public static const HIT:String = "hit";
 		public static const DEAD:String = "dead";

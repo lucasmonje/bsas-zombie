@@ -123,6 +123,21 @@
 				<stats xp="3" />
 			</reward>
 		</zombie>
+		<zombie name="zombie05" code="300005" type="zombieGrave">
+			<collision hits="1" life="1" collisionId="B" collisionAccept="A,D" speedMin="0.07" speedMax="0.1" />
+			<physicProps density="100.0" friction="1.0" restitution="0.0" />
+			<animations>
+				<animation name="appears" frameTime="1" afterReproduce="walk" defaultAnim="true"/>
+				<animation name="walk" frameTime="1" afterReproduce="walk" />
+				<animation name="hit" frameTime="1" afterReproduce="walk" />
+				<animation name="dead" frameTime="1" />
+				<animation name="attack" frameTime="1" />
+			</animations>
+			<reward>
+				<stats coins="15" />
+				<stats xp="3" />
+			</reward>
+		</zombie>
 	</zombies>
 	<stuffs>
 		<stuff name="barricade" code="400001" type="barricade">

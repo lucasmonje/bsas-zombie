@@ -12,6 +12,7 @@ package com.sevenbrains.trashingDead.entities {
 	import com.sevenbrains.trashingDead.models.UserModel;
 	import com.sevenbrains.trashingDead.interfaces.Collisionable;
 	import com.sevenbrains.trashingDead.enum.EntitiesAnimsEnum;
+	import com.sevenbrains.trashingDead.events.AnimationsEvent;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -22,6 +23,7 @@ package com.sevenbrains.trashingDead.entities {
 	*/
 	public class Zombie extends Entity {
 		
+		protected static const STATE_APPEARING:String = "appearing";
 		protected static const STATE_WALKING:String = "walking";
 		protected static const STATE_ATTACKING:String = "attacking";
 
@@ -34,30 +36,27 @@ package com.sevenbrains.trashingDead.entities {
 		public function Zombie(props:ItemDefinition, initialPosition:Point, zombieType:String, target:Entity) {
 			_target = target;
 			super(props, initialPosition, zombieType, -1);
-			_state = STATE_WALKING;
 		}
 		
-		override public function updatePosition():void {
+		override public function init():void 
+		{
+			super.init();
+			
+			if (animations.hasAnim(EntitiesAnimsEnum.APPEAR)) {
+				_state = STATE_APPEARING;
+				stopMoving();
+			}else{
+				_state = STATE_WALKING;
+			}
+		}
+		
+		override protected function update():void {
 			switch (_state) {
+				case STATE_APPEARING:
+					updatePosition();
+					break;
 				case STATE_WALKING:
-					for each (var currentBody:b2Body in _compositionMap.arrayMode) {
-						var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
-						var view:DisplayObject = bodyInfo.userData.assetSprite;
-						var pos:b2Vec2 = currentBody.GetPosition();
-						var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
-						
-						if ((pos.x * GameProperties.WORLD_SCALE) > UserModel.instance.players.wagonPosition.x) {
-							pos.x = pos.x - bodyInfo.speed;
-							currentBody.SetPosition(pos);
-						}
-						
-						if (Boolean(view)) {
-							view.rotation = rotation;
-							view.x = pos.x * GameProperties.WORLD_SCALE;
-							view.y = pos.y * GameProperties.WORLD_SCALE;					
-						}
-						
-					}
+					updatePosition();
 					
 					if (isNearToTarget()) {
 						stopMoving();
@@ -78,6 +77,27 @@ package com.sevenbrains.trashingDead.entities {
 						}
 					}
 					break;
+			}
+		}
+		
+		override protected function updatePosition():void {
+			for each (var currentBody:b2Body in _compositionMap.arrayMode) {
+				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
+				var view:DisplayObject = bodyInfo.userData.assetSprite;
+				var pos:b2Vec2 = currentBody.GetPosition();
+				var rotation:Number = currentBody.GetAngle() * (180 / Math.PI);
+				
+				if ((pos.x * GameProperties.WORLD_SCALE) > UserModel.instance.players.wagonPosition.x) {
+					pos.x = pos.x - bodyInfo.speed;
+					currentBody.SetPosition(pos);
+				}
+				
+				if (Boolean(view)) {
+					view.rotation = rotation;
+					view.x = pos.x * GameProperties.WORLD_SCALE;
+					view.y = pos.y * GameProperties.WORLD_SCALE;					
+				}
+				
 			}
 		}
 		
@@ -108,6 +128,10 @@ package com.sevenbrains.trashingDead.entities {
 		
 		override protected function updateAnimation(e:Event):void 
 		{
+			if (animations.currentAnimName == EntitiesAnimsEnum.APPEAR) {
+				setSpeed();
+				_state = STATE_WALKING;	
+			}
 			super.updateAnimation(e);
 			if (animations.currentAnimName == EntitiesAnimsEnum.DEAD) {
 				_enabled = false;

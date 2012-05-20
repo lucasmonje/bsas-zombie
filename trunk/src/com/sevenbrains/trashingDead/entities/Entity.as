@@ -329,11 +329,11 @@ package com.sevenbrains.trashingDead.entities
 			}
 		}
 		
-		private function update():void {
+		protected function update():void {
 			updatePosition();
 		}
 		
-		public function updatePosition():void {
+		protected function updatePosition():void {
 			for each (var currentBody:b2Body in _compositionMap.arrayMode) {
 				var bodyInfo:PhysicInformable = currentBody as PhysicInformable;
 				var view:DisplayObject = bodyInfo.userData.assetSprite;

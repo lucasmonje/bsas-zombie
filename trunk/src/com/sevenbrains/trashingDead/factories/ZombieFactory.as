@@ -44,14 +44,13 @@ package com.sevenbrains.trashingDead.factories {
 			var zombie:Entity;
 			
 			switch (def.type) {
-				case PhysicObjectType.ZOMBIE:  {
+				case PhysicObjectType.ZOMBIE:
+				case PhysicObjectType.ZOMBIE_GRAVE:
 					zombie = new Zombie(def, pos, def.type, WorldModel.instance.barricade);
 					break;
-				}
-				case PhysicObjectType.FLYING_ZOMBIE:  {
+				case PhysicObjectType.FLYING_ZOMBIE:
 					zombie = new FlyingZombie(def, pos, def.type, WorldModel.instance.barricade);
 					break;
-				}
 			}
 			zombie.init();
 			return zombie;

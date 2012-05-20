@@ -15,9 +15,9 @@ package com.sevenbrains.trashingDead.entities {
 			super(props, initialPosition, zombieType, target);
 		}
 		
-		override public function updatePosition():void 
+		override protected function update():void 
 		{
-			super.updatePosition();
+			super.update();
 			
 			if (_state == STATE_WALKING){
 		  
