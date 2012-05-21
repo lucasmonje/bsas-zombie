@@ -67,7 +67,7 @@ package com.sevenbrains.trashingDead.managers {
 		}
 		
 		private function setZoomLevels():void {
-			_screenWidth = StageReference.stage.stageWidth;
+			_screenWidth = FullscreenManager.instance.isFullScreen ? StageReference.stage.fullScreenWidth : StageReference.stage.stageWidth;
 			var fitScreen:Number = _screenWidth / _targetInitialWidth;
 			_zoomLevels = new Array();
 			_zoomLevels[0] = fitScreen;
@@ -80,7 +80,8 @@ package com.sevenbrains.trashingDead.managers {
 			props.scaleX = currentZoom;
 			props.scaleY = currentZoom;
 			props.y = (StageReference.stage.stageHeight - (_targetInitialHeight * currentZoom))*0.75;
-			props.x = 0; 
+			props.x = StageReference.stage.x; 
+			
 			props.ease = Tweener.EASE_IN_EXPO; 
 			Tweener.to(_target, 0.5, props);
 			_cameraBounds = new Rectangle(0, props.y, StageReference.stage.stageWidth / currentZoom, StageReference.stage.stageHeight / currentZoom);

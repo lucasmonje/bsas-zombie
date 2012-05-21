@@ -51,7 +51,7 @@ package com.sevenbrains.trashingDead.managers {
 					if (player == _musicPlayer) {
 						player.stopAll();
 					}
-					//return player.play(id);
+					return player.play(id);
 				}
 			}
 			return null;

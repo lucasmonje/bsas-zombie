@@ -10,15 +10,19 @@
 //------------------------------------------------------------------------------
 package com.sevenbrains.trashingDead.models {
 	
-	import com.sevenbrains.trashingDead.display.World;
-	import com.sevenbrains.trashingDead.entities.Barricade;
-	import com.sevenbrains.trashingDead.managers.PanZoom;
-	import com.sevenbrains.trashingDead.managers.StageTimer;
-	import flash.geom.Rectangle;
 	import Box2D.Common.Math.b2Vec2;
 	
+	import com.sevenbrains.trashingDead.display.World;
+	import com.sevenbrains.trashingDead.entities.Barricade;
+	import com.sevenbrains.trashingDead.events.PropertyChangeEvent;
+	import com.sevenbrains.trashingDead.managers.PanZoom;
+	import com.sevenbrains.trashingDead.managers.StageTimer;
 	
-	public class WorldModel {
+	import flash.events.EventDispatcher;
+	import flash.geom.Rectangle;
+	
+	
+	public class WorldModel extends EventDispatcher {
 		
 		private static var _instance:WorldModel;
 		
@@ -79,7 +83,11 @@ package com.sevenbrains.trashingDead.models {
 		}
 		
 		public function set stageTimer(value:StageTimer):void {
+			if (!Boolean(value)) {
+				return;
+			}
 			_stageTimer = value;
+			dispatchEvent(new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGED, "stageTimer", null, value)); 
 		}
 		
 		public static function get instance():WorldModel {
