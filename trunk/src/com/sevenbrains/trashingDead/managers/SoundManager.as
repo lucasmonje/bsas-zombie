@@ -1,5 +1,6 @@
 package com.sevenbrains.trashingDead.managers {
 	
+	import com.sevenbrains.trashingDead.enum.SharedObjectType;
 	import com.sevenbrains.trashingDead.enum.SoundType;
 	import com.sevenbrains.trashingDead.interfaces.ISoundPlayer;
 	import com.sevenbrains.trashingDead.models.ConfigModel;
@@ -9,7 +10,6 @@ package com.sevenbrains.trashingDead.managers {
 	
 	public class SoundManager implements ISoundPlayer {
 		
-		private static const COOKIE:String = 'sound';
 		private static const FX_MUTE:String = 'fx_mute';
 		private static const MUSIC_MUTE:String = 'music_mute';
 
@@ -41,8 +41,7 @@ package com.sevenbrains.trashingDead.managers {
 			_fxPlayer = new SoundPlayer(ConfigModel.sounds.getSoundDefinitionsByType(SoundType.FX));
 			_players.push(_musicPlayer);
 			_players.push(_fxPlayer);
-			fxMuted = Boolean(SharedObjectUtils.load(COOKIE, FX_MUTE));
-			musicMuted = Boolean(SharedObjectUtils.load(COOKIE, MUSIC_MUTE));
+			musicMuted = fxMuted = Boolean(SharedObjectUtils.load(SharedObjectType.settingsKey, MUSIC_MUTE));
 		}
 		
 		public function play(id:String):Sound {
@@ -83,7 +82,7 @@ package com.sevenbrains.trashingDead.managers {
 		
 		public function set fxMuted(value:Boolean):void {
 			_fxPlayer && (_fxPlayer.muted = value);
-			SharedObjectUtils.save(COOKIE, FX_MUTE, value);
+			SharedObjectUtils.save(SharedObjectType.settingsKey, FX_MUTE, value);
 		}
 		
 		public function get fxMuted():Boolean {
@@ -92,7 +91,8 @@ package com.sevenbrains.trashingDead.managers {
 		
 		public function set musicMuted(value:Boolean):void {
 			_musicPlayer && (_musicPlayer.muted = value);
-			SharedObjectUtils.save(COOKIE, MUSIC_MUTE, value);
+			SharedObjectUtils.save(SharedObjectType.settingsKey, MUSIC_MUTE, value);
+			SharedObjectUtils.save(SharedObjectType.settingsKey, FX_MUTE, value);
 		}
 		
 		public function get musicMuted():Boolean {
