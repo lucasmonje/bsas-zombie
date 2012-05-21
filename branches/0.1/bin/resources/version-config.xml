@@ -2,26 +2,26 @@
 <config>
 	<versions>
 		<path url="assets/swf/">
-			<file url="common.swf" version="0.0" />
-			<file url="backgrounds/background01.swf" version="0.0" />
-			<file url="zombies/zombie01.swf" version="0.0" />
-			<file url="zombies/zombie02.swf" version="0.0" />
-			<file url="trash/trashTv.swf" version="0.0" />
-			<file url="trash/trashRim.swf" version="0.0" />
-			<file url="trash/trashSafeBox.swf" version="0.0" />
-			<file url="item/itemMolotov.swf" version="0.0" />
-			<file url="screens/gameTitle.swf" version="0.0" />
-			<file url="screens/mapWorld.swf" version="0.0" />
-			<file url="players/players.swf" version="0.0" />
-			<file url="barricade/barricade.swf" version="0.0" />
-			<file url="zombies/zombie03.swf" version="0.0" />
-			<file url="popups/popupAlert.swf" version="0.0" />
-			<file url="popups/popupBigMessage.swf" version="0.0" />
-			<file url="popups/popupMaterial.swf" version="0.0" />
-			<file url="zombies/zombie04.swf" version="0.0" />
-			<file url="trash/trashRock.swf" version="0.0" />
-			<file url="screens/hud.swf" version="0.0" />
-			<file url="zombies/zombie05.swf" version="0.0" />
+			<file url="common.swf" version="0.1" />
+			<file url="backgrounds/background01.swf" version="0.1" />
+			<file url="zombies/zombie01.swf" version="0.1" />
+			<file url="zombies/zombie02.swf" version="0.1" />
+			<file url="trash/trashTv.swf" version="0.1" />
+			<file url="trash/trashRim.swf" version="0.1" />
+			<file url="trash/trashSafeBox.swf" version="0.1" />
+			<file url="item/itemMolotov.swf" version="0.1" />
+			<file url="screens/gameTitle.swf" version="0.1" />
+			<file url="screens/mapWorld.swf" version="0.1" />
+			<file url="players/players.swf" version="0.1" />
+			<file url="barricade/barricade.swf" version="0.1" />
+			<file url="zombies/zombie03.swf" version="0.1" />
+			<file url="popups/popupAlert.swf" version="0.1" />
+			<file url="popups/popupBigMessage.swf" version="0.1" />
+			<file url="popups/popupMaterial.swf" version="0.1" />
+			<file url="zombies/zombie04.swf" version="0.1" />
+			<file url="trash/trashRock.swf" version="0.1" />
+			<file url="screens/hud.swf" version="0.1" />
+			<file url="zombies/zombie05.swf" version="0.1" />
 		</path>
 	</versions>
 </config>
