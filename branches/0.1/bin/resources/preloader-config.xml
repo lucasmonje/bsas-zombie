@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<preloaderProccess>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlAssetsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.AssetsConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.AssetsConfig" /> 
+			<param name="model" value="assets" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlItemsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.ItemConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.ItemsConfig" /> 
+			<param name="model" value="items" />
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlWorldsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.WorldConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.WorldsConfig" /> 
+			<param name="model" value="worlds" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="xmlSoundsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.SoundConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.SoundsConfig" /> 
+			<param name="model" value="sounds" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.ConfigBuilder">
+			<param name="xmlClassName" value="popupsConfigClass" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.PopupsConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.PopupsConfig" /> 
+			<param name="model" value="popups" /> 			
+		</config>
+		<config builder="com.sevenbrains.trashingDead.builders.LocaleBuilder">
+			<param name="localePath" value="resources/locale/messages_${locale}.properties" /> 
+			<param name="deserializerClass" value="com.sevenbrains.trashingDead.deserealizer.LocaleConfigDeserializer" /> 
+			<param name="configClass" value="com.sevenbrains.trashingDead.configuration.LocaleConfig" /> 
+			<param name="model" value="messages" /> 			
+		</config>
+	</preloaderProccess>
+</data>

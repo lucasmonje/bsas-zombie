@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<swfs folderPath="assets/swf/" >
+		<swf id="common" path="common.swf" preloaderId="10001" />
+		<swf id="background01" path="backgrounds/background01.swf" preloaderId="10002" />
+		<swf id="zombie01" path="zombies/zombie01.swf" preloaderId="10003" />
+		<swf id="zombie02" path="zombies/zombie02.swf" preloaderId="10004" />
+		<swf id="trashTv" path="trash/trashTv.swf" preloaderId="10005" />
+		<swf id="trashRim" path="trash/trashRim.swf" preloaderId="10006" />
+		<swf id="trashSafeBox" path="trash/trashSafeBox.swf" preloaderId="10007" />
+		<swf id="itemMolotov" path="item/itemMolotov.swf" preloaderId="10008" />
+		<swf id="gameTitle" path="screens/gameTitle.swf" preloaderId="10009" />
+		<swf id="mapWorld" path="screens/mapWorld.swf" preloaderId="10010" />
+		<swf id="players" path="players/players.swf" preloaderId="10011" />
+		<swf id="barricade" path="barricade/barricade.swf" preloaderId="10012" />
+		<swf id="zombie03" path="zombies/zombie03.swf" preloaderId="10013" />
+		<swf id="popupAlert" path="popups/popupAlert.swf" />
+		<swf id="popupBigMessage" path="popups/popupBigMessage.swf" />
+		<swf id="popupMaterial" path="popups/popupMaterial.swf" />
+		<swf id="zombie04" path="zombies/zombie04.swf" preloaderId="10014" />
+		<swf id="trashRock" path="trash/trashRock.swf" preloaderId="10015" />
+		<swf id="hud" path="screens/hud.swf" preloaderId="10016" />
+		<swf id="zombie05" path="zombies/zombie05.swf" preloaderId="10017" />
+	</swfs>
+</data>
