@@ -14,6 +14,7 @@ package com.sevenbrains.trashingDead.display {
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
+	
 	import com.sevenbrains.trashingDead.b2.Box;
 	import com.sevenbrains.trashingDead.b2.BoxBuilder;
 	import com.sevenbrains.trashingDead.b2.GamePhysicWorld;
@@ -41,6 +42,7 @@ package com.sevenbrains.trashingDead.display {
 	import com.sevenbrains.trashingDead.models.WorldModel;
 	import com.sevenbrains.trashingDead.utils.DisplayUtil;
 	import com.sevenbrains.trashingDead.utils.StageReference;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -169,7 +171,7 @@ package com.sevenbrains.trashingDead.display {
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_callId = _gameTimer.callMeEvery(GameProperties.TIMER_UPDATE, updateWorld);
 			
-			if (Boolean(_props.soundId)) {
+			if (Boolean(_props.soundId) && Boolean(ConfigModel.sounds.getSoundDefById(_props.soundId))) {
 				SoundManager.instance.play(_props.soundId);
 			}
 			_worldModel.stageTimer.addEventListener(StageTimerEvent.SECOND_ROUND, onSecondRound);

@@ -73,7 +73,7 @@ package com.sevenbrains.trashingDead.display.iconList {
 		}
 		
 		public function init():void {
-			_asset = new DefaultAssetLoader(VersionManager.getUrl(_url));
+			_asset = new DefaultAssetLoader(_url);
 			_asset.addEventListener(Event.COMPLETE, onAssetComplete);
 			_asset.load();
 		}

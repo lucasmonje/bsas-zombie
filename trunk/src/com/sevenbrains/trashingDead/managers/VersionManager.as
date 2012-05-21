@@ -10,9 +10,9 @@
 package com.sevenbrains.trashingDead.managers {
 	
 	import com.sevenbrains.trashingDead.net.URLLoader;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
 	import flash.utils.Dictionary;
 	
 	public class VersionManager extends EventDispatcher {

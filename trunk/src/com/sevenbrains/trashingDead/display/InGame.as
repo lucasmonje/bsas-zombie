@@ -5,6 +5,7 @@ package com.sevenbrains.trashingDead.display
 	import com.sevenbrains.trashingDead.controller.event.ToggleMusicEvent;
 	import com.sevenbrains.trashingDead.display.canvas.GameCanvas;
 	import com.sevenbrains.trashingDead.enum.ClassStatesEnum;
+	import com.sevenbrains.trashingDead.events.GameTimerEvent;
 	import com.sevenbrains.trashingDead.interfaces.Screenable;
 	import com.sevenbrains.trashingDead.managers.GameTimer;
 	import com.sevenbrains.trashingDead.managers.PopupManager;
@@ -57,7 +58,6 @@ package com.sevenbrains.trashingDead.display
 		
 		public function init():void {
 			SoundManager.instance.setup();
-			SoundManager.instance.play("intro");
 			UserModel.instance.init();
 			
 			addChild(GameCanvas.instance.world);
@@ -87,11 +87,10 @@ package com.sevenbrains.trashingDead.display
 			
 			PopupManager.instance.setLayer(GameCanvas.instance.popup);
 			
-			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			_callId = GameTimer.instance.callMeEvery(1, update);
+			GameTimer.instance.addEventListener(GameTimerEvent.TIME_UPDATE, update);
 		}
 
-		private function update():void {
+		private function update(e:GameTimerEvent):void {
 			switch(_state) {
 				case STATE_MAP:
 					if (_actualScreen.state == ClassStatesEnum.DESTROYING) {
@@ -142,11 +141,6 @@ package com.sevenbrains.trashingDead.display
 			GameCanvas.instance.world.addChild(_actualScreen as DisplayObject);
 		}
 		
-		private function onKeyUp(e:KeyboardEvent):void {
-			if (e.keyCode == Keyboard.ESCAPE) {
-			}
-		}
-		
 		private function onWorldLoaded(e:Event):void {
 			changeScreen(_world);
 			
@@ -154,7 +148,7 @@ package com.sevenbrains.trashingDead.display
 		}
 		
 		public function destroy():void {
-			StageReference.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			GameTimer.instance.removeEventListener(GameTimerEvent.TIME_UPDATE, update);
 			_world.removeEventListener(Event.COMPLETE, onWorldLoaded);
 			
 			if (_world.parent != null){
@@ -166,8 +160,6 @@ package com.sevenbrains.trashingDead.display
 			}
 			
 			_worldMap.destroy();
-			
-			GameTimer.instance.cancelCall(_callId);
 		}
 		
 		public function get state():String 

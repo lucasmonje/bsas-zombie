@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
-	<swfs folderPath="assets/swf/" >
+	<swfs folderPath="assets/" >
 		<swf id="common" path="common.swf" preloaderId="10001" />
 		<swf id="background01" path="backgrounds/background01.swf" preloaderId="10002" />
 		<swf id="zombie01" path="zombies/zombie01.swf" preloaderId="10003" />
