@@ -1,0 +1,160 @@
+2012-02-01 19:07:48,551 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-01 19:07:48,554 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-01 19:07:48,586 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-01 19:07:48,914 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-01 19:07:56,252 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-01 19:07:56,467 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-01 19:07:56,468 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-08 17:25:04,869 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-08 17:25:04,903 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-08 17:25:05,187 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-08 17:25:06,385 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-08 17:25:09,858 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-08 17:25:10,272 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-08 17:25:10,273 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-08 17:25:50,378 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-08 17:25:50,381 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-08 17:25:50,406 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-08 17:25:50,573 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-08 17:25:51,678 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-08 17:25:51,866 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-08 17:25:51,867 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-08 17:30:20,563 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-08 17:30:20,566 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-08 17:30:20,592 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-08 17:30:20,772 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-08 17:30:21,926 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-08 17:30:22,123 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-08 17:30:22,124 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-08 19:40:50,772 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-08 19:40:50,811 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-08 19:40:50,928 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-08 19:40:52,569 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-08 19:40:53,432 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-08 19:40:53,734 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-08 19:40:53,748 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-23 20:18:50,125 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-23 20:18:50,141 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-23 20:18:50,211 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-23 20:18:50,526 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-23 20:18:53,717 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-23 20:18:54,030 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-23 20:18:54,031 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-23 20:24:16,951 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-23 20:24:16,955 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-23 20:24:16,985 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-23 20:24:17,183 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-23 20:24:18,592 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-23 20:24:18,783 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-23 20:24:18,784 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-02-23 20:25:07,193 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-02-23 20:25:07,196 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-02-23 20:25:07,226 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-02-23 20:25:07,413 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-02-23 20:25:08,813 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-02-23 20:25:09,017 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-02-23 20:25:09,018 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-03-05 13:33:10,978 com.vostu.minicafe.version.VersionUpdater [main] INFO  - Start process
+2012-03-05 13:33:11,003 com.vostu.minicafe.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-03-05 13:33:11,070 com.vostu.minicafe.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-03-05 13:33:11,456 com.vostu.minicafe.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-03-05 13:33:15,703 com.vostu.minicafe.version.SvnHelper [main] INFO  - get file: client/game/resources/version-config.xml to repository
+2012-03-05 13:33:16,083 com.vostu.minicafe.version.VersionUpdater [main] INFO  - write file
+2012-03-05 13:33:16,083 com.vostu.minicafe.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 16:09:30,134 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 16:09:30,384 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 16:09:36,394 com.sevenbrains.trashingDead.version.VersionUpdater [main] ERROR - process fail
+2012-05-21 16:09:36,394 com.sevenbrains.trashingDead.version.VersionUpdater [main] ERROR - org.tmatesoft.svn.core.SVNException: svn: 'https://bsas-zombie.googlecode.com/svn/trunk/branches/1.0' was not found in the repository at revision 188
+2012-05-21 17:26:32,001 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:26:32,271 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:27:10,228 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:27:12,077 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:27:12,078 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:31:24,549 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:31:24,774 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:31:30,272 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:32:22,567 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:32:22,567 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:32:44,626 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:32:44,848 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:32:49,965 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:32:51,742 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:32:51,742 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:33:11,868 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:33:12,079 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:33:17,325 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:33:19,229 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:33:19,229 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:37:12,406 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:37:12,629 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:37:17,802 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:37:19,683 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:37:19,684 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:37:32,925 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:37:33,184 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:37:38,066 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:38:34,281 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:40:30,301 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:40:34,498 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:40:34,778 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:40:39,826 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:41:49,814 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:41:50,066 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:41:58,875 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:41:59,102 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:42:04,890 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:47:06,977 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:47:07,221 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:47:12,541 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:47:33,780 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:47:33,780 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:47:40,309 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:47:40,537 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:47:45,756 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:47:47,561 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:47:47,561 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:50:11,502 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:50:11,736 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:50:16,650 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:50:18,510 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:50:18,511 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:51:25,099 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:51:25,341 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:51:30,528 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:51:33,008 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:51:33,008 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 17:55:53,255 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 17:55:53,259 com.sevenbrains.trashingDead.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-05-21 17:55:53,290 com.sevenbrains.trashingDead.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-05-21 17:55:53,511 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 17:55:58,391 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 17:56:00,186 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 17:56:00,186 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 18:04:16,654 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 18:04:16,657 com.sevenbrains.trashingDead.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-05-21 18:04:16,689 com.sevenbrains.trashingDead.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-05-21 18:04:16,899 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 18:04:21,875 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 18:04:23,665 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 18:04:23,665 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 18:04:42,156 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 18:04:42,160 com.sevenbrains.trashingDead.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-05-21 18:04:42,191 com.sevenbrains.trashingDead.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-05-21 18:04:42,392 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 18:04:48,285 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 18:04:49,924 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 18:04:49,924 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 18:05:25,400 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 18:05:25,404 com.sevenbrains.trashingDead.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-05-21 18:05:25,433 com.sevenbrains.trashingDead.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-05-21 18:05:25,639 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 18:05:30,599 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 18:05:32,291 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 18:05:32,292 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
+2012-05-21 18:05:52,356 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - Start process
+2012-05-21 18:05:52,359 com.sevenbrains.trashingDead.version.CommonsUtils [main] DEBUG - Obtaining parameters
+2012-05-21 18:05:52,393 com.sevenbrains.trashingDead.version.SvnHelper [main] DEBUG - create create AuthenticationManager
+2012-05-21 18:05:52,590 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - Obtaining the differences of the files
+2012-05-21 18:05:57,682 com.sevenbrains.trashingDead.version.SvnHelper [main] INFO  - get file: resources/version-config.xml to repository
+2012-05-21 18:05:59,415 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - write file
+2012-05-21 18:05:59,415 com.sevenbrains.trashingDead.version.VersionUpdater [main] INFO  - finish process
