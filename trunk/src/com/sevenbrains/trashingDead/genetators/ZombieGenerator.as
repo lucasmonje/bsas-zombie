@@ -90,7 +90,7 @@ package com.sevenbrains.trashingDead.genetators {
 							pos= new Point(WorldModel.instance.panZoom.cameraBounds.right + 50, floorY);
 							break;
 						case PhysicObjectType.FLYING_ZOMBIE:
-							pos = new Point(WorldModel.instance.panZoom.cameraBounds.right + 50, floorY - 250);
+							pos = new Point(WorldModel.instance.panZoom.cameraBounds.right + 50, floorY - 200);
 							break;
 						case PhysicObjectType.ZOMBIE_GRAVE:
 							pos = new Point(WorldModel.instance.panZoom.cameraBounds.right - 250, floorY);
