@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<data>
-	<sounds folderPath="assets/sounds/" >
-	<!--
-		<sound assetRef="intro" type="music" stream="true" loops="999" path="intro.mp3" preloaderId="10010" />
-		<sound assetRef="level01" type="music" stream="true" loops="999" path="level01.mp3" preloaderId="10011" />
-	-->
-	</sounds>
-</data>
